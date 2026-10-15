@@ -14,7 +14,7 @@ header{background:#fff;border-bottom:1px solid var(--line)}
 .brand strong{display:block;font-family:'Inter',sans-serif;font-weight:800;color:var(--blue);font-size:27px;letter-spacing:0.5px;line-height:1.25}
 .contacttop{font-size:12px;color:var(--muted)}.contacttop b{display:block;font-size:22px;color:var(--blue)}
 nav{border-top:1px solid #eef1f5}
-nav .wrap{display:flex;align-items:center;justify-content:flex-end;gap:36px}
+nav .wrap{display:flex;align-items:center;justify-content:flex-start;gap:36px}
 nav a{font-size:14px;padding:16px 0;white-space:nowrap;transition:color .2s}
 nav a:hover,nav a.active{color:var(--blue);font-weight:bold}
 nav a.active{border-bottom:2px solid var(--blue)}
@@ -108,10 +108,6 @@ nav a.active{border-bottom:2px solid var(--blue)}
 .btn-white{display:inline-block;background:#fff;color:var(--navy);padding:9px 18px;border-radius:3px;font-size:13px;font-weight:bold;transition:background .2s}
 .btn-white:hover{background:#edf2fa}
 
-/* Floating buttons */
-.floating-hotline{position:fixed;bottom:25px;left:25px;background:#0ca678;color:#fff;padding:9px 18px;border-radius:25px;font-weight:bold;font-size:14px;box-shadow:0 6px 20px rgba(12,166,120,.35);display:flex;align-items:center;gap:8px;z-index:99}
-.floating-zalo{position:fixed;bottom:25px;right:25px;background:#0068ff;color:#fff;width:52px;height:52px;border-radius:50%;box-shadow:0 6px 20px rgba(0,104,255,.35);display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:14px;z-index:99}
-
 /* Toast */
 .toast-notice{position:fixed;top:30px;right:30px;max-width:420px;background:#11284b;color:#fff;padding:18px 22px;border-radius:6px;box-shadow:0 12px 35px rgba(17,40,75,.35);font-size:13.5px;line-height:1.6;z-index:9999;border-left:5px solid #0ca678;animation:slideIn .3s ease-out}
 @keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
@@ -125,8 +121,6 @@ footer{background:#edf3fb;color:#5c708b;padding:35px 0;font-size:12px;border-top
 .application-box{padding:24px 20px}
 .brand strong{font-size:22px}.brand img{width:60px;height:60px}.contacttop{display:none}
 nav .wrap{overflow:auto;justify-content:flex-start;gap:25px}nav a{font-size:12px}
-.floating-hotline{bottom:15px;left:15px;padding:8px 14px;font-size:12px}
-.floating-zalo{bottom:15px;right:15px;width:44px;height:44px;font-size:12px}
 }
 </style></head><body>
 <div class="top"><div class="wrap"><span>CÔNG TY LUẬT TNHH MTV TỪ LIÊM</span><span>Đồng hành cùng quyền lợi của bạn</span></div></div>
@@ -375,9 +369,7 @@ nav .wrap{overflow:auto;justify-content:flex-start;gap:25px}nav a{font-size:12px
   </div>
 </main>
 
-<!-- Tiện ích Hotline & Zalo góc màn hình -->
-<a class="floating-hotline" href="tel:0916029966" title="Gọi Hotline">Hotline: 0916 029 966</a>
-<a class="floating-zalo" href="https://zalo.me/0916029966" target="_blank" title="Chat Zalo">Zalo</a>
+
 
 <footer>
   <div class="wrap">
