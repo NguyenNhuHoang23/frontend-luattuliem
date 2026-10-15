@@ -5,7 +5,16 @@
 /* Light homepage: unfiltered photograph, separate editorial text column. */
 .top{background:#f0f5fc;color:#496280;border-bottom:1px solid #e1e9f4}
 .hero{background:#f8faff;color:var(--navy);min-height:510px;display:grid;grid-template-columns:46% 54%;align-items:stretch;overflow:hidden}
-.hero>img{position:static;grid-column:2;grid-row:1;width:100%;height:100%;min-height:510px;object-fit:cover;object-position:47% center}
+.hero-slider{grid-column:2;grid-row:1;position:relative;width:100%;height:100%;min-height:510px;overflow:hidden;background:var(--navy)}
+.hero-slides{position:relative;width:100%;height:100%}
+.hero-slide{position:absolute;inset:0;opacity:0;transition:opacity .8s ease-in-out;z-index:1;pointer-events:none}
+.hero-slide.active{opacity:1;z-index:2;pointer-events:auto}
+.hero-slide img{width:100%;height:100%;min-height:510px;object-fit:cover;object-position:center;display:block}
+.slider-controls{position:absolute;bottom:12px;right:5%;z-index:10;display:flex;align-items:center;gap:10px}
+.slider-controls .caption{position:static;background:#ffffffeb;color:#4e5e72;font-size:10px;padding:3px 9px;border-radius:2px;box-shadow:0 1px 4px rgba(0,0,0,.15);transition:opacity .3s ease}
+.slider-dots{display:flex;gap:6px;align-items:center;background:#ffffffeb;padding:4px 8px;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,.15)}
+.slider-dot{width:7px;height:7px;border-radius:50%;border:0;background:#9ab0d3;padding:0;cursor:pointer;transition:all .3s ease}
+.slider-dot.active{background:var(--blue);width:16px;border-radius:4px}
 .hero:after{display:none}
 .hero>.wrap{grid-column:1;grid-row:1;width:auto;margin:0;padding:0 35px 0 max(5vw,calc((100vw - 1200px)/2));display:flex;align-items:center}
 .herotext{max-width:510px;padding:55px 0}
@@ -20,13 +29,13 @@
 .fields,.news{background:#f6f9fd}.service{border:1px solid #e0e8f3;border-top:2px solid #4777c3}
 footer{background:#edf3fb;color:#5c708b;border-top:1px solid #dce6f3}footer strong{color:var(--blue)}
 .demo{background:#f8faff;color:#687c98}
-@media(min-width:1600px){.hero>img{max-height:610px}.hero{min-height:570px}}
-@media(max-width:800px){.hero{display:flex;flex-direction:column;min-height:0}.hero>.wrap{order:0;width:90%;margin:auto;padding:0}.herotext{padding:38px 0;max-width:100%}.hero h1{font-size:39px}.hero>img{order:1;min-height:0;height:auto;max-height:410px;object-fit:cover;width:100%}.caption{right:3%;bottom:10px}.hero .actions{margin-top:23px}.hero p{font-size:15px}}
+@media(min-width:1600px){.hero-slide img,.hero-slider{max-height:610px}.hero{min-height:570px}}
+@media(max-width:800px){.hero{display:flex;flex-direction:column;min-height:0}.hero>.wrap{order:0;width:90%;margin:auto;padding:0}.herotext{padding:38px 0;max-width:100%}.hero h1{font-size:39px}.hero-slider{order:1;min-height:0;height:340px;width:100%}.hero-slide img{min-height:0;height:340px;object-fit:cover;width:100%}.slider-controls{right:3%;bottom:10px}.hero .actions{margin-top:23px}.hero p{font-size:15px}}
 
 </style></head><body>
 <div class="top"><div class="wrap"><span>CÔNG TY LUẬT TNHH MTV TỪ LIÊM</span><span>Đồng hành cùng quyền lợi của bạn</span></div></div>
 <header><div class="wrap brandrow"><a class="brand" href="#" onclick="home()"><img src="assets/logo.jpg" alt="Logo Công ty Luật Từ Liêm"><div><small>CÔNG TY LUẬT TNHH MTV</small><strong>TỪ LIÊM</strong></div></a><a class="contacttop" href="tel:0916029966">Liên hệ trực tiếp với công ty<b>0916 029 966</b></a></div><nav><div class="wrap"><a href="#" onclick="home()">Trang chủ</a><a href="#gioi-thieu" onclick="home()">Giới thiệu &amp; lĩnh vực</a><a href="#bai-viet" onclick="home()">Bài viết &amp; hoạt động</a><a href="#hop-tac" onclick="home()">Tuyển dụng – Hợp tác</a><a href="#lien-he" onclick="home()">Gửi yêu cầu – Liên hệ</a><a class="memberlink" href="#thanh-vien" onclick="portal('login')">Thành viên ↗</a></div></nav></header>
-<main id="public"><div class="hero"><img src="assets/cover.jpg" alt="Tòa án nhân dân thành phố Hà Nội"><div class="wrap"><div class="herotext"><div class="eyebrow">CÔNG TY LUẬT TỪ LIÊM</div><h1>Đồng hành cùng<br>quyền lợi của bạn.</h1><p>Lắng nghe để hiểu đúng. Phân tích để làm rõ.<br>Cùng bạn lựa chọn hướng giải quyết phù hợp.</p><div class="actions"><a class="btn light" href="#lien-he">Gửi yêu cầu hỗ trợ ↗</a><a class="textlink" href="#gioi-thieu">Tìm hiểu về chúng tôi</a></div></div></div><span class="caption">Ảnh: Tòa án nhân dân thành phố Hà Nội</span></div>
+<main id="public"><div class="hero"><div class="hero-slider" id="heroSlider" aria-label="Hình ảnh tiêu biểu"><div class="hero-slides"><div class="hero-slide active"><img src="assets/cover.jpg" alt="Tòa án nhân dân thành phố Hà Nội"></div><div class="hero-slide"><img src="assets/cover_2.jpg" alt="Tòa án nhân dân tối cao"></div><div class="hero-slide"><img src="assets/cover_3.jpg" alt="Không gian tư vấn và làm việc pháp lý"></div></div><div class="slider-controls"><span class="caption" id="sliderCaption">Ảnh: Tòa án nhân dân thành phố Hà Nội</span><div class="slider-dots" id="sliderDots" role="tablist"><button class="slider-dot active" aria-label="Ảnh 1" onclick="goToSlide(0)"></button><button class="slider-dot" aria-label="Ảnh 2" onclick="goToSlide(1)"></button><button class="slider-dot" aria-label="Ảnh 3" onclick="goToSlide(2)"></button></div></div></div><div class="wrap"><div class="herotext"><div class="eyebrow">CÔNG TY LUẬT TỪ LIÊM</div><h1>Đồng hành cùng<br>quyền lợi của bạn.</h1><p>Lắng nghe để hiểu đúng. Phân tích để làm rõ.<br>Cùng bạn lựa chọn hướng giải quyết phù hợp.</p><div class="actions"><a class="btn light" href="#lien-he">Gửi yêu cầu hỗ trợ ↗</a><a class="textlink" href="#gioi-thieu">Tìm hiểu về chúng tôi</a></div></div></div></div>
 <div class="principles"><div class="wrap"><article><span class="number">01</span><div><b>Tiếp nhận trực tiếp</b><small>Mọi yêu cầu được gửi về công ty</small></div></article><article><span class="number">02</span><div><b>Phạm vi công việc rõ ràng</b><small>Trao đổi và thống nhất trước khi thực hiện</small></div></article><article><span class="number">03</span><div><b>Đồng hành tại địa phương</b><small>Kết nối nhân lực phù hợp với vụ việc</small></div></article></div></div>
 <section id="gioi-thieu"><div class="wrap intro"><div><div class="eyebrow">VỀ CHÚNG TÔI</div><h2>Gần hơn với khách hàng.<br>Rõ hơn trong từng việc.</h2></div><div><p>Công ty Luật TNHH MTV Từ Liêm hướng đến việc kết nối luật sư và cộng tác viên tại địa phương, giúp khách hàng thuận tiện hơn trong quá trình trao đổi và giải quyết công việc.</p><div class="quote">Tối ưu nguồn nhân lực địa phương,<br>hướng đến lợi ích của khách hàng.</div></div></div></section>
 <section class="fields"><div class="wrap"><div class="sectionhead"><div><div class="eyebrow">LĨNH VỰC HOẠT ĐỘNG</div><h2>Bắt đầu từ vấn đề của bạn</h2></div><p>Các nhóm lĩnh vực dưới đây là nội dung minh họa để duyệt bố cục, có thể điều chỉnh khi hoàn thiện website.</p></div><div class="grid3"><article class="service"><div class="no">01 / ĐẤT ĐAI</div><h3>Đất đai &amp; nhà ở</h3><p>Trao đổi về quyền sử dụng đất, nhà ở và những vướng mắc liên quan.</p><a href="#lien-he">Gửi yêu cầu →</a></article><article class="service"><div class="no">02 / DÂN SỰ</div><h3>Dân sự &amp; gia đình</h3><p>Những vấn đề về hợp đồng, thừa kế, hôn nhân và quyền lợi cá nhân.</p><a href="#lien-he">Gửi yêu cầu →</a></article><article class="service"><div class="no">03 / TỐ TỤNG</div><h3>Tham gia tố tụng</h3><p>Tiếp nhận yêu cầu luật sư tham gia bảo vệ quyền và lợi ích hợp pháp.</p><a href="#lien-he">Gửi yêu cầu →</a></article></div></div></section>
@@ -43,6 +52,36 @@ function apply(role){document.getElementById('roleTitle').textContent=role;docum
 const reply=()=>`<form class="reply" onsubmit="event.preventDefault();demoReply(this)"><input required aria-label="Nội dung trả lời" placeholder="Nhập nội dung trả lời…"><button class="btn">Trả lời</button></form>`;
 function demoReply(f){const p=document.createElement('p');p.textContent='Bạn (minh họa): '+f.querySelector('input').value;f.before(p);f.reset()}
 function portal(type){document.getElementById('public').classList.add('hidden');document.getElementById('portal').classList.remove('hidden');let title=document.getElementById('portalTitle'),box=document.getElementById('portalContent');if(type==='login'){title.textContent='Đăng nhập thành viên';box.innerHTML=`<form class="loginbox" onsubmit="event.preventDefault();portal('member')"><img src="assets/logo.jpg" alt="Luật Từ Liêm" width="70"><h3>Chào mừng trở lại</h3><label>Tên đăng nhập<input required autocomplete="username"></label><label>Mật khẩu<input required type="password" autocomplete="current-password"></label><button class="btn">Xem giao diện minh họa</button><p class="notice"><a href="#" onclick="event.preventDefault();toast('Mẫu giao diện: liên hệ quản trị viên để được hỗ trợ tài khoản.')">Quên mật khẩu?</a></p></form>`;return}let admin=type==='admin';title.textContent=admin?'Xin chào Giám đốc':'Xin chào CTV Nguyễn Văn A';box.innerHTML=`<div class="dashboard"><aside class="sidebar"><b>${admin?'QUẢN TRỊ':'THÀNH VIÊN'}</b><a href="#tin">Tin nhanh</a><a href="#vuviec">Trao đổi vụ việc</a><a href="#taichinh">Thông báo tài chính</a>${admin?'<a href="#nhansu">Danh sách nhân sự</a>':''}<a href="#" onclick="portal('login');return false">Đăng xuất</a></aside><div><div class="panel" id="tin"><h3>Tin nhanh</h3><div class="thread"><small>Giám đốc · 08:30, 13/10/2026</small><p>Em lưu ý nộp trước ngày 30/10 nhé.</p></div>${admin?'<label>Gửi đến<select><option>Nguyễn Văn A</option><option>Nhóm luật sư</option><option>Toàn thể cộng tác viên</option></select></label>':''}${reply()}</div><div class="panel" id="vuviec"><h3>Các trao đổi vụ việc</h3><p class="notice">${admin?'Giám đốc giám sát tất cả nhóm.':'Chỉ hiển thị những nhóm bạn được tham gia.'}</p><button class="casebtn" onclick="document.getElementById('caseA').classList.toggle('hidden')"><b>Vụ bà A</b><span class="tag">Mở trao đổi ↓</span></button><div id="caseA" class="hidden"><p class="notice">Thành phần minh họa: Giám đốc · Luật sư A · CTV Nguyễn Văn A</p><div class="thread"><small>Luật sư A · 08:00, 03/09</small><p>A nộp cho anh đơn khởi kiện nhé.</p><small>Nguyễn Văn A · 09:00, 03/09</small><p>Vâng.</p><small>Giám đốc · 21:00, 06/09</small><p>Sao không thấy phiếu tiếp nhận?</p></div>${reply()}<p class="notice">Đính chính bằng phản hồi mới; thành viên không sửa hoặc xóa nội dung đã đăng.</p></div><button class="casebtn" onclick="toast('Vụ ông B: chưa có trao đổi trong dữ liệu minh họa.')"><b>Vụ ông B</b><span>→</span></button>${admin?`<details><summary>Tạo vụ việc</summary><form onsubmit="event.preventDefault();toast('Đã minh họa thao tác tạo nhóm. Không lưu dữ liệu thực tế.')"><label>Tên vụ việc<input required></label><label>Chọn luật sư<select><option>Luật sư A</option><option>Luật sư B</option></select></label><div class="formrow"><label>CTV hỗ trợ<select><option>Nguyễn Văn A</option><option>Chưa chọn</option></select></label><label>CTV pháp lý<select><option>CTV C</option><option>Chưa chọn</option></select></label></div><p class="notice">Giám đốc chỉ tạo nhóm cho vụ việc đã ký HĐ dịch vụ pháp lý.</p><button class="btn">Tạo nhóm</button></form></details>`:''}</div><div class="panel" id="taichinh"><h3>Thông báo tài chính</h3><div class="thread"><small>Giám đốc · 10/04/2026</small><p>Đã thanh toán 10 triệu đồng.</p></div>${reply()}<p class="notice">Thông báo nhập thủ công, không phải chức năng chuyển tiền hoặc kế toán.</p></div>${admin?'<div class="panel" id="nhansu"><h3>Danh sách nhân sự</h3><p class="notice">Chỉ giám đốc được xem danh sách tổng thể.</p><details><summary>Luật sư</summary><p>Luật sư A · Hà Nội · Tài khoản hoạt động</p></details><details><summary>CTV hỗ trợ</summary><p>Nguyễn Văn A · Hà Nội · Tài khoản hoạt động</p></details><details><summary>CTV pháp lý</summary><p>CTV C · Hà Nội · Tài khoản hoạt động</p></details></div>':''}</div></div>`}
+
+const slidesData=[
+  {caption:'Ảnh: Tòa án nhân dân thành phố Hà Nội'},
+  {caption:'Ảnh: Tòa án nhân dân tối cao'},
+  {caption:'Ảnh: Không gian tư vấn và làm việc pháp lý'}
+];
+let currentSlide=0,slideTimer=null;
+function showSlide(n){
+  const s=document.querySelectorAll('.hero-slide'),d=document.querySelectorAll('.slider-dot'),c=document.getElementById('sliderCaption');
+  if(!s.length)return;
+  currentSlide=(n+s.length)%s.length;
+  s.forEach((e,i)=>e.classList.toggle('active',i===currentSlide));
+  d.forEach((e,i)=>e.classList.toggle('active',i===currentSlide));
+  if(c&&slidesData[currentSlide]){
+    c.style.opacity='0';
+    setTimeout(()=>{c.textContent=slidesData[currentSlide].caption;c.style.opacity='1'},200);
+  }
+}
+function nextSlide(){showSlide(currentSlide+1)}
+function goToSlide(n){showSlide(n);resetTimer()}
+function startTimer(){clearInterval(slideTimer);slideTimer=setInterval(nextSlide,4500)}
+function resetTimer(){startTimer()}
+startTimer();
+document.addEventListener('DOMContentLoaded',()=>{
+  const sl=document.getElementById('heroSlider');
+  if(sl){
+    sl.addEventListener('mouseenter',()=>clearInterval(slideTimer));
+    sl.addEventListener('mouseleave',startTimer);
+  }
+});
 </script>
 </body>
 </html>
