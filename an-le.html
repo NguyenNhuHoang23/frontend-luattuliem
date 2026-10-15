@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="vi"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Án Lệ &amp; Án Hay Tiêu Biểu | Công ty Luật Từ Liêm</title><meta name="description" content="Tuyển tập án lệ Tòa án nhân dân tối cao và các bản án thực tiễn tiêu biểu được phân tích bởi Công ty Luật TNHH MTV Từ Liêm."><style>
+:root{--blue:#10399a;--navy:#11284b;--ink:#24364d;--muted:#65758b;--line:#dce3ec;--paper:#f5f7fa;--tag-bg:#edf2fb}
+*{box-sizing:border-box}body{margin:0;font:15px/1.65 Arial,sans-serif;color:var(--ink);background:white}button,input,textarea,select{font:inherit}a{color:inherit;text-decoration:none}button,a{touch-action:manipulation}button{cursor:pointer}.wrap{width:min(1200px,92%);margin:auto}
+.top{background:#f0f5fc;color:#496280;font-size:12px;padding:7px 0;border-bottom:1px solid #e1e9f4}.top .wrap{display:flex;justify-content:space-between}
+header{background:#fff;border-bottom:1px solid var(--line)}
+.brandrow{display:flex;align-items:center;justify-content:space-between;padding:18px 0}
+.brand{display:flex;align-items:center;gap:16px}
+.brand img{width:76px;height:76px;border-radius:4px}
+.brand small{font-size:11px;letter-spacing:2px}
+.brand strong{display:block;font-family:Georgia,serif;color:var(--blue);font-size:28px;letter-spacing:2px;line-height:1.3}
+.contacttop{font-size:12px;color:var(--muted)}.contacttop b{display:block;font-size:22px;color:var(--blue)}
+nav{border-top:1px solid #eef1f5}
+nav .wrap{display:flex;align-items:center;justify-content:flex-end;gap:36px}
+nav a{font-size:14px;padding:16px 0;white-space:nowrap;transition:color .2s}
+nav a:hover,nav a.active{color:var(--blue);font-weight:bold}
+nav a.active{border-bottom:2px solid var(--blue)}
+.memberlink{color:var(--blue);font-weight:bold}
+
+/* Main Layout */
+.main-container{padding:30px 0 60px}
+.editorial-grid{display:grid;grid-template-columns:1fr 340px;gap:45px;align-items:start}
+
+/* Breadcrumb & Header */
+.breadcrumb{font-size:13px;color:var(--muted);margin-bottom:18px}
+.breadcrumb a{color:#496280}.breadcrumb a:hover{color:var(--blue);text-decoration:underline}
+.breadcrumb span{color:#98a6b8;margin:0 6px}
+.page-title{font:bold 26px/1.3 Georgia,serif;color:var(--navy);margin:0 0 8px;text-transform:uppercase}
+.page-subtitle{color:var(--muted);font-size:14px;margin:0 0 24px}
+
+/* Category Filter Tabs */
+.filter-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:30px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.filter-btn{background:#fff;border:1px solid #cbd5e1;color:#475569;padding:7px 16px;border-radius:4px;font-size:13px;font-weight:bold;transition:all .2s}
+.filter-btn:hover{border-color:var(--blue);color:var(--blue)}
+.filter-btn.active{background:var(--blue);border-color:var(--blue);color:#fff}
+
+/* Featured Case Card */
+.featured-case{background:#fbfcfe;border:1px solid #c9d8eb;border-top:4px solid var(--blue);border-radius:6px;padding:26px 28px;margin-bottom:30px;box-shadow:0 6px 20px rgba(17,40,75,.05)}
+.featured-badge{display:inline-block;background:var(--navy);color:#fff;font-size:11px;font-weight:bold;padding:4px 10px;border-radius:3px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px}
+.featured-case h2{font:bold 22px/1.35 Georgia,serif;color:var(--navy);margin:0 0 12px}
+.featured-case p{color:#475569;font-size:14px;line-height:1.7;margin:0 0 16px}
+.case-summary-box{background:#fff;border:1px solid #e2e8f0;border-left:3px solid #0ca678;padding:14px 18px;border-radius:3px;margin-bottom:16px;font-size:13.5px}
+.case-summary-box b{color:var(--navy);display:block;margin-bottom:4px}
+.featured-actions{display:flex;gap:14px;align-items:center}
+
+/* Regular Case Cards */
+.case-list{display:flex;flex-direction:column;gap:20px}
+.case-card{background:#fff;border:1px solid var(--line);border-radius:5px;padding:22px 24px;transition:transform .2s,box-shadow .2s;display:flex;flex-direction:column;justify-content:space-between}
+.case-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(17,40,75,.06);border-color:#b4c8e1}
+.case-header{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:10px}
+.case-tag{background:var(--tag-bg);color:var(--blue);font-size:11px;font-weight:bold;padding:4px 10px;border-radius:3px;white-space:nowrap}
+.case-code{font-size:12px;color:var(--muted);font-weight:bold}
+.case-card h3{font:bold 18px/1.35 Georgia,serif;color:var(--navy);margin:0 0 10px}
+.case-card h3 a:hover{color:var(--blue);text-decoration:underline}
+.case-card p{color:var(--muted);font-size:13.5px;line-height:1.65;margin:0 0 16px}
+.case-footer{display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:1px solid #f1f5f9;font-size:12.5px;color:#94a3b8}
+.read-more{color:var(--blue);font-weight:bold;font-size:13px;display:inline-flex;align-items:center;gap:4px}
+.read-more:hover{text-decoration:underline}
+
+/* Sidebar Components */
+.sidebar{position:sticky;top:20px}
+.sidebar-box{background:#f8faff;border:1px solid #dce4ee;border-radius:6px;padding:22px;margin-bottom:25px}
+.sidebar-title{font-size:15px;font-weight:bold;color:var(--navy);letter-spacing:.5px;margin:0 0 16px;padding-left:10px;border-left:4px solid var(--blue);text-transform:uppercase}
+.search-input{width:100%;padding:10px 12px;border:1px solid #cbd5e1;border-radius:4px;font-size:13.5px;background:#fff;margin-bottom:10px}
+.search-input:focus{outline:2px solid var(--blue);border-color:var(--blue)}
+.sidebar-links{list-style:none;padding:0;margin:0}
+.sidebar-links li{border-bottom:1px solid #e6edf7;padding:10px 0}
+.sidebar-links li:last-child{border-bottom:0}
+.sidebar-links a{color:#334155;font-size:13.5px;display:flex;justify-content:space-between;align-items:center}
+.sidebar-links a:hover{color:var(--blue);font-weight:bold}
+.sidebar-links span{background:#e2e8f0;color:#64748b;font-size:11px;padding:2px 6px;border-radius:10px}
+
+/* Consultation Box */
+.consult-widget{background:var(--navy);color:#fff;border-radius:6px;padding:24px;text-align:center}
+.consult-widget h4{font:bold 18px/1.3 Georgia,serif;color:#fff;margin:0 0 8px}
+.consult-widget p{font-size:13px;color:#cad5e2;margin:0 0 16px;line-height:1.6}
+.btn{display:inline-block;border:1px solid var(--blue);background:var(--blue);color:white;padding:10px 18px;font-weight:bold;font-size:13px;border-radius:3px;transition:all .2s;text-align:center}
+.btn:hover{background:#0b2b77}
+.btn.white{background:#fff;color:var(--navy);border-color:#fff}
+.btn.white:hover{background:#f0f5fc}
+
+/* Modal Popup Dialog */
+dialog{border:0;border-radius:6px;width:min(640px,94%);padding:30px;color:var(--ink);box-shadow:0 20px 80px rgba(17,40,75,.35)}
+dialog::backdrop{background:#11284b88}
+.dialog-close{float:right;background:none;border:0;font-size:24px;color:#64748b;cursor:pointer}
+.dialog-title{font:bold 20px/1.35 Georgia,serif;color:var(--navy);margin:0 0 14px}
+.dialog-content{font-size:14px;line-height:1.7;color:#334155}
+.dialog-content b{color:var(--navy)}
+
+/* Floating buttons */
+.floating-hotline{position:fixed;bottom:25px;left:25px;background:#0ca678;color:#fff;padding:9px 18px;border-radius:25px;font-weight:bold;font-size:14px;box-shadow:0 6px 20px rgba(12,166,120,.35);display:flex;align-items:center;gap:8px;z-index:99}
+.floating-zalo{position:fixed;bottom:25px;right:25px;background:#0068ff;color:#fff;width:52px;height:52px;border-radius:50%;box-shadow:0 6px 20px rgba(0,104,255,.35);display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:14px;z-index:99}
+
+footer{background:#edf3fb;color:#5c708b;padding:35px 0;font-size:12px;border-top:1px solid #dce6f3}footer strong{color:var(--blue)}footer .wrap{display:flex;justify-content:space-between;gap:30px}.demo{background:#f8faff;color:#687c98;text-align:center;padding:7px 15px;font-size:11px}
+
+@media(max-width:900px){
+.editorial-grid{grid-template-columns:1fr;gap:35px}
+.brand strong{font-size:22px}.brand img{width:60px;height:60px}.contacttop{display:none}
+nav .wrap{overflow:auto;justify-content:flex-start;gap:25px}nav a{font-size:12px}
+.floating-hotline{bottom:15px;left:15px;padding:8px 14px;font-size:12px}
+.floating-zalo{bottom:15px;right:15px;width:44px;height:44px;font-size:12px}
+}
+</style></head><body>
+<div class="top"><div class="wrap"><span>CÔNG TY LUẬT TNHH MTV TỪ LIÊM</span><span>Đồng hành cùng quyền lợi của bạn</span></div></div>
+
+<header>
+  <div class="wrap brandrow">
+    <a class="brand" href="index.html">
+      <img src="assets/logo.jpg" alt="Logo Công ty Luật Từ Liêm">
+      <div><small>CÔNG TY LUẬT TNHH MTV</small><strong>TỪ LIÊM</strong></div>
+    </a>
+    <a class="contacttop" href="tel:0916029966">Liên hệ trực tiếp với công ty<b>0916 029 966</b></a>
+  </div>
+  <nav>
+    <div class="wrap">
+      <a href="index.html">Trang chủ</a>
+      <a href="gioi-thieu.html">Giới thiệu công ty</a>
+      <a href="an-le.html" class="active">Án lệ Án hay</a>
+      <a class="memberlink" href="index.html#thanh-vien">Thành viên ↗</a>
+    </div>
+  </nav>
+</header>
+
+<main class="main-container">
+  <div class="wrap editorial-grid">
+    
+    <!-- Cột nội dung chính bên trái -->
+    <section class="cases-content">
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb">
+        <a href="index.html">Trang chủ</a><span>/</span>
+        <a href="an-le.html">Án lệ Án hay</a><span>/</span>
+        Tuyển tập bản án &amp; án lệ tiêu biểu
+      </nav>
+
+      <h1 class="page-title">ÁN LỆ &amp; ÁN HAY TIÊU BIỂU</h1>
+      <p class="page-subtitle">Tổng hợp các án lệ TAND Tối cao ban hành và các vụ án thực tiễn do đội ngũ luật sư công ty tham gia nghiên cứu, bảo vệ quyền lợi hợp pháp.</p>
+
+      <!-- Bộ lọc lĩnh vực -->
+      <div class="filter-tabs" id="filterTabs">
+        <button class="filter-btn active" onclick="filterCases('all', this)">Tất cả</button>
+        <button class="filter-btn" onclick="filterCases('dat-dai', this)">Đất đai &amp; Nhà ở</button>
+        <button class="filter-btn" onclick="filterCases('hop-dong', this)">Hợp đồng &amp; Dân sự</button>
+        <button class="filter-btn" onclick="filterCases('thua-ke', this)">Thừa kế &amp; Gia đình</button>
+        <button class="filter-btn" onclick="filterCases('to-tung', this)">Tham gia tố tụng</button>
+      </div>
+
+      <!-- Án lệ tiêu biểu số 1 (Featured Hero Case) -->
+      <article class="featured-case" data-category="dat-dai">
+        <span class="featured-badge">Án lệ nổi bật</span>
+        <h2>Án lệ số 43/2021/AL: Hiệu lực hợp đồng chuyển nhượng quyền sử dụng đất khi chưa công chứng</h2>
+        <p>Tình huống pháp lý điển hình: Hợp đồng chuyển nhượng quyền sử dụng đất được xác lập trước đây bằng giấy viết tay, chưa qua công chứng chứng thực nhưng bên mua đã thanh toán trên 2/3 nghĩa vụ và bên bán đã bàn giao đất.</p>
+        
+        <div class="case-summary-box">
+          <b>Phán quyết &amp; Định hướng áp dụng của Tòa án:</b>
+          Căn cứ quy định Bộ luật Dân sự, Tòa án công nhận hiệu lực của giao dịch dân sự khi các bên đã thực hiện ít nhất hai phần ba nghĩa vụ, bảo vệ quyền và lợi ích hợp pháp của người nhận chuyển nhượng ngay cả khi hợp đồng vi phạm về mặt hình thức.
+        </div>
+
+        <div class="featured-actions">
+          <button class="btn" onclick="openCaseModal('Án lệ số 43/2021/AL', 'Hợp đồng chuyển nhượng đất đai chưa công chứng', 'Tòa án nhân dân tối cao', 'Bảo vệ quyền lợi bên mua đã hoàn thành nghĩa vụ tài chính và nhận bàn giao đất trên thực tế theo Điều 129 Bộ luật Dân sự.')">Xem tóm tắt phán quyết ↗</button>
+          <a class="read-more" href="index.html#lien-he">Yêu cầu tư vấn vụ việc tương tự →</a>
+        </div>
+      </article>
+
+      <!-- Danh sách các án lệ & bản án thực tế -->
+      <div class="case-list" id="caseList">
+        
+        <!-- Case 1 -->
+        <article class="case-card" data-category="dat-dai">
+          <div>
+            <div class="case-header">
+              <span class="case-tag">Đất đai &amp; Nhà ở</span>
+              <span class="case-code">Hồ sơ: 2024/TL-DD</span>
+            </div>
+            <h3><a href="#" onclick="openCaseModal('Vụ án tranh chấp ranh giới quyền sử dụng đất tại Bắc Từ Liêm', 'Tranh chấp ranh giới đất liền kề', 'TAND quận Bắc Từ Liêm, Hà Nội', 'Luật sư Công ty Luật Từ Liêm thu thập hồ sơ địa chính qua các thời kỳ, bảo vệ thành công diện tích đất hợp pháp của thân chủ, được Tòa chấp thuận toàn bộ yêu cầu khởi kiện.'); return false;">Bảo vệ thành công quyền sử dụng đất trong tranh chấp ranh giới liền kề tại Hà Nội</a></h3>
+            <p>Vụ việc giải quyết tranh chấp mốc giới thửa đất giữa hai hộ gia đình liền kề có sự sai lệch giữa sơ đồ hiện trạng và giấy chứng nhận được cấp từ năm 2003.</p>
+          </div>
+          <div class="case-footer">
+            <span>Cập nhật: 12-10-2026</span>
+            <a class="read-more" href="#" onclick="openCaseModal('Vụ án tranh chấp ranh giới quyền sử dụng đất tại Bắc Từ Liêm', 'Tranh chấp ranh giới đất liền kề', 'TAND quận Bắc Từ Liêm, Hà Nội', 'Luật sư Công ty Luật Từ Liêm thu thập hồ sơ địa chính qua các thời kỳ, bảo vệ thành công diện tích đất hợp pháp của thân chủ, được Tòa chấp thuận toàn bộ yêu cầu khởi kiện.'); return false;">Xem kết quả giải quyết →</a>
+          </div>
+        </article>
+
+        <!-- Case 2 -->
+        <article class="case-card" data-category="hop-dong">
+          <div>
+            <div class="case-header">
+              <span class="case-tag">Hợp đồng &amp; Dân sự</span>
+              <span class="case-code">Án lệ số 02/2021/AL</span>
+            </div>
+            <h3><a href="#" onclick="openCaseModal('Án lệ số 02/2021/AL', 'Hợp đồng tặng cho tài sản có điều kiện', 'TAND Tối cao', 'Bên được tặng cho không thực hiện nghĩa vụ phụng dưỡng theo thỏa thuận; Tòa án tuyên hủy hợp đồng tặng cho và buộc trả lại tài sản cho bên tặng cho.'); return false;">Hủy hợp đồng tặng cho tài sản gắn liền với đất khi bên nhận không thực hiện cam kết</a></h3>
+            <p>Án lệ xác lập nguyên tắc giải quyết khi cha mẹ tặng cho nhà đất cho con có điều kiện phụng dưỡng, nhưng con không thực hiện nghĩa vụ đã cam kết.</p>
+          </div>
+          <div class="case-footer">
+            <span>Cập nhật: 05-10-2026</span>
+            <a class="read-more" href="#" onclick="openCaseModal('Án lệ số 02/2021/AL', 'Hợp đồng tặng cho tài sản có điều kiện', 'TAND Tối cao', 'Bên được tặng cho không thực hiện nghĩa vụ phụng dưỡng theo thỏa thuận; Tòa án tuyên hủy hợp đồng tặng cho và buộc trả lại tài sản cho bên tặng cho.'); return false;">Xem kết quả giải quyết →</a>
+          </div>
+        </article>
+
+        <!-- Case 3 -->
+        <article class="case-card" data-category="thua-ke">
+          <div>
+            <div class="case-header">
+              <span class="case-tag">Thừa kế &amp; Gia đình</span>
+              <span class="case-code">Án lệ số 16/2017/AL</span>
+            </div>
+            <h3><a href="#" onclick="openCaseModal('Án lệ số 16/2017/AL', 'Công nhận văn bản phân chia di sản thừa kế', 'Hội đồng Thẩm phán TAND Tối cao', 'Công nhận sự tự nguyện thỏa thuận định đoạt di sản của các đồng thừa kế khi không có tranh chấp và phù hợp ý chí người để lại di sản.'); return false;">Công nhận thỏa thuận phân chia di sản thừa kế có người ở nước ngoài ủy quyền</a></h3>
+            <p>Hướng dẫn áp dụng pháp luật trong trường hợp phân chia di sản nhà đất khi một trong các đồng thừa kế cư trú tại nước ngoài và có văn bản ủy quyền hợp pháp.</p>
+          </div>
+          <div class="case-footer">
+            <span>Cập nhật: 28-09-2026</span>
+            <a class="read-more" href="#" onclick="openCaseModal('Án lệ số 16/2017/AL', 'Công nhận văn bản phân chia di sản thừa kế', 'Hội đồng Thẩm phán TAND Tối cao', 'Công nhận sự tự nguyện thỏa thuận định đoạt di sản của các đồng thừa kế khi không có tranh chấp và phù hợp ý chí người để lại di sản.'); return false;">Xem kết quả giải quyết →</a>
+          </div>
+        </article>
+
+        <!-- Case 4 -->
+        <article class="case-card" data-category="to-tung">
+          <div>
+            <div class="case-header">
+              <span class="case-tag">Tham gia tố tụng</span>
+              <span class="case-code">Vụ án số 48/2024/DS-ST</span>
+            </div>
+            <h3><a href="#" onclick="openCaseModal('Vụ việc bồi thường thiệt hại ngoài hợp đồng do chậm bàn giao mặt bằng', 'Tranh tụng tố tụng thương mại', 'TAND TP. Hà Nội', 'Luật sư tham gia chứng minh lỗi vi phạm tiến độ và đối trừ thiệt hại phát sinh thực tế, đạt mức bồi thường thỏa đáng cho doanh nghiệp thân chủ.'); return false;">Đại diện bảo vệ quyền lợi doanh nghiệp trong tranh chấp bồi thường mặt bằng dự án</a></h3>
+            <p>Tham gia tố tụng từ giai đoạn hòa giải tiền tố tụng đến phiên tòa sơ thẩm, chứng minh các khoản thiệt hại trực tiếp và gián tiếp phát sinh từ hành vi vi phạm thỏa thuận.</p>
+          </div>
+          <div class="case-footer">
+            <span>Cập nhật: 15-09-2026</span>
+            <a class="read-more" href="#" onclick="openCaseModal('Vụ việc bồi thường thiệt hại ngoài hợp đồng do chậm bàn giao mặt bằng', 'Tranh tụng tố tụng thương mại', 'TAND TP. Hà Nội', 'Luật sư tham gia chứng minh lỗi vi phạm tiến độ và đối trừ thiệt hại phát sinh thực tế, đạt mức bồi thường thỏa đáng cho doanh nghiệp thân chủ.'); return false;">Xem kết quả giải quyết →</a>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- Cột Sidebar bên phải -->
+    <aside class="sidebar">
+      
+      <!-- Tra cứu nhanh -->
+      <div class="sidebar-box">
+        <h3 class="sidebar-title">Tìm kiếm bản án</h3>
+        <input class="search-input" id="caseSearchInput" placeholder="Nhập từ khóa hoặc số hiệu..." oninput="searchCases(this.value)">
+        <p style="font-size:12px;color:var(--muted);margin:0">Tra cứu nhanh các tiền lệ pháp lý đất đai, dân sự, thừa kế.</p>
+      </div>
+
+      <!-- Danh mục án lệ theo năm -->
+      <div class="sidebar-box">
+        <h3 class="sidebar-title">Hệ thống án lệ</h3>
+        <ul class="sidebar-links">
+          <li><a href="#" onclick="filterCases('all'); return false;">Án lệ công bố năm 2026 <span>Mới</span></a></li>
+          <li><a href="#" onclick="filterCases('dat-dai'); return false;">Án lệ lĩnh vực Đất đai <span>12</span></a></li>
+          <li><a href="#" onclick="filterCases('hop-dong'); return false;">Án lệ lĩnh vực Dân sự <span>18</span></a></li>
+          <li><a href="#" onclick="filterCases('thua-ke'); return false;">Án lệ Thừa kế &amp; Gia đình <span>09</span></a></li>
+          <li><a href="#" onclick="filterCases('to-tung'); return false;">Án lệ Tố tụng &amp; Thi hành án <span>15</span></a></li>
+        </ul>
+      </div>
+
+      <!-- Tư vấn vụ việc tương tự -->
+      <div class="consult-widget">
+        <h4>Vụ việc của bạn có tương tự?</h4>
+        <p>Mỗi vụ việc có đặc thù tài liệu chứng cứ riêng. Hãy trao đổi với luật sư để được đánh giá tiền lệ áp dụng chính xác nhất.</p>
+        <a class="btn white" href="index.html#lien-he">Gửi yêu cầu phân tích hồ sơ ↗</a>
+      </div>
+
+    </aside>
+
+  </div>
+</main>
+
+<!-- Dialog xem chi tiết tóm tắt bản án -->
+<dialog id="caseModal">
+  <button class="dialog-close" onclick="document.getElementById('caseModal').close()" aria-label="Đóng">×</button>
+  <div style="font-size:11px;font-weight:bold;color:var(--blue);letter-spacing:1px;margin-bottom:8px">CHI TIẾT VỤ ÁN / ÁN LỆ</div>
+  <h3 class="dialog-title" id="modalTitle"></h3>
+  <div class="dialog-content">
+    <p><b>Lĩnh vực &amp; Vấn đề:</b> <span id="modalTopic"></span></p>
+    <p><b>Cơ quan xét xử / Nguồn áp dụng:</b> <span id="modalCourt"></span></p>
+    <div style="background:#f8faff;border-left:3px solid var(--blue);padding:14px;border-radius:3px;margin:16px 0">
+      <b>Tóm tắt kết quả &amp; Giải pháp:</b>
+      <p id="modalResult" style="margin:6px 0 0;color:#334155"></p>
+    </div>
+    <div style="display:flex;gap:12px;margin-top:20px">
+      <a class="btn" href="index.html#lien-he">Tư vấn vụ việc tương tự ↗</a>
+      <button class="btn white" style="border:1px solid #cbd5e1" onclick="document.getElementById('caseModal').close()">Đóng lại</button>
+    </div>
+  </div>
+</dialog>
+
+<!-- Tiện ích Hotline & Zalo góc màn hình -->
+<a class="floating-hotline" href="tel:0916029966" title="Gọi Hotline">Hotline: 0916 029 966</a>
+<a class="floating-zalo" href="https://zalo.me/0916029966" target="_blank" title="Chat Zalo">Zalo</a>
+
+<footer>
+  <div class="wrap">
+    <div><strong>CÔNG TY LUẬT TNHH MTV TỪ LIÊM</strong><br>Đồng hành cùng quyền lợi của bạn.</div>
+    <div>luattuliem.vn · 0916 029 966<br>Mẫu thiết kế tham khảo · 2026</div>
+  </div>
+</footer>
+<div class="demo">MẪU GIAO DIỆN • Nội dung và chức năng minh họa phục vụ duyệt thiết kế</div>
+
+<script>
+function filterCases(category, btnElement){
+  const buttons = document.querySelectorAll('.filter-btn');
+  if(btnElement){
+    buttons.forEach(b => b.classList.remove('active'));
+    btnElement.classList.add('active');
+  }
+  const cards = document.querySelectorAll('.case-card, .featured-case');
+  cards.forEach(card => {
+    if(category === 'all' || card.dataset.category === category){
+      card.style.display = 'flex';
+      if(card.classList.contains('featured-case')) card.style.display = 'block';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+
+function searchCases(query){
+  const q = query.toLowerCase().trim();
+  const cards = document.querySelectorAll('.case-card');
+  cards.forEach(card => {
+    const text = card.textContent.toLowerCase();
+    card.style.display = text.includes(q) ? 'flex' : 'none';
+  });
+}
+
+function openCaseModal(title, topic, court, result){
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalTopic').textContent = topic;
+  document.getElementById('modalCourt').textContent = court;
+  document.getElementById('modalResult').textContent = result;
+  document.getElementById('caseModal').showModal();
+}
+</script>
+</body></html>
