@@ -4,14 +4,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--blue:#10399a;--navy:#11284b;--ink:#24364d;--muted:#65758b;--line:#dce3ec;--paper:#f5f7fa;--accent:#c92a2a;--green:#0ca678}
-*{box-sizing:border-box}body{margin:0;font:15px/1.65 \'Inter\',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:white;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}a{color:inherit;text-decoration:none}button,a{touch-action:manipulation}button{cursor:pointer}.wrap{width:min(1200px,92%);margin:auto}
+*{box-sizing:border-box}body{margin:0;font:15px/1.65 Arial,Helvetica,sans-serif;color:var(--ink);background:white;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}a{color:inherit;text-decoration:none}button,a{touch-action:manipulation}button{cursor:pointer}.wrap{width:min(1200px,92%);margin:auto}
 .top{background:#f0f5fc;color:#496280;font-size:12px;padding:7px 0;border-bottom:1px solid #e1e9f4}.top .wrap{display:flex;justify-content:space-between}
 header{background:#fff;border-bottom:1px solid var(--line)}
 .brandrow{display:flex;align-items:center;justify-content:space-between;padding:18px 0}
 .brand{display:flex;align-items:center;gap:16px}
 .brand img{width:76px;height:76px;border-radius:4px}
 .brand small{font-size:11px;letter-spacing:2px}
-.brand strong{display:block;font-family:'Inter',sans-serif;font-weight:800;color:var(--blue);font-size:27px;letter-spacing:0.5px;line-height:1.25}
+.brand strong{display:block;font-family:Arial,Helvetica,sans-serif;font-weight:800;color:var(--blue);font-size:27px;letter-spacing:0.5px;line-height:1.25}
 .contacttop{font-size:12px;color:var(--muted)}.contacttop b{display:block;font-size:22px;color:var(--blue)}
 nav{border-top:1px solid #eef1f5}
 nav .wrap{display:flex;align-items:center;justify-content:flex-start;gap:36px}
@@ -28,7 +28,7 @@ nav a.active{border-bottom:2px solid var(--blue)}
 .breadcrumb{font-size:13px;color:var(--muted);margin-bottom:18px}
 .breadcrumb a{color:#496280}.breadcrumb a:hover{color:var(--blue);text-decoration:underline}
 .breadcrumb span{color:#98a6b8;margin:0 6px}
-.article-title{font:800 24px/1.3 'Inter',sans-serif;letter-spacing:-0.02em;color:var(--navy);margin:0 0 12px;text-transform:uppercase;letter-spacing:.3px}
+.article-title{font:800 24px/1.3 Arial,Helvetica,sans-serif;letter-spacing:-0.02em;color:var(--navy);margin:0 0 12px;text-transform:uppercase;letter-spacing:.3px}
 .post-meta{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:8px;margin-bottom:24px}
 
 /* Featured Law Poster Card (matching screenshot style) */
@@ -36,10 +36,10 @@ nav a.active{border-bottom:2px solid var(--blue)}
 .poster-inner{display:grid;grid-template-columns:1.15fr .85fr;background:#fbfcfe}
 .poster-left{padding:32px 28px 24px;display:flex;flex-direction:column;justify-content:space-between}
 .poster-brand{display:flex;align-items:center;gap:12px;margin-bottom:20px}
-.poster-brand strong{color:var(--blue);font-size:20px;letter-spacing:0.5px;font-weight:800;font-family:'Inter',sans-serif}
+.poster-brand strong{color:var(--blue);font-size:20px;letter-spacing:0.5px;font-weight:800;font-family:Arial,Helvetica,sans-serif}
 .poster-brand small{font-size:10px;color:var(--muted);letter-spacing:1px;display:block}
 .poster-headline{margin:0 0 10px}
-.poster-headline h2{font:800 23px/1.25 'Inter',sans-serif;letter-spacing:-0.015em;color:#ba1a1a;margin:0 0 8px;letter-spacing:.5px}
+.poster-headline h2{font:800 23px/1.25 Arial,Helvetica,sans-serif;letter-spacing:-0.015em;color:#ba1a1a;margin:0 0 8px;letter-spacing:.5px}
 .poster-headline p{font-size:14px;color:var(--navy);font-weight:bold;margin:0}
 .poster-values{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:22px 0 18px;text-align:center}
 .poster-val-item{background:#f0f4fa;border:1px solid #dce5f2;border-radius:4px;padding:12px 6px;display:flex;align-items:center;justify-content:center}
@@ -51,7 +51,7 @@ nav a.active{border-bottom:2px solid var(--blue)}
 
 /* Article Body Content */
 .article-body{font-size:15px;line-height:1.75;color:#334155}
-.article-body h3{font:700 19px/1.3 'Inter',sans-serif;letter-spacing:-0.01em;color:var(--navy);margin:32px 0 14px;padding-bottom:8px;border-bottom:2px solid #eef2f7}
+.article-body h3{font:700 19px/1.3 Arial,Helvetica,sans-serif;letter-spacing:-0.01em;color:var(--navy);margin:32px 0 14px;padding-bottom:8px;border-bottom:2px solid #eef2f7}
 .article-body p{margin:0 0 16px}
 .quote-box{background:#f8faff;border-left:4px solid var(--blue);padding:18px 24px;border-radius:0 4px 4px 0;margin:24px 0;font-style:italic;color:#1e3a5f}
 
@@ -85,7 +85,9 @@ footer{background:#edf3fb;color:#5c708b;padding:35px 0;font-size:12px;border-top
 nav .wrap{overflow:auto;justify-content:flex-start;gap:25px}nav a{font-size:12px}
 .poster-values{grid-template-columns:repeat(2,1fr)}
 }
-</style></head><body>
+</style><link rel="stylesheet" href="assets/responsive.css">
+<script type="module" src="assets/mobile-menu.js"></script>
+</head><body>
 <div class="top"><div class="wrap"><span>CÔNG TY LUẬT TNHH MTV TỪ LIÊM</span><span>Đồng hành cùng quyền lợi của bạn</span></div></div>
 
 <header>
@@ -94,7 +96,7 @@ nav .wrap{overflow:auto;justify-content:flex-start;gap:25px}nav a{font-size:12px
       <img src="assets/logo.jpg" alt="Logo Công ty Luật Từ Liêm">
       <div><small>CÔNG TY LUẬT TNHH MTV</small><strong>TỪ LIÊM</strong></div>
     </a>
-    <a class="contacttop" href="tel:0916029966">Liên hệ trực tiếp với công ty<b>0916 029 966</b></a>
+    <a class="contacttop" href="tel:0916029966">Liên hệ trực tiếp với công ty<b>091 602 99 66</b></a>
   </div>
   <nav>
     <div class="wrap">
@@ -166,7 +168,7 @@ nav .wrap{overflow:auto;justify-content:flex-start;gap:25px}nav a{font-size:12px
 
             <!-- Chân poster thông tin liên hệ -->
             <div class="poster-footer">
-              <div>Hotline: <b>0916 029 966</b><br>Website: <b>luattuliem.vn</b></div>
+              <div>Hotline: <b>091 602 99 66</b><br>Website: <b>luattuliem.vn</b></div>
               <div>Địa chỉ: <b>Tầng 5, số 73 Phú Diễn, Bắc Từ Liêm, Hà Nội</b></div>
             </div>
           </div>
@@ -271,7 +273,7 @@ nav .wrap{overflow:auto;justify-content:flex-start;gap:25px}nav a{font-size:12px
 <footer>
   <div class="wrap">
     <div><strong>CÔNG TY LUẬT TNHH MTV TỪ LIÊM</strong><br>Đồng hành cùng quyền lợi của bạn.</div>
-    <div>luattuliem.vn · 0916 029 966<br>Mẫu thiết kế tham khảo · 2026</div>
+    <div>luattuliem.vn · 091 602 99 66<br>Mẫu thiết kế tham khảo · 2026</div>
   </div>
 </footer>
 <div class="demo">MẪU GIAO DIỆN • Nội dung và chức năng minh họa phục vụ duyệt thiết kế</div>
