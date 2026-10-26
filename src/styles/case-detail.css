@@ -1,0 +1,594 @@
+@layer pages {
+  .page-case-detail {
+    --blue: #10399a;
+    --navy: #11284b;
+    --ink: #24364d;
+    --muted: #65758b;
+    --line: #dce3ec;
+    --paper: #f5f7fa;
+    --surface-tint: #f6f9fd;
+  }
+
+  .page-case-detail {
+    margin: 0;
+    font:
+      15px/1.7 "Liberation Sans Web",
+      Arial,
+      Helvetica,
+      sans-serif;
+    color: var(--ink);
+    background: #ffffff;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .page-case-detail * {
+    box-sizing: border-box;
+  }
+
+  .page-case-detail .wrap {
+    width: min(1000px, 92%);
+    margin: auto;
+  }
+
+  .page-case-detail .main-container {
+    padding: 30px 0 60px;
+  }
+
+  /* Thanh Tab chức năng (Tone màu xanh thương hiệu chuẩn design.md) */
+  .page-case-detail .case-tabs-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--line);
+    margin-bottom: 24px;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .page-case-detail .case-tabs-nav {
+    display: flex;
+    gap: 4px;
+  }
+  .page-case-detail .case-tab-btn {
+    border: none;
+    background: transparent;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--muted);
+    border-radius: 4px 4px 0 0;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+  .page-case-detail .case-tab-btn:hover {
+    background: #f0f5fc;
+    color: var(--navy);
+  }
+  .page-case-detail .case-tab-btn.active {
+    background: var(--blue);
+    color: #ffffff;
+  }
+
+  .page-case-detail .case-tabs-actions {
+    display: flex;
+    gap: 10px;
+  }
+  .page-case-detail .case-action-btn {
+    background: #ffffff;
+    border: 1px solid var(--line);
+    color: var(--blue);
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 700;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: inherit;
+  }
+  .page-case-detail .case-action-btn:hover {
+    background: #f0f5fc;
+    border-color: #b1c2df;
+  }
+
+  /* Khung văn bản Án lệ (Card trắng, viền trên xanh thương hiệu chuẩn design.md) */
+  .page-case-detail .court-doc-card {
+    background: #ffffff;
+    border: 1px solid var(--line);
+    border-top: 3px solid var(--blue);
+    border-radius: 4px;
+    padding: 36px 42px;
+    box-shadow: 0 4px 16px rgba(17, 40, 75, 0.04);
+    margin-bottom: 36px;
+  }
+
+  .page-case-detail .court-doc-header {
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 16px;
+    margin-bottom: 24px;
+  }
+  .page-case-detail .court-case-number {
+    font:
+      800 clamp(24px, 3vw, 32px)/1.25 "Liberation Sans Web",
+      Arial,
+      Helvetica,
+      sans-serif;
+    color: var(--navy);
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+
+  .page-case-detail .court-intro-text {
+    font-size: 15.5px;
+    color: var(--navy);
+    line-height: 1.6;
+    margin: 0 0 14px;
+  }
+  .page-case-detail .court-approval-text {
+    font-size: 14.5px;
+    color: var(--muted);
+    line-height: 1.65;
+    margin: 0 0 24px;
+    padding-bottom: 18px;
+    border-bottom: 1px dashed var(--line);
+  }
+
+  /* Các tiểu mục trong Án lệ */
+  .page-case-detail .court-section {
+    margin: 24px 0;
+  }
+  .page-case-detail .court-section-heading {
+    font:
+      700 16px/1.4 "Liberation Sans Web",
+      Arial,
+      Helvetica,
+      sans-serif;
+    color: var(--navy);
+    margin: 0 0 10px;
+    letter-spacing: -0.01em;
+  }
+
+  .page-case-detail .court-highlight-box {
+    background: #f8faff;
+    border-left: 3px solid var(--blue);
+    padding: 16px 20px;
+    border-radius: 0 4px 4px 0;
+    margin: 8px 0;
+    border-top: 1px solid #e1e9f4;
+    border-right: 1px solid #e1e9f4;
+    border-bottom: 1px solid #e1e9f4;
+  }
+  .page-case-detail .court-highlight-box p {
+    margin: 0;
+    color: var(--ink);
+    line-height: 1.7;
+    text-align: justify;
+  }
+
+  .page-case-detail .court-legal-list {
+    margin: 8px 0 0 18px;
+    padding: 0;
+    list-style-type: disc;
+    color: var(--ink);
+  }
+  .page-case-detail .court-legal-list li {
+    margin-bottom: 8px;
+    line-height: 1.6;
+  }
+
+  /* Từ khóa của án lệ */
+  .page-case-detail .court-keywords-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .page-case-detail .court-keyword-pill {
+    background: #eef3ff;
+    border: 1px solid #d4e2fa;
+    color: var(--blue);
+    padding: 5px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 3px;
+  }
+
+  /* Hình ảnh minh họa trong văn bản án lệ */
+  .page-case-detail .court-doc-image {
+    margin: 28px 0;
+    padding: 0;
+    text-align: center;
+  }
+  .page-case-detail .court-doc-image img {
+    max-width: 100%;
+    height: auto;
+    max-height: 480px;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 1px solid var(--line);
+    box-shadow: 0 4px 14px rgba(17, 40, 75, 0.06);
+    display: block;
+    margin: 0 auto;
+  }
+  .page-case-detail .court-image-caption {
+    display: block;
+    font-size: 13px;
+    font-style: italic;
+    color: var(--muted);
+    margin-top: 10px;
+    line-height: 1.5;
+    text-align: center;
+  }
+
+  /* Toàn văn nội dung vụ án & nhận định */
+  .page-case-detail .court-body-wrapper {
+    margin-top: 36px;
+    padding-top: 28px;
+    border-top: 1px solid var(--line);
+  }
+  .page-case-detail .court-body-title {
+    font:
+      700 18px/1.4 "Liberation Sans Web",
+      Arial,
+      Helvetica,
+      sans-serif;
+    color: var(--navy);
+    text-transform: uppercase;
+    text-align: center;
+    margin: 28px 0 16px;
+    letter-spacing: 0.3px;
+  }
+  .page-case-detail .court-body-text p {
+    margin: 0 0 16px;
+    color: var(--ink);
+    line-height: 1.8;
+    text-align: justify;
+    font-size: 15px;
+  }
+
+  /* Bảng thuộc tính */
+  .page-case-detail .court-attributes-panel .panel-title,
+  .page-case-detail .court-related-panel .panel-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--navy);
+    margin: 0 0 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+  .page-case-detail .attributes-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #ffffff;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .page-case-detail .attributes-table th,
+  .page-case-detail .attributes-table td {
+    padding: 14px 18px;
+    font-size: 14px;
+    line-height: 1.5;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+  }
+  .page-case-detail .attributes-table th {
+    width: 220px;
+    background: #f8faff;
+    color: var(--navy);
+    font-weight: 700;
+  }
+  .page-case-detail .attributes-table td {
+    color: var(--ink);
+  }
+  .page-case-detail .status-badge-active {
+    display: inline-block;
+    background: #edf7ed;
+    color: #1e4620;
+    border: 1px solid #c8e6c9;
+    padding: 3px 8px;
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 3px;
+  }
+
+  /* Danh sách văn bản liên quan */
+  .page-case-detail .related-docs-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .page-case-detail .related-doc-item {
+    background: #ffffff;
+    border: 1px solid var(--line);
+    padding: 16px 20px;
+    border-radius: 4px;
+    margin-bottom: 12px;
+    border-left: 3px solid var(--blue);
+  }
+  .page-case-detail .related-doc-info strong {
+    font-size: 14.5px;
+    color: var(--navy);
+    display: block;
+    margin-bottom: 6px;
+  }
+  .page-case-detail .related-doc-meta {
+    display: flex;
+    gap: 12px;
+    font-size: 12px;
+    color: var(--muted);
+    align-items: center;
+  }
+  .page-case-detail .doc-type-tag {
+    background: #eef3ff;
+    color: var(--blue);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-weight: 600;
+  }
+
+  /* Khối CTA & Liên hệ tư vấn cuối trang */
+  .page-case-detail .case-detail-cta {
+    background: linear-gradient(135deg, #f0f5fc 0%, #ffffff 100%);
+    border: 1px solid #d0deee;
+    border-left: 4px solid var(--blue);
+    border-radius: 4px;
+    padding: 28px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    box-shadow: 0 4px 16px rgba(17, 40, 75, 0.04);
+  }
+  .page-case-detail .case-cta-content h3 {
+    font:
+      700 18px/1.3 "Liberation Sans Web",
+      Arial,
+      Helvetica,
+      sans-serif;
+    color: var(--navy);
+    margin: 0 0 8px;
+  }
+  .page-case-detail .case-cta-content p {
+    font-size: 14px;
+    color: var(--muted);
+    margin: 0;
+    line-height: 1.6;
+  }
+  .page-case-detail .case-cta-actions {
+    display: flex;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+  .page-case-detail .case-cta-actions .btn {
+    display: inline-flex;
+    align-items: center;
+    background: var(--blue);
+    color: #fff;
+    padding: 11px 20px;
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: 3px;
+    border: 1px solid var(--blue);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+  .page-case-detail .case-cta-actions .btn:hover {
+    background: #0c2d7c;
+    box-shadow: 0 4px 12px rgba(16, 57, 154, 0.25);
+  }
+  .page-case-detail .case-cta-actions .btn.ghost {
+    background: #ffffff;
+    color: var(--blue);
+    border-color: var(--line);
+  }
+  .page-case-detail .case-cta-actions .btn.ghost:hover {
+    background: #f0f5fc;
+    border-color: #b1c2df;
+  }
+
+  /* Not found box */
+  .page-case-detail .not-found-box {
+    text-align: center;
+    padding: 60px 20px;
+    background: #ffffff;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+  }
+  .page-case-detail .not-found-box h2 {
+    color: var(--navy);
+    margin: 0 0 12px;
+  }
+  .page-case-detail .not-found-box p {
+    color: var(--muted);
+    margin: 0 0 24px;
+  }
+
+  /* Trình xem PDF nhúng và nút Fullscreen */
+  .page-case-detail .case-pdf-viewer {
+    margin: 32px 0 24px;
+    background: #ffffff;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(17, 40, 75, 0.05);
+    display: flex;
+    flex-direction: column;
+  }
+  .page-case-detail .case-pdf-viewer.is-fullscreen {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    width: 100vw;
+    height: 100vh;
+    border-radius: 0;
+    border: none;
+    margin: 0;
+    background: #0f172a;
+  }
+  .page-case-detail .pdf-viewer-header {
+    background: #f0f5fc;
+    border-bottom: 1px solid var(--line);
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .page-case-detail .case-pdf-viewer.is-fullscreen .pdf-viewer-header {
+    background: #11284b;
+    border-bottom: 1px solid #1e3a5f;
+    color: #ffffff;
+  }
+  .page-case-detail .pdf-viewer-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--navy);
+  }
+  .page-case-detail .case-pdf-viewer.is-fullscreen .pdf-viewer-title {
+    color: #ffffff;
+  }
+  .page-case-detail .pdf-badge {
+    background: var(--blue);
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 2px 7px;
+    border-radius: 3px;
+    letter-spacing: 0.5px;
+  }
+  .page-case-detail .pdf-viewer-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .page-case-detail .pdf-action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    border-radius: 3px;
+    padding: 7px 14px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+  .page-case-detail .pdf-action-btn.primary {
+    background: var(--blue);
+    color: #ffffff;
+    border: 1px solid var(--blue);
+  }
+  .page-case-detail .pdf-action-btn.primary:hover {
+    background: #0c2d7c;
+    box-shadow: 0 4px 10px rgba(16, 57, 154, 0.25);
+  }
+  .page-case-detail .pdf-action-btn.secondary {
+    background: #ffffff;
+    color: var(--navy);
+    border: 1px solid var(--line);
+  }
+  .page-case-detail .pdf-action-btn.secondary:hover {
+    background: #f0f5fc;
+    border-color: #b1c2df;
+  }
+  .page-case-detail .pdf-frame-wrapper {
+    width: 100%;
+    height: 680px;
+    position: relative;
+    background: #525659;
+  }
+  .page-case-detail .case-pdf-viewer.is-fullscreen .pdf-frame-wrapper {
+    flex: 1;
+    height: calc(100vh - 54px);
+  }
+  .page-case-detail .pdf-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+  }
+  .page-case-detail .pdf-fallback-text {
+    padding: 10px 20px;
+    font-size: 13px;
+    color: var(--muted);
+    margin: 0;
+    background: #fafbfc;
+    border-top: 1px solid #eef2f7;
+  }
+  .page-case-detail .pdf-fallback-text a {
+    color: var(--blue);
+    font-weight: 600;
+    text-decoration: underline;
+  }
+
+  /* Responsive Mobile */
+  @media (max-width: 768px) {
+    .page-case-detail .pdf-frame-wrapper {
+      height: 480px;
+    }
+    .page-case-detail .pdf-viewer-header {
+      padding: 10px 14px;
+    }
+    .page-case-detail .pdf-action-btn {
+      padding: 6px 10px;
+      font-size: 12px;
+    }
+    .page-case-detail .court-doc-card {
+      padding: 24px 18px;
+    }
+    .page-case-detail .case-tabs-bar {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .page-case-detail .case-tabs-nav {
+      width: 100%;
+      overflow-x: auto;
+    }
+    .page-case-detail .case-tabs-actions {
+      justify-content: flex-end;
+    }
+    .page-case-detail .case-detail-cta {
+      flex-direction: column;
+      align-items: stretch;
+      padding: 22px;
+    }
+    .page-case-detail .case-cta-actions {
+      flex-direction: column;
+    }
+    .page-case-detail .attributes-table th {
+      width: 130px;
+    }
+    .page-case-detail .court-body-text p,
+    .page-case-detail .court-highlight-box p {
+      text-align: left;
+    }
+  }
+
+  /* Print Stylesheet */
+  @media print {
+    header,
+    footer,
+    .case-tabs-bar,
+    .case-detail-cta {
+      display: none !important;
+    }
+    .page-case-detail {
+      background: white;
+    }
+    .court-doc-card {
+      border: none !important;
+      box-shadow: none !important;
+      padding: 0 !important;
+    }
+  }
+}

@@ -1,0 +1,368 @@
+@layer base {
+  :root {
+    --blue: #10399a;
+    --navy: #11284b;
+    --ink: #24364d;
+    --muted: #65758b;
+    --line: #dce3ec;
+    --paper: #f5f7fa;
+  }
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    font:
+      15px/1.65 "Liberation Sans Web",
+      Arial,
+      Helvetica,
+      sans-serif;
+    color: var(--ink);
+    background: white;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+  button {
+    touch-action: manipulation;
+  }
+  a {
+    touch-action: manipulation;
+  }
+  button {
+    cursor: pointer;
+  }
+  .wrap {
+    width: min(1200px, 90%);
+    margin: auto;
+  }
+  .top {
+    background: var(--navy);
+    color: #dce5f3;
+    font-size: 12px;
+    padding: 7px 0;
+  }
+  .top .wrap {
+    display: flex;
+    justify-content: space-between;
+  }
+  header {
+    background: #fff;
+    border-bottom: 1px solid var(--line);
+  }
+  .brandrow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 0;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .brand img {
+    width: 76px;
+    height: 76px;
+  }
+  .brand small {
+    font-size: 11px;
+    letter-spacing: 2px;
+  }
+  .brand strong {
+    display: block;
+    font-family: "Liberation Sans Web", Arial, Helvetica, sans-serif;
+    font-weight: 800;
+    color: var(--blue);
+    font-size: 27px;
+    letter-spacing: 0.5px;
+    line-height: 1.25;
+  }
+  .contacttop {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .contacttop b {
+    display: block;
+    font-size: 22px;
+    color: var(--blue);
+  }
+  nav {
+    border-top: 1px solid #eef1f5;
+  }
+  nav .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 36px;
+  }
+  nav a {
+    font-size: 14px;
+    padding: 17px 0;
+    white-space: nowrap;
+  }
+  nav a:hover {
+    color: var(--blue);
+  }
+  .memberlink {
+    color: var(--blue);
+    font-weight: bold;
+  }
+  .eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2.6px;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 16px;
+  }
+  .btn {
+    display: inline-block;
+    border: 1px solid var(--blue);
+    background: var(--blue);
+    color: white;
+    padding: 12px 23px;
+    font-weight: bold;
+    font-size: 14px;
+    border-radius: 3px;
+  }
+  .btn.light {
+    background: white;
+    color: var(--navy);
+    border-color: white;
+  }
+  .btn.ghost {
+    background: transparent;
+    color: var(--blue);
+  }
+  :where(.page-home, .portal, .application-dialog) section {
+    padding: 80px 0;
+    scroll-margin-top: 20px;
+  }
+  :where(.page-home, .portal, .application-dialog) h2 {
+    font:
+      700 32px/1.25 "Liberation Sans Web",
+      Arial,
+      Helvetica,
+      sans-serif;
+    letter-spacing: -0.02em;
+    color: var(--navy);
+    margin: 0 0 22px;
+  }
+  :where(.page-home, .portal, .application-dialog) h3 {
+    font:
+      700 21px/1.3 "Liberation Sans Web",
+      Arial,
+      Helvetica,
+      sans-serif;
+    letter-spacing: -0.015em;
+    color: var(--navy);
+    margin: 0 0 12px;
+  }
+  :where(.page-home, .portal, .application-dialog) p {
+    margin: 0 0 18px;
+  }
+  .notice {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 22px;
+  }
+  :where(.page-home, .portal, .application-dialog) details {
+    border-bottom: 1px solid var(--line);
+    padding: 20px 0;
+  }
+  :where(.page-home, .portal, .application-dialog) summary {
+    cursor: pointer;
+    font-size: 19px;
+    color: var(--navy);
+  }
+  :where(.page-home, .portal, .application-dialog) details p {
+    margin: 15px 0 0;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  :where(.page-home, .portal, .application-dialog) label {
+    display: block;
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+  :where(.page-home, .portal, .application-dialog) input {
+    display: block;
+    width: 100%;
+    padding: 11px 13px;
+    border: 1px solid #cdd7e4;
+    border-radius: 3px;
+    margin-top: 6px;
+    background: white;
+    color: var(--ink);
+  }
+  :where(.page-home, .portal, .application-dialog) textarea {
+    display: block;
+    width: 100%;
+    padding: 11px 13px;
+    border: 1px solid #cdd7e4;
+    border-radius: 3px;
+    margin-top: 6px;
+    background: white;
+    color: var(--ink);
+  }
+  :where(.page-home, .portal, .application-dialog) select {
+    display: block;
+    width: 100%;
+    padding: 11px 13px;
+    border: 1px solid #cdd7e4;
+    border-radius: 3px;
+    margin-top: 6px;
+    background: white;
+    color: var(--ink);
+  }
+  :where(.page-home, .portal, .application-dialog) textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+  .formrow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+  }
+  footer {
+    background: var(--navy);
+    color: #bdc9da;
+    padding: 35px 0;
+    font-size: 12px;
+  }
+  footer strong {
+    color: white;
+    font-size: 16px;
+  }
+  footer .wrap {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+  }
+  .demo {
+    background: #edf2fb;
+    color: #485e80;
+    text-align: center;
+    padding: 7px 15px;
+    font-size: 11px;
+  }
+  .hidden {
+    display: none !important;
+  }
+  .portalbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    gap: 20px;
+  }
+  .portalbar h2 {
+    font-size: 30px;
+    margin: 0;
+  }
+  dialog {
+    border: 0;
+    border-radius: 5px;
+    width: min(540px, 92%);
+    padding: 35px;
+    color: var(--ink);
+    box-shadow: 0 20px 100px #10274755;
+  }
+  dialog::backdrop {
+    background: #11284b99;
+  }
+  .close {
+    float: right;
+    background: none;
+    border: 0;
+    font-size: 24px;
+  }
+  .toast {
+    position: fixed;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--navy);
+    color: #fff;
+    padding: 15px 25px;
+    border-radius: 5px;
+    z-index: 100;
+    width: max-content;
+    max-width: 90%;
+    font-size: 14px;
+  }
+  a:focus-visible {
+    outline: 3px solid #d3a04a;
+    outline-offset: 4px;
+  }
+  button:focus-visible {
+    outline: 3px solid #d3a04a;
+    outline-offset: 4px;
+  }
+  @media (max-width: 800px) {
+    .brand strong {
+      font-size: 23px;
+    }
+    .brand img {
+      width: 60px;
+      height: 60px;
+    }
+    .contacttop {
+      display: none;
+    }
+    nav .wrap {
+      overflow: auto;
+      justify-content: flex-start;
+      gap: 25px;
+    }
+    nav a {
+      font-size: 12px;
+    }
+    :where(.page-home, .portal, .application-dialog) section {
+      padding: 50px 0;
+    }
+    :where(.page-home, .portal, .application-dialog) h2 {
+      font-size: 32px;
+    }
+    .portalbar {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+    footer .wrap {
+      flex-direction: column;
+    }
+    .formrow {
+      grid-template-columns: 1fr;
+    }
+    .top {
+      font-size: 10px;
+    }
+    .top span:last-child {
+      display: none;
+    }
+  }
+
+  /* Light homepage: unfiltered photograph, separate editorial text column. */
+  .top {
+    background: #f0f5fc;
+    color: #496280;
+    border-bottom: 1px solid #e1e9f4;
+  }
+  footer {
+    background: #edf3fb;
+    color: #5c708b;
+    border-top: 1px solid #dce6f3;
+  }
+  footer strong {
+    color: var(--blue);
+  }
+  .demo {
+    background: #f8faff;
+    color: #687c98;
+  }
+}

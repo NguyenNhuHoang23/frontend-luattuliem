@@ -1,0 +1,185 @@
+@layer base {
+  .portal {
+    background: var(--paper);
+    min-height: 80vh;
+    padding: 36px 0 65px;
+  }
+  .portal .switch {
+    display: flex;
+    gap: 8px;
+  }
+  .portal .switch button {
+    padding: 7px 13px;
+    background: #fff;
+    border: 1px solid var(--line);
+    color: var(--blue);
+    border-radius: 3px;
+  }
+  .portal .dashboard {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 28px;
+  }
+  .portal .sidebar {
+    background: var(--navy);
+    padding: 24px;
+    border-radius: 4px;
+    color: #d6e0ef;
+    align-self: start;
+  }
+  .portal .sidebar b {
+    display: block;
+    color: white;
+    margin-bottom: 20px;
+  }
+  .portal .sidebar a {
+    display: block;
+    padding: 10px 0;
+    font-size: 14px;
+  }
+  .portal .panel {
+    background: white;
+    border: 1px solid var(--line);
+    padding: 27px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+  }
+  .portal .panel h3 {
+    font-size: 23px;
+  }
+  .portal .tag {
+    font-size: 11px;
+    background: #eef3ff;
+    color: var(--blue);
+    padding: 4px 8px;
+    border-radius: 3px;
+  }
+  .portal .thread {
+    border-left: 2px solid #dce4f2;
+    padding-left: 18px;
+    margin: 20px 0;
+  }
+  .portal .thread small {
+    color: var(--muted);
+  }
+  .portal .thread p {
+    margin: 6px 0 15px;
+  }
+  .portal .casebtn {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    background: white;
+    border: 0;
+    border-top: 1px solid var(--line);
+    text-align: left;
+    padding: 17px 0;
+    color: var(--ink);
+  }
+  .portal .reply {
+    display: flex;
+    gap: 10px;
+  }
+  .portal .reply input {
+    margin: 0;
+  }
+  .portal .reply .btn {
+    white-space: nowrap;
+  }
+  .portal .loginbox {
+    max-width: 430px;
+    margin: 30px auto;
+    background: white;
+    padding: 36px;
+    border: 1px solid var(--line);
+  }
+  @media (max-width: 800px) {
+    .portal .dashboard {
+      grid-template-columns: 1fr;
+    }
+    .portal .sidebar {
+      display: none;
+    }
+    .portal .switch {
+      flex-wrap: wrap;
+    }
+    .portal .reply {
+      flex-wrap: wrap;
+    }
+    .portal .reply input {
+      flex: 1;
+      min-width: 170px;
+    }
+  }
+
+  /* Light homepage: unfiltered photograph, separate editorial text column. */
+}
+
+@layer react {
+  .page-forum .portalbar h1 {
+    margin: 0;
+    color: var(--navy);
+    font-size: 30px;
+    line-height: 1.25;
+  }
+  .portal .loginbox {
+    width: 100%;
+    max-width: 460px;
+  }
+  .portal .loginbox h3 {
+    margin: 16px 0 24px;
+  }
+  .portal .loginbox > .btn {
+    width: 100%;
+  }
+  .member-account-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 8px 16px;
+    margin-top: 20px;
+  }
+  .member-account-links button {
+    min-height: 44px;
+    text-align: left;
+  }
+  .member-feedback {
+    margin: 16px 0 0;
+    padding: 12px 14px;
+    background: var(--paper);
+    border-left: 3px solid var(--blue);
+    font-size: 14px;
+  }
+  .member-account-dialog {
+    width: min(540px, calc(100% - 32px));
+    padding: 28px;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    color: var(--ink);
+  }
+  .member-account-dialog::backdrop {
+    background: #11284b88;
+  }
+  .member-account-dialog .dialog-title {
+    font-size: 24px;
+    margin: 0 32px 20px 0;
+  }
+  .member-request label {
+    display: block;
+  }
+  .member-request input,
+  .member-request textarea {
+    width: 100%;
+  }
+  @media (max-width: 600px) {
+    .page-forum .portalbar h1 {
+      font-size: 25px;
+    }
+    .portal .loginbox {
+      padding: 24px 20px;
+    }
+    .member-account-dialog {
+      padding: 24px 20px;
+    }
+  }
+}

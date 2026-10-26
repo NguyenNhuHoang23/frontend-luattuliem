@@ -1,0 +1,8 @@
+legacy/
+.agents/
+tests/
+test-results/
+playwright-report/
+dist/
+.env*
+*_files/

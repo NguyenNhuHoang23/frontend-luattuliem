@@ -24,3 +24,9 @@ dist-ssr
 *.sw?
 .agents/
 *_backup.*
+
+# Kết quả kiểm tra trình duyệt
+test-results/
+playwright-report/
+.vercel
+.env*

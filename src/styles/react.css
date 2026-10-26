@@ -1,0 +1,173 @@
+@layer react {
+  html {
+    scrollbar-gutter: stable;
+  }
+  .main-container > .wrap {
+    width: min(1200px, 90%);
+    max-width: none;
+    margin-inline: auto;
+  }
+  .page-cases .case-news-summary:first-child {
+    padding-top: 0;
+  }
+  header nav a {
+    border-bottom: 2px solid transparent;
+  }
+  @media (min-width: 901px) {
+    header nav a::after {
+      content: attr(data-label);
+      display: block;
+      height: 0;
+      overflow: hidden;
+      visibility: hidden;
+      font-weight: 700;
+    }
+  }
+  @media (max-width: 900px) {
+    .main-container > .wrap {
+      width: calc(100% - 32px);
+    }
+  }
+  /* Giữ tên trang cho trình đọc màn hình, không chiếm chỗ trong bố cục. */
+  .page-heading-sr-only {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip-path: inset(50%) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+  }
+  .page-about .article-body > :first-child {
+    margin-top: 0;
+  }
+
+  header .brand img {
+    flex-shrink: 0;
+    object-fit: contain;
+  }
+  @media (min-width: 901px) {
+    header .brand {
+      gap: 22px;
+    }
+    header .brand img {
+      width: 162px;
+      height: 162px;
+    }
+    header .brand small {
+      display: block;
+      font-size: 20px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 3px;
+    }
+    header .brand strong {
+      font-size: 52px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      line-height: 1.15;
+    }
+  }
+  @media (max-width: 900px) {
+    header .brand img {
+      width: 76px;
+      height: 76px;
+    }
+  }
+  @media (max-width: 360px) {
+    header .brand img {
+      width: 60px;
+      height: 60px;
+    }
+  }
+  header nav a.active {
+    color: var(--blue);
+    font-weight: bold;
+    border-bottom: 2px solid var(--blue);
+  }
+  .not-found {
+    min-height: 50vh;
+    padding-block: 60px;
+  }
+  .inline-link {
+    color: var(--blue);
+    background: none;
+    border: 0;
+    padding: 0;
+    font: inherit;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  .sidebar .logout {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+    padding: 10px 0;
+    text-align: left;
+    min-height: 44px;
+  }
+  .page-contact .choice-item {
+    position: relative;
+  }
+  .page-contact .choice-item input {
+    display: block;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    min-height: 0;
+    opacity: 0;
+    overflow: hidden;
+  }
+  .page-contact .choice-item:has(input:focus-visible) {
+    outline: 3px solid #bd852d;
+    outline-offset: 3px;
+  }
+  .page-about .article-content,
+  .page-cases .main-content,
+  .page-recruitment .main-content,
+  .page-contact .main-content {
+    min-width: 0;
+  }
+  .dialog-close {
+    float: right;
+    background: none;
+    border: 0;
+    font-size: 24px;
+    color: #64748b;
+    cursor: pointer;
+  }
+  .application-dialog .dialog-title {
+    font-size: 28px;
+  }
+  .modal-result {
+    background: #f8faff;
+    border-left: 3px solid var(--blue);
+    padding: 14px;
+    border-radius: 3px;
+    margin: 16px 0;
+  }
+  .modal-result p {
+    margin: 6px 0 0;
+    color: #334155;
+  }
+  .modal-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+  .modal-actions .white {
+    border: 1px solid #cbd5e1;
+  }
+  dialog {
+    max-height: calc(100dvh - 32px);
+    overflow: auto;
+  }
+  [hidden] {
+    display: none !important;
+  }
+}

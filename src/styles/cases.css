@@ -1,0 +1,627 @@
+@layer pages {
+  .page-cases {
+    --blue: #10399a;
+    --navy: #11284b;
+    --ink: #24364d;
+    --muted: #65758b;
+    --line: #dce3ec;
+    --paper: #f5f7fa;
+    --tag-bg: #edf2fb;
+  }
+  .page-cases * {
+    box-sizing: border-box;
+  }
+  .page-cases {
+    margin: 0;
+    font:
+      15px/1.65 "Liberation Sans Web",
+      Arial,
+      Helvetica,
+      sans-serif;
+    color: var(--ink);
+    background: white;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  .page-cases a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .page-cases button,
+  .page-cases a {
+    touch-action: manipulation;
+  }
+  .page-cases button {
+    cursor: pointer;
+  }
+  .page-cases .wrap {
+    width: min(1200px, 92%);
+    margin: auto;
+  }
+  .page-cases .top {
+    background: #f0f5fc;
+    color: #496280;
+    font-size: 12px;
+    padding: 7px 0;
+    border-bottom: 1px solid #e1e9f4;
+  }
+  .page-cases .top .wrap {
+    display: flex;
+    justify-content: space-between;
+  }
+  .page-cases header {
+    background: #fff;
+    border-bottom: 1px solid var(--line);
+  }
+  .page-cases .brandrow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 0;
+  }
+  .page-cases .brand {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .page-cases .brand img {
+    width: 76px;
+    height: 76px;
+    border-radius: 4px;
+  }
+  .page-cases .brand small {
+    font-size: 11px;
+    letter-spacing: 2px;
+  }
+  .page-cases .brand strong {
+    display: block;
+    font-family: "Liberation Sans Web", Arial, Helvetica, sans-serif;
+    font-weight: 800;
+    color: var(--blue);
+    font-size: 27px;
+    letter-spacing: 0.5px;
+    line-height: 1.25;
+  }
+  .page-cases .contacttop {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .page-cases .contacttop b {
+    display: block;
+    font-size: 22px;
+    color: var(--blue);
+  }
+  .page-cases nav {
+    border-top: 1px solid #eef1f5;
+  }
+  .page-cases nav .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 36px;
+  }
+  .page-cases nav a {
+    font-size: 14px;
+    padding: 16px 0;
+    white-space: nowrap;
+    transition: color 0.2s;
+  }
+  .page-cases nav a:hover,
+  .page-cases nav a.active {
+    color: var(--blue);
+    font-weight: bold;
+  }
+  .page-cases nav a.active {
+    border-bottom: 2px solid var(--blue);
+  }
+  .page-cases .memberlink {
+    color: var(--blue);
+    font-weight: bold;
+  }
+
+  /* Main Layout */
+  .page-cases .main-container {
+    padding: 30px 0 60px;
+  }
+  .page-cases .editorial-grid {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 45px;
+    align-items: start;
+  }
+
+  /* Breadcrumb & Header */
+  .page-cases .breadcrumb {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 18px;
+  }
+  .page-cases .breadcrumb a {
+    color: #496280;
+  }
+  .page-cases .breadcrumb a:hover {
+    color: var(--blue);
+    text-decoration: underline;
+  }
+  .page-cases .breadcrumb span {
+    color: #98a6b8;
+    margin: 0 6px;
+  }
+  .page-cases .page-title {
+    font:
+      800 24px/1.3 "Liberation Sans Web",
+      Arial,
+      Helvetica,
+      sans-serif;
+    letter-spacing: -0.02em;
+    color: var(--navy);
+    margin: 0 0 8px;
+    text-transform: none;
+  }
+  .page-cases .page-subtitle {
+    color: var(--muted);
+    font-size: 14px;
+    margin: 0 0 24px;
+  }
+
+  /* Category Filter Tabs */
+  .page-cases .filter-tabs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--line);
+  }
+  .page-cases .filter-btn {
+    background: #fff;
+    border: 1px solid #cbd5e1;
+    color: #475569;
+    padding: 7px 16px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: bold;
+    transition: all 0.2s;
+  }
+  .page-cases .filter-btn:hover {
+    border-color: var(--blue);
+    color: var(--blue);
+  }
+  .page-cases .filter-btn.active {
+    background: var(--blue);
+    border-color: var(--blue);
+    color: #fff;
+  }
+
+  /* Featured Case Card */
+  .page-cases .featured-case {
+    background: #fbfcfe;
+    border: 1px solid #c9d8eb;
+    border-top: 4px solid var(--blue);
+    border-radius: 6px;
+    padding: 26px 28px;
+    margin-bottom: 30px;
+    box-shadow: 0 6px 20px rgba(17, 40, 75, 0.05);
+  }
+  .page-cases .featured-badge {
+    display: inline-block;
+    background: var(--navy);
+    color: #fff;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 4px 10px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+  }
+  .page-cases .featured-case h2 {
+    font:
+      700 21px/1.35 "Liberation Sans Web",
+      Arial,
+      Helvetica,
+      sans-serif;
+    letter-spacing: -0.015em;
+    color: var(--navy);
+    margin: 0 0 12px;
+  }
+  .page-cases .featured-case p {
+    color: #475569;
+    font-size: 14px;
+    line-height: 1.7;
+    margin: 0 0 16px;
+  }
+  .page-cases .case-summary-box {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-left: 3px solid #0ca678;
+    padding: 14px 18px;
+    border-radius: 3px;
+    margin-bottom: 16px;
+    font-size: 13.5px;
+  }
+  .page-cases .case-summary-box b {
+    color: var(--navy);
+    display: block;
+    margin-bottom: 4px;
+  }
+  .page-cases .featured-actions {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+  }
+
+  /* Regular Case Cards */
+  .page-cases .case-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .page-cases .case-card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    padding: 22px 24px;
+    transition:
+      transform 0.2s,
+      box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .page-cases .case-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(17, 40, 75, 0.06);
+    border-color: #b4c8e1;
+  }
+  .page-cases .case-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 10px;
+  }
+  .page-cases .case-tag {
+    background: var(--tag-bg);
+    color: var(--blue);
+    font-size: 11px;
+    font-weight: bold;
+    padding: 4px 10px;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+  .page-cases .case-code {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: bold;
+  }
+  .page-cases .case-card h3 {
+    font:
+      700 17px/1.35 "Liberation Sans Web",
+      Arial,
+      Helvetica,
+      sans-serif;
+    letter-spacing: -0.01em;
+    color: var(--navy);
+    margin: 0 0 10px;
+  }
+  .page-cases .case-card h3 a:hover {
+    color: var(--blue);
+    text-decoration: underline;
+  }
+  .page-cases .case-card p {
+    color: var(--muted);
+    font-size: 13.5px;
+    line-height: 1.65;
+    margin: 0 0 16px;
+  }
+  .page-cases .case-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 12px;
+    border-top: 1px solid #f1f5f9;
+    font-size: 12.5px;
+    color: #94a3b8;
+  }
+  .page-cases .read-more {
+    color: var(--blue);
+    font-weight: bold;
+    font-size: 13px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .page-cases .read-more:hover {
+    text-decoration: underline;
+  }
+
+  /* Sidebar Components */
+  .page-cases .sidebar {
+    position: sticky;
+    top: 20px;
+  }
+  .page-cases .sidebar-box {
+    background: #f8faff;
+    border: 1px solid #dce4ee;
+    border-radius: 6px;
+    padding: 22px;
+    margin-bottom: 25px;
+  }
+  .page-cases .sidebar-title {
+    font-size: 15px;
+    font-weight: bold;
+    color: var(--navy);
+    letter-spacing: 0.5px;
+    margin: 0 0 16px;
+    padding-left: 10px;
+    border-left: 4px solid var(--blue);
+    text-transform: uppercase;
+  }
+  .page-cases .search-input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    font-size: 13.5px;
+    background: #fff;
+    margin-bottom: 10px;
+  }
+  .page-cases .search-input:focus {
+    outline: 2px solid var(--blue);
+    border-color: var(--blue);
+  }
+  .page-cases .sidebar-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .page-cases .sidebar-links li {
+    border-bottom: 1px solid #e6edf7;
+    padding: 10px 0;
+  }
+  .page-cases .sidebar-links li:last-child {
+    border-bottom: 0;
+  }
+  .page-cases .sidebar-links a {
+    color: #334155;
+    font-size: 13.5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .page-cases .sidebar-links a:hover {
+    color: var(--blue);
+    font-weight: bold;
+  }
+  .page-cases .sidebar-links span {
+    background: #e2e8f0;
+    color: #64748b;
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 10px;
+  }
+
+  /* Consultation Box */
+  .page-cases .consult-widget {
+    background: var(--navy);
+    color: #fff;
+    border-radius: 6px;
+    padding: 24px;
+    text-align: center;
+  }
+  .page-cases .consult-widget h4 {
+    font:
+      700 17px/1.3 "Liberation Sans Web",
+      Arial,
+      Helvetica,
+      sans-serif;
+    letter-spacing: -0.01em;
+    color: #fff;
+    margin: 0 0 8px;
+  }
+  .page-cases .consult-widget p {
+    font-size: 13px;
+    color: #cad5e2;
+    margin: 0 0 16px;
+    line-height: 1.6;
+  }
+  .page-cases .btn {
+    display: inline-block;
+    border: 1px solid var(--blue);
+    background: var(--blue);
+    color: white;
+    padding: 10px 18px;
+    font-weight: bold;
+    font-size: 13px;
+    border-radius: 3px;
+    transition: all 0.2s;
+    text-align: center;
+  }
+  .page-cases .btn:hover {
+    background: #0b2b77;
+  }
+  .page-cases .btn.white {
+    background: #fff;
+    color: var(--navy);
+    border-color: #fff;
+  }
+  .page-cases .btn.white:hover {
+    background: #f0f5fc;
+  }
+
+  /* Modal Popup Dialog */
+  .page-cases dialog {
+    border: 0;
+    border-radius: 6px;
+    width: min(640px, 94%);
+    padding: 30px;
+    color: var(--ink);
+    box-shadow: 0 20px 80px rgba(17, 40, 75, 0.35);
+  }
+  .page-cases dialog::backdrop {
+    background: #11284b88;
+  }
+  .page-cases .dialog-close {
+    float: right;
+    background: none;
+    border: 0;
+    font-size: 24px;
+    color: #64748b;
+    cursor: pointer;
+  }
+  .page-cases .dialog-title {
+    font:
+      700 19px/1.35 "Liberation Sans Web",
+      Arial,
+      Helvetica,
+      sans-serif;
+    letter-spacing: -0.01em;
+    color: var(--navy);
+    margin: 0 0 14px;
+  }
+  .page-cases .dialog-content {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #334155;
+  }
+  .page-cases .dialog-content b {
+    color: var(--navy);
+  }
+
+  .page-cases footer {
+    background: #edf3fb;
+    color: #5c708b;
+    padding: 35px 0;
+    font-size: 12px;
+    border-top: 1px solid #dce6f3;
+  }
+  .page-cases footer strong {
+    color: var(--blue);
+  }
+  .page-cases footer .wrap {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+  }
+  .page-cases .demo {
+    background: #f8faff;
+    color: #687c98;
+    text-align: center;
+    padding: 7px 15px;
+    font-size: 11px;
+  }
+
+  @media (max-width: 900px) {
+    .page-cases .editorial-grid {
+      grid-template-columns: 1fr;
+      gap: 35px;
+    }
+    .page-cases .brand strong {
+      font-size: 22px;
+    }
+    .page-cases .brand img {
+      width: 60px;
+      height: 60px;
+    }
+    .page-cases .contacttop {
+      display: none;
+    }
+    .page-cases nav .wrap {
+      overflow: auto;
+      justify-content: flex-start;
+      gap: 25px;
+    }
+    .page-cases nav a {
+      font-size: 12px;
+    }
+  }
+  .page-cases .case-news {
+    max-width: 1000px;
+  }
+  .page-cases .case-news-summary {
+    padding: 26px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .page-cases .case-news-summary h2 {
+    margin: 0 0 8px;
+    font-size: 21px;
+    line-height: 1.45;
+  }
+  .page-cases .case-news-title {
+    display: block;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--navy);
+    font: inherit;
+    font-weight: 700;
+    text-align: left;
+    overflow-wrap: anywhere;
+  }
+  .page-cases .case-news-title:hover {
+    color: var(--blue);
+    text-decoration: underline;
+  }
+  .page-cases .case-news-excerpt {
+    margin: 10px 0 12px;
+    color: var(--muted);
+  }
+  .page-cases .case-news-date {
+    display: block;
+    margin: 6px 0 0;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .page-cases .case-news-more {
+    padding: 8px 0;
+    border: 0;
+    background: none;
+    color: var(--blue);
+    font: inherit;
+    font-weight: 700;
+  }
+  .page-cases .case-news-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .page-cases .case-news-list li {
+    padding: 20px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .page-cases .case-news-list .case-news-title {
+    font-size: 17px;
+    line-height: 1.5;
+  }
+  .page-cases .case-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    border: 0;
+    margin-top: 32px;
+  }
+  .page-cases .case-pagination button {
+    min-height: 44px;
+    padding: 8px 16px;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    background: white;
+    color: var(--blue);
+    font: inherit;
+  }
+  .page-cases .case-pagination button:disabled {
+    color: var(--muted);
+    opacity: 0.5;
+    cursor: default;
+  }
+  @media (max-width: 600px) {
+    .page-cases .case-news-summary h2 {
+      font-size: 19px;
+    }
+    .page-cases .case-pagination {
+      gap: 12px;
+    }
+  }
+}

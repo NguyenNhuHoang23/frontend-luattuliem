@@ -1,0 +1,789 @@
+/* Stylesheet dành cho Diễn đàn & Trao đổi nội bộ Công ty Luật Từ Liêm — Tuân thủ .agents & design.md */
+.forum-page {
+  background: #f4f7fb;
+  min-height: 85vh;
+  padding: 32px 0 70px;
+}
+
+/* Header trang */
+.forum-header-box {
+  background: #ffffff;
+  border: 1px solid #dce4f0;
+  border-radius: 6px;
+  padding: 24px 28px;
+  margin-bottom: 24px;
+  box-shadow: 0 1px 4px rgba(17, 40, 75, 0.03);
+}
+
+.forum-header-box .eyebrow {
+  display: inline-block;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--blue, #10399a);
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  margin-bottom: 8px;
+}
+
+.forum-header-box h1 {
+  font-size: clamp(22px, 2.6vw, 26px);
+  font-weight: 700;
+  color: var(--navy, #11284b);
+  margin: 0 0 8px;
+  line-height: 1.3;
+}
+
+.forum-header-box .forum-desc {
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--muted, #65758b);
+  margin: 0 0 16px;
+  max-width: 850px;
+}
+
+.forum-disclaimer-alert {
+  background: #f0f5fc;
+  border-left: 3px solid var(--blue, #10399a);
+  padding: 10px 14px;
+  border-radius: 0 3px 3px 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink, #24364d);
+}
+
+/* Khung giao diện trao đổi chính (Workspace Container) */
+.forum-workspace {
+  display: grid;
+  grid-template-columns: 310px 1fr;
+  gap: 24px;
+  align-items: stretch;
+}
+
+/* Cột danh sách vụ việc / Kênh trao đổi */
+.forum-channels-card {
+  background: #ffffff;
+  border: 1px solid #dce4f0;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(17, 40, 75, 0.03);
+  display: flex;
+  flex-direction: column;
+  height: 640px;
+  overflow: hidden;
+}
+
+.channels-card-header {
+  background: #f8fafc;
+  border-bottom: 1px solid #e5edf7;
+  padding: 15px 18px;
+  flex-shrink: 0;
+}
+
+.channels-card-header h2 {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--navy, #11284b);
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.channels-card-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 4px 0;
+}
+
+.channels-group {
+  padding: 6px 10px;
+}
+
+.channels-group-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: #8da0b6;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding: 10px 8px 4px;
+}
+
+.channel-item-btn {
+  width: 100%;
+  display: block;
+  padding: 11px 14px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  margin-bottom: 3px;
+  font-family: inherit;
+}
+
+.channel-item-btn:hover {
+  background: #f0f5fc;
+  border-color: #dce7f5;
+}
+
+.channel-item-btn.active {
+  background: #ffffff;
+  border-color: #c9dbf2;
+  box-shadow: 0 2px 8px rgba(16, 57, 154, 0.06);
+  border-left: 3px solid var(--blue, #10399a);
+}
+
+.channel-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 3px;
+}
+
+.channel-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--navy, #11284b);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.channel-item-btn.active .channel-title {
+  color: var(--blue, #10399a);
+}
+
+.channel-badge-count {
+  font-size: 11px;
+  font-weight: 700;
+  background: #edf3fb;
+  color: var(--blue, #10399a);
+  padding: 1px 7px;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.channel-desc {
+  font-size: 12px;
+  line-height: 1.4;
+  color: #65758b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Cột cuộc trò chuyện chính (Chat Thread Area) */
+.forum-chat-card {
+  background: #ffffff;
+  border: 1px solid #dce4f0;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(17, 40, 75, 0.03);
+  display: flex;
+  flex-direction: column;
+  height: 640px;
+  overflow: hidden;
+}
+
+/* Header của kênh đang chọn */
+.chat-thread-header {
+  background: #ffffff;
+  border-bottom: 1px solid #e5edf7;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+
+.chat-thread-title {
+  font-size: 16.5px;
+  font-weight: 700;
+  color: var(--navy, #11284b);
+  margin: 0 0 3px;
+}
+
+.chat-thread-members {
+  font-size: 12.5px;
+  color: #65758b;
+}
+
+.chat-thread-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--navy, #11284b);
+  background: #f0f5fc;
+  border: 1px solid #dce4f0;
+  padding: 4px 10px;
+  border-radius: 3px;
+}
+
+.chat-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--blue, #10399a);
+  display: inline-block;
+}
+
+/* Danh sách tin nhắn trao đổi (Cuộn nội bộ bên trong) */
+.chat-messages-container {
+  flex: 1;
+  padding: 20px 24px;
+  background: #fafbfd;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  scroll-behavior: smooth;
+}
+
+.chat-timeline-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 2px 0 8px;
+}
+
+.chat-timeline-text {
+  font-size: 11px;
+  font-weight: 700;
+  color: #8da0b6;
+  background: #edf3f9;
+  padding: 3px 12px;
+  border-radius: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Từng khối tin nhắn */
+.chat-message-row {
+  display: flex;
+  gap: 12px;
+  max-width: 86%;
+}
+
+.chat-message-row.is-own {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+}
+
+.chat-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 4px;
+  background: #edf3fb;
+  border: 1px solid #d2e2f4;
+  color: var(--navy, #11284b);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.chat-message-row.is-own .chat-avatar {
+  background: #e1ecfa;
+  border-color: #bad3f3;
+  color: var(--blue, #10399a);
+}
+
+.chat-message-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.chat-message-row.is-own .chat-message-content {
+  align-items: flex-end;
+}
+
+.chat-sender-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.chat-sender-name {
+  font-weight: 700;
+  color: var(--navy, #11284b);
+}
+
+.chat-sender-role {
+  font-size: 11px;
+  color: #65758b;
+  background: #edf2f9;
+  padding: 1px 6px;
+  border-radius: 2px;
+}
+
+.chat-msg-time {
+  font-size: 11.5px;
+  color: #94a3b8;
+}
+
+.chat-bubble-card {
+  background: #ffffff;
+  border: 1px solid #dce4f0;
+  border-radius: 4px;
+  padding: 12px 16px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink, #24364d);
+  box-shadow: 0 1px 3px rgba(17, 40, 75, 0.03);
+  white-space: pre-line;
+}
+
+.chat-message-row.is-own .chat-bubble-card {
+  background: #f0f5fc;
+  border-color: #bad3f3;
+  color: #0d2857;
+}
+
+/* Khung soạn thảo tin nhắn */
+.chat-composer-box {
+  background: #ffffff;
+  border-top: 1px solid #e5edf7;
+  padding: 14px 24px;
+  flex-shrink: 0;
+}
+
+.chat-composer-form {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+}
+
+.composer-input-field {
+  flex: 1;
+}
+
+.composer-input-field textarea {
+  width: 100%;
+  min-height: 50px;
+  max-height: 120px;
+  padding: 10px 12px;
+  border: 1px solid #cbd7e6;
+  border-radius: 4px;
+  font-size: 14px;
+  line-height: 1.5;
+  font-family: inherit;
+  color: var(--ink, #24364d);
+  background: #ffffff;
+  resize: vertical;
+  box-sizing: border-box;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.composer-input-field textarea:focus {
+  outline: none;
+  border-color: var(--blue, #10399a);
+  box-shadow: 0 0 0 2px rgba(16, 57, 154, 0.1);
+}
+
+.chat-btn-submit {
+  background: var(--blue, #10399a);
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  padding: 0 20px;
+  height: 50px;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+  white-space: nowrap;
+  flex-shrink: 0;
+  font-family: inherit;
+}
+
+.chat-btn-submit:hover {
+  background: #0d2e7c;
+}
+
+.composer-sub-hint {
+  font-size: 11.5px;
+  color: #8da0b6;
+  margin-top: 4px;
+}
+
+/* Responsive khi màn hình nhỏ */
+@media (max-width: 900px) {
+  .forum-workspace {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .forum-channels-card {
+    height: auto;
+    max-height: 280px;
+  }
+
+  .channels-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 8px 10px;
+  }
+
+  .channels-group-title {
+    width: 100%;
+    padding: 0 0 2px;
+  }
+
+  .channel-item-btn {
+    width: auto;
+    flex: 1;
+    min-width: 200px;
+    margin-bottom: 0;
+  }
+
+  .forum-chat-card {
+    height: 520px;
+  }
+
+  .chat-message-row {
+    max-width: 95%;
+  }
+
+  .chat-thread-header {
+    padding: 14px 16px;
+  }
+
+  .chat-messages-container {
+    padding: 14px 16px;
+  }
+
+  .chat-composer-box {
+    padding: 12px 16px;
+  }
+}
+
+/* Tìm kiếm và tài liệu đính kèm của phiên trao đổi. */
+.forum-search-toolbar {
+  padding: 12px 24px;
+  border-bottom: 1px solid #e5edf7;
+  flex-shrink: 0;
+}
+.forum-search-toolbar label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--navy);
+}
+.forum-search-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.forum-search-controls input {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid #cbd7e6;
+  border-radius: 4px;
+  color: var(--ink);
+  background: white;
+  font: inherit;
+  font-size: 14px;
+}
+.forum-secondary-button {
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid #cbd7e6;
+  border-radius: 4px;
+  background: white;
+  color: var(--blue);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.forum-search-count {
+  margin: 6px 0 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+.forum-search-empty {
+  color: var(--muted);
+  font-size: 14px;
+  text-align: center;
+}
+.forum-file-input {
+  display: none;
+}
+.forum-file-picker {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+.forum-file-picker > span {
+  font-size: 12px;
+  color: var(--muted);
+}
+.forum-pending-files,
+.forum-attachments {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0 0;
+}
+.forum-pending-files {
+  max-height: 110px;
+  overflow-y: auto;
+}
+.forum-pending-files li,
+.forum-attachments li {
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #dce4f0;
+  padding: 6px 0;
+}
+.forum-pending-files li > span,
+.forum-attachments li > span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.forum-attachments b {
+  font-size: 13px;
+}
+.forum-attachments small {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+}
+.forum-attachments a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--blue);
+  font-size: 13px;
+  white-space: nowrap;
+  text-decoration: underline;
+}
+.forum-page .chat-message-content,
+.forum-page .composer-input-field {
+  min-width: 0;
+}
+.forum-page .chat-bubble-card {
+  overflow-wrap: anywhere;
+}
+.forum-page .chat-messages-container {
+  min-height: 150px;
+}
+.forum-page .forum-chat-card {
+  min-height: 760px;
+}
+@media (max-width: 900px) {
+  .forum-search-toolbar {
+    padding: 12px 16px;
+  }
+  .forum-search-controls {
+    flex-wrap: wrap;
+  }
+  .forum-search-controls input {
+    flex: 1 1 180px;
+  }
+  .forum-page .chat-composer-form {
+    flex-wrap: wrap;
+  }
+  .forum-page .composer-input-field {
+    flex-basis: 100%;
+  }
+  .forum-page .chat-btn-submit {
+    min-height: 44px;
+    height: 44px;
+    margin-left: auto;
+  }
+  .forum-page .forum-chat-card {
+    min-height: 820px;
+  }
+}
+
+/* Thanh công cụ hội thoại: tìm kiếm thu gọn, soạn tin và tài liệu cùng nhịp. */
+.forum-page .chat-thread-tools {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.forum-page .forum-icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: white;
+  color: var(--navy);
+  cursor: pointer;
+}
+.forum-page .forum-icon-button:hover,
+.forum-page .forum-icon-button[aria-expanded="true"] {
+  color: var(--blue);
+  background: #f0f5fc;
+  border-color: #b1c5e3;
+}
+.forum-page .forum-search-controls input:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+.forum-page .chat-composer-box {
+  padding: 16px 24px;
+}
+.forum-page .chat-composer-form {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+}
+.forum-page .composer-input-field {
+  flex: initial;
+}
+.forum-page .composer-input-field textarea {
+  display: block;
+  min-height: 76px;
+  margin: 0;
+  background: #f8faff;
+}
+.forum-page .composer-input-field textarea:focus {
+  background: white;
+}
+.forum-page .composer-input-field textarea::placeholder {
+  color: var(--muted);
+}
+.forum-page .forum-composer-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.forum-page .forum-file-picker {
+  margin: 0;
+  gap: 10px;
+}
+.forum-page .forum-attach-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 44px;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--blue);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.forum-page .forum-attach-button:hover {
+  background: #edf3fb;
+}
+.forum-page .forum-file-limit {
+  color: var(--muted);
+  font-size: 12px;
+}
+.forum-page .chat-btn-submit {
+  height: 44px;
+  gap: 10px;
+  padding: 0 16px;
+}
+.forum-page .composer-sub-hint {
+  margin: 0;
+  color: var(--muted);
+  font-size: 11px;
+}
+.forum-page .composer-sub-hint kbd {
+  font-family: inherit;
+  font-weight: 700;
+}
+.forum-page .forum-pending-files {
+  background: #f5f8fc;
+  border-radius: 4px;
+  padding: 0 10px;
+  margin-top: 10px;
+}
+.forum-page .forum-pending-files li {
+  border-color: #e0e8f3;
+}
+.forum-page .forum-pending-files li:first-child {
+  border-top: 0;
+}
+.forum-page .forum-pending-file-name {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
+  font-size: 13px;
+}
+.forum-page .forum-pending-file-name svg {
+  flex-shrink: 0;
+  color: var(--blue);
+}
+.forum-page .forum-pending-files button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  width: 44px;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+}
+.forum-page .forum-pending-files button:hover {
+  background: #e7eef8;
+  color: var(--blue);
+}
+@media (max-width: 900px) {
+  .forum-page .chat-composer-box {
+    padding: 12px 16px;
+  }
+  .forum-page .chat-thread-tools {
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+}
+@media (max-width: 600px) {
+  .forum-page .forum-composer-toolbar {
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .forum-page .forum-file-picker {
+    gap: 0;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .forum-page .forum-file-limit {
+    font-size: 11px;
+    padding-left: 10px;
+  }
+  .forum-page .forum-attach-button {
+    font-size: 12px;
+  }
+  .forum-page .chat-btn-submit {
+    font-size: 12px;
+    padding: 0 12px;
+    gap: 6px;
+  }
+  .forum-page .composer-sub-hint {
+    display: none;
+  }
+}
