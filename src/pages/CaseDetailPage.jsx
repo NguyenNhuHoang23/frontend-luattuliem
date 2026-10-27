@@ -1,8 +1,14 @@
 import { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { getPublicCase } from "../api/public.js";
+import { deleteMemberCaseArticle } from "../api/member.js";
+import { CaseDetailSkeleton } from "../components/Skeleton.jsx";
+import { Modal } from "../components/Modal.jsx";
+import { useToast } from "../components/toast-context.js";
 import { images } from "../data/images.js";
+import { CaseComposeModal } from "../features/CaseComposeModal.jsx";
 import { CasePdfViewer } from "../features/CasePdfViewer.jsx";
+import { useMemberAuth } from "../features/memberAuth.jsx";
 
 function caseImageSrc(image) {
   if (!image) return "";
@@ -12,10 +18,17 @@ function caseImageSrc(image) {
 
 export default function CaseDetailPage() {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const { session } = useMemberAuth();
+  const { showToast } = useToast();
+  const isDirector = session?.role === "director";
   const [activeTab, setActiveTab] = useState("content");
   const [caseItem, setCaseItem] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [composeOpen, setComposeOpen] = useState(false);
+  const [removing, setRemoving] = useState(false);
+  const [removingBusy, setRemovingBusy] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -53,15 +66,7 @@ export default function CaseDetailPage() {
   }, [caseItem]);
 
   if (loading) {
-    return (
-      <div className="page-case-detail">
-        <main className="main-container">
-          <div className="wrap">
-            <p>Đang tải án lệ…</p>
-          </div>
-        </main>
-      </div>
-    );
+    return <CaseDetailSkeleton />;
   }
 
   if (!caseItem) {
@@ -86,6 +91,28 @@ export default function CaseDetailPage() {
   const handlePrint = () => {
     window.print();
   };
+
+  function handleSaved(article) {
+    setCaseItem(article);
+    setComposeOpen(false);
+    showToast("Đã cập nhật án lệ / án hay.");
+    if (article.id && article.id !== id) {
+      navigate(`/an-le/${article.id}`, { replace: true });
+    }
+  }
+
+  async function confirmRemove() {
+    if (!caseItem) return;
+    setRemovingBusy(true);
+    try {
+      await deleteMemberCaseArticle(caseItem.id);
+      showToast("Đã xóa án lệ / án hay.");
+      navigate("/an-le", { replace: true });
+    } catch (err) {
+      showToast(err.message);
+      setRemovingBusy(false);
+    }
+  }
 
   return (
     <div className="page-case-detail">
@@ -120,6 +147,24 @@ export default function CaseDetailPage() {
               </button>
             </div>
             <div className="case-tabs-actions">
+              {isDirector ? (
+                <>
+                  <button
+                    className="case-action-btn"
+                    type="button"
+                    onClick={() => setComposeOpen(true)}
+                  >
+                    Sửa
+                  </button>
+                  <button
+                    className="case-action-btn"
+                    type="button"
+                    onClick={() => setRemoving(true)}
+                  >
+                    Xóa
+                  </button>
+                </>
+              ) : null}
               <button
                 className="case-action-btn"
                 onClick={handlePrint}
@@ -369,6 +414,44 @@ export default function CaseDetailPage() {
           </div>
         </div>
       </main>
+      {isDirector ? (
+        <>
+          <CaseComposeModal
+            open={composeOpen}
+            article={caseItem}
+            onClose={() => setComposeOpen(false)}
+            onSaved={handleSaved}
+          />
+          <Modal
+            className="application-dialog"
+            open={removing}
+            title="Xóa án lệ / án hay?"
+            onClose={() => !removingBusy && setRemoving(false)}
+          >
+            <p>
+              Xóa “{caseItem.title}”? Bài sẽ không còn hiện trên trang Án lệ.
+            </p>
+            <div className="modal-actions">
+              <button
+                className="btn"
+                type="button"
+                disabled={removingBusy}
+                onClick={confirmRemove}
+              >
+                {removingBusy ? "Đang xóa…" : "Xóa"}
+              </button>
+              <button
+                className="btn white"
+                type="button"
+                disabled={removingBusy}
+                onClick={() => setRemoving(false)}
+              >
+                Hủy
+              </button>
+            </div>
+          </Modal>
+        </>
+      ) : null}
     </div>
   );
 }

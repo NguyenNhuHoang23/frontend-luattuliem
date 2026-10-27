@@ -1,6 +1,24 @@
 import { useEffect, useMemo, useState } from "react";
-import { getTeamMember, listTeamMembers } from "../api/member.js";
+import {
+  approveMemberApplication,
+  getTeamMember,
+  listMemberApplications,
+  listTeamMembers,
+  rejectMemberApplication,
+} from "../api/member.js";
+import {
+  MemberDirectorySkeleton,
+  MemberDossierBodySkeleton,
+  MemberDossierSkeleton,
+  Skeleton,
+} from "../components/Skeleton.jsx";
+import {
+  MemberApplicationDetail,
+  MemberApplicationList,
+} from "./MemberApproval.jsx";
+import { Modal } from "../components/Modal.jsx";
 import { useMemberAuth } from "./memberAuth.jsx";
+import { useToast } from "../components/toast-context.js";
 
 const ROLE_CONFIG = {
   director: { label: "Giám đốc", badgeClass: "badge-lawyer", desc: "Điều hành đội ngũ và phân công công việc" },
@@ -37,8 +55,10 @@ export default function MemberManagement({
   onToggleStatus,
   onOpenDirectMessage,
   onOpenCaseThread,
+  onPendingCount,
 }) {
   const { session } = useMemberAuth();
+  const { showToast } = useToast();
   const isDirectorAccount = session?.role === "director";
   const [apiMembers, setApiMembers] = useState(null);
   const [listError, setListError] = useState("");
@@ -53,6 +73,15 @@ export default function MemberManagement({
   const [isEditing, setIsEditing] = useState(false);
   const [editFormData, setEditFormData] = useState({});
   const [formError, setFormError] = useState("");
+  const [applications, setApplications] = useState([]);
+  const [applicationError, setApplicationError] = useState("");
+  const [applicationLoading, setApplicationLoading] = useState(false);
+  const [applicationFilter, setApplicationFilter] = useState("pending");
+  const [applicationSearch, setApplicationSearch] = useState("");
+  const [selectedApplicationId, setSelectedApplicationId] = useState("");
+  const [applicationSaving, setApplicationSaving] = useState(false);
+  const [applicationFormError, setApplicationFormError] = useState("");
+  const [pauseConfirm, setPauseConfirm] = useState(null);
 
   useEffect(() => {
     if (!isDirectorAccount) {
@@ -81,6 +110,35 @@ export default function MemberManagement({
       cancelled = true;
     };
   }, [isDirectorAccount]);
+
+  useEffect(() => {
+    if (!isDirectorAccount) {
+      setApplications([]);
+      onPendingCount?.(0);
+      return undefined;
+    }
+    let cancelled = false;
+    setApplicationLoading(true);
+    setApplicationError("");
+    listMemberApplications()
+      .then(({ items, pendingCount }) => {
+        if (cancelled) return;
+        setApplications(items);
+        onPendingCount?.(pendingCount);
+      })
+      .catch((err) => {
+        if (!cancelled) {
+          setApplicationError(err.message);
+          setApplications([]);
+        }
+      })
+      .finally(() => {
+        if (!cancelled) setApplicationLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [isDirectorAccount, onPendingCount]);
 
   // Chỉ lấy nhân sự, loại trừ Giám đốc
   const staffMembers = useMemo(() => {
@@ -123,6 +181,10 @@ export default function MemberManagement({
 
   const activeCount = staffMembers.filter(isActiveStatus).length;
   const inactiveCount = staffMembers.length - activeCount;
+  const pendingCount = applications.filter((item) => item.status === "pending").length;
+  const selectedApplication =
+    applications.find((item) => sameId(item.id, selectedApplicationId)) || null;
+  const isPendingTab = viewMode === "pending";
 
   // Thành viên đang được chọn hiển thị ở cột phải
   const activeMember = useMemo(() => {
@@ -182,6 +244,58 @@ export default function MemberManagement({
     const parts = name.trim().split(/\s+/);
     if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
     return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  };
+
+  const handleSelectApplication = (id) => {
+    setSelectedApplicationId(id);
+    setIsMobileDetailOpen(true);
+    setApplicationFormError("");
+  };
+
+  const handleApproveApplication = async ({ username, password, area }) => {
+    if (!selectedApplication) return;
+    setApplicationSaving(true);
+    setApplicationFormError("");
+    try {
+      const { application, member, message } = await approveMemberApplication(
+        selectedApplication.id,
+        { username, password, area },
+      );
+      setApplications((prev) =>
+        prev.map((item) => (sameId(item.id, application.id) ? application : item)),
+      );
+      if (member) {
+        setApiMembers((prev) =>
+          Array.isArray(prev) ? [normalizeMember(member), ...prev] : [normalizeMember(member)],
+        );
+      }
+      onPendingCount?.(Math.max(0, pendingCount - 1));
+      showToast(
+        `${message || "Đã duyệt thành viên."} Tài khoản: ${username} / ${password}`,
+      );
+    } catch (err) {
+      setApplicationFormError(err.message);
+    } finally {
+      setApplicationSaving(false);
+    }
+  };
+
+  const handleRejectApplication = async (note) => {
+    if (!selectedApplication) return;
+    setApplicationSaving(true);
+    setApplicationFormError("");
+    try {
+      const application = await rejectMemberApplication(selectedApplication.id, note);
+      setApplications((prev) =>
+        prev.map((item) => (sameId(item.id, application.id) ? application : item)),
+      );
+      onPendingCount?.(Math.max(0, pendingCount - 1));
+      showToast("Đã từ chối hồ sơ ứng tuyển.");
+    } catch (err) {
+      setApplicationFormError(err.message);
+    } finally {
+      setApplicationSaving(false);
+    }
   };
 
   // Bắt đầu chỉnh sửa hồ sơ
@@ -267,19 +381,27 @@ export default function MemberManagement({
       <aside
         className="member-list member-directory-sidebar"
         aria-label={
-          viewMode === "inactive" ? "Thành viên không hoạt động" : "Thành viên đang hoạt động"
+          isPendingTab
+            ? "Duyệt thành viên"
+            : viewMode === "inactive"
+              ? "Thành viên không hoạt động"
+              : "Thành viên đang hoạt động"
         }
       >
         <div className="member-list-heading directory-heading">
           <h2>
-            {viewMode === "inactive" ? "Không hoạt động" : "Đang hoạt động"}
+            {isPendingTab
+              ? "Duyệt thành viên"
+              : viewMode === "inactive"
+                ? "Không hoạt động"
+                : "Đang hoạt động"}
           </h2>
         </div>
 
         <div
           className="directory-subtabs"
           role="tablist"
-          aria-label="Lọc theo trạng thái hoạt động"
+          aria-label="Lọc danh sách thành viên"
         >
           <button
             type="button"
@@ -291,7 +413,7 @@ export default function MemberManagement({
               setIsMobileDetailOpen(false);
             }}
           >
-            Đang hoạt động ({activeCount})
+            Hoạt động ({activeCount})
           </button>
           <button
             type="button"
@@ -303,9 +425,45 @@ export default function MemberManagement({
               setIsMobileDetailOpen(false);
             }}
           >
-            Không hoạt động ({inactiveCount})
+            Tạm dừng ({inactiveCount})
           </button>
+          {isDirectorAccount ? (
+            <button
+              type="button"
+              role="tab"
+              aria-selected={isPendingTab}
+              className={`directory-subtab-btn ${isPendingTab ? "active" : ""}`}
+              onClick={() => {
+                setViewMode("pending");
+                setIsMobileDetailOpen(false);
+                setApplicationFormError("");
+              }}
+            >
+              Duyệt thành viên
+              {pendingCount > 0 ? (
+                <span className="subtab-counter">{pendingCount}</span>
+              ) : null}
+            </button>
+          ) : null}
         </div>
+        {isPendingTab ? (
+          <MemberApplicationList
+            applications={applications}
+            loading={applicationLoading}
+            error={applicationError}
+            selectedId={selectedApplication?.id}
+            statusFilter={applicationFilter}
+            searchTerm={applicationSearch}
+            onSearch={setApplicationSearch}
+            onStatusFilter={(value) => {
+              setApplicationFilter(value);
+              setSelectedApplicationId("");
+              setIsMobileDetailOpen(false);
+            }}
+            onSelect={handleSelectApplication}
+          />
+        ) : (
+          <>
             {/* Thanh tìm kiếm nhanh */}
             <div className="directory-search-box">
               <div className="directory-search-input-wrap">
@@ -391,14 +549,12 @@ export default function MemberManagement({
             </div>
 
             {/* Danh sách thành viên bên trái */}
-            {listLoading ? (
-              <p className="member-empty">Đang tải danh sách thành viên…</p>
-            ) : null}
             {listError ? (
               <p className="member-empty" role="alert">
                 {listError}
               </p>
             ) : null}
+            {listLoading ? <MemberDirectorySkeleton /> : (
             <div className="member-thread-list directory-list">
               {!listLoading && filteredMembers.length > 0 ? (
                 filteredMembers.map((person) => {
@@ -447,7 +603,7 @@ export default function MemberManagement({
                     </button>
                   );
                 })
-              ) : listLoading ? null : (
+              ) : (
                 <p className="member-empty">
                   {viewMode === "inactive"
                     ? "Không có thành viên ngừng hoạt động."
@@ -455,12 +611,27 @@ export default function MemberManagement({
                 </p>
               )}
             </div>
+            )}
+          </>
+        )}
       </aside>
 
       {/* ============================================================
           CỘT PHẢI: CHI TIẾT HỒ SƠ THÀNH VIÊN
          ============================================================ */}
-      {activeMember ? (
+      {isPendingTab ? (
+        <MemberApplicationDetail
+          application={selectedApplication}
+          loading={applicationLoading}
+          saving={applicationSaving}
+          error={applicationFormError}
+          onApprove={handleApproveApplication}
+          onReject={handleRejectApplication}
+          onBack={() => setIsMobileDetailOpen(false)}
+        />
+      ) : listLoading && !activeMember ? (
+        <MemberDossierSkeleton />
+      ) : activeMember ? (
           <section
             className="member-dossier-panel"
             aria-label={`Hồ sơ thành viên ${activeMember.name}`}
@@ -500,7 +671,9 @@ export default function MemberManagement({
                     </span>
                   </div>
                   {detailLoading ? (
-                    <p className="pending-subtitle">Đang tải hồ sơ chi tiết…</p>
+                    <p className="pending-subtitle">
+                      <Skeleton className="sk-line sk-line-sm" style={{ width: "180px" }} />
+                    </p>
                   ) : activeMember.username ? (
                     <p className="pending-subtitle">
                       Tên đăng nhập: {activeMember.username}
@@ -540,7 +713,13 @@ export default function MemberManagement({
                       ? "btn-dossier-pause"
                       : "btn-dossier-activate"
                   }`}
-                  onClick={() => handleToggleMemberStatus(activeMember.id)}
+                  onClick={() => {
+                    if (activeMember.status !== "inactive") {
+                      setPauseConfirm(activeMember);
+                      return;
+                    }
+                    handleToggleMemberStatus(activeMember.id);
+                  }}
                 >
                   {activeMember.status !== "inactive" ? (
                     <>
@@ -756,6 +935,8 @@ export default function MemberManagement({
                     </div>
                   </form>
                 </div>
+              ) : detailLoading ? (
+                <MemberDossierBodySkeleton />
               ) : (
                 /* CHẾ ĐỘ XEM HỒ SƠ TINH GỌN */
                 <div className="dossier-view-container">
@@ -960,6 +1141,36 @@ export default function MemberManagement({
               : "Chọn một thành viên trong danh bạ bên trái để xem hồ sơ chi tiết."}
           </div>
         )}
+      <Modal
+        open={Boolean(pauseConfirm)}
+        onClose={() => setPauseConfirm(null)}
+        title="Tạm dừng thành viên"
+        className="member-workspace-dialog"
+      >
+        {pauseConfirm ? (
+          <>
+            <p className="member-confirm-copy">
+              Tạm dừng tài khoản <strong>{pauseConfirm.name}</strong>? Thành viên
+              sẽ không đăng nhập được cho đến khi được kích hoạt lại.
+            </p>
+            <div className="member-dialog-actions">
+              <button type="button" onClick={() => setPauseConfirm(null)}>
+                Hủy
+              </button>
+              <button
+                type="button"
+                className="member-confirm-pause"
+                onClick={() => {
+                  handleToggleMemberStatus(pauseConfirm.id);
+                  setPauseConfirm(null);
+                }}
+              >
+                Tạm dừng
+              </button>
+            </div>
+          </>
+        ) : null}
+      </Modal>
     </div>
   );
 }

@@ -13,12 +13,10 @@ const titles = {
   "/admin/thong-tin": "Thông tin công ty",
   "/admin/gioi-thieu": "Cấu hình trang giới thiệu",
   "/admin/tin-tuc": "Tin tức",
-  "/admin/an-le": "Án lệ – Án hay",
   "/admin/tuyen-dung": "Tuyển dụng",
   "/admin/thanh-vien": "Thành viên",
   "/admin/tin-nhan": "Tin nhắn",
   "/admin/lien-he": "Liên hệ",
-  "/admin/ho-so-ung-tuyen": "Hồ sơ ứng tuyển",
 };
 
 export default function AdminLayout() {
@@ -45,8 +43,7 @@ export default function AdminLayout() {
   }
 
   const newContacts = data.contacts.filter((item) => item.status === "moi").length;
-  const newApplications = data.applications.filter((item) => item.status === "moi").length;
-  const badges = { contacts: newContacts, applications: newApplications };
+  const badges = { contacts: newContacts };
 
   return (
     <div className={`admin-shell${open ? " sidebar-open" : ""}`}>

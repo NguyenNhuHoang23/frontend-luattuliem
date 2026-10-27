@@ -244,30 +244,14 @@ test("Đăng nhập thành viên yêu cầu đủ thông tin và xác thực tà
   await expect(page.getByRole("alert")).toBeVisible();
 });
 
-test("Đăng ký chờ duyệt và khôi phục mật khẩu ở bản local", async ({
+test("Ứng tuyển dẫn sang tuyển dụng và khôi phục mật khẩu ở bản local", async ({
   page,
 }) => {
   await page.goto("/thanh-vien");
+  await expect(
+    page.getByRole("link", { name: "Ứng tuyển thành viên", exact: true }),
+  ).toHaveAttribute("href", "/tuyen-dung");
   const dialog = page.getByRole("dialog");
-  await page
-    .getByRole("button", { name: "Đăng ký thành viên", exact: true })
-    .click();
-  await expect(dialog).toBeVisible();
-  await expect(dialog).toContainText("không tự động kích hoạt tài khoản");
-  await dialog.getByRole("button", { name: "Gửi đề nghị đăng ký" }).click();
-  await expect(dialog.getByLabel("Họ và tên", { exact: true })).toBeFocused();
-  await dialog.getByLabel("Họ và tên", { exact: true }).fill("Nguyễn Văn Bình");
-  await dialog.getByLabel("Số điện thoại", { exact: true }).fill("0912345678");
-  await dialog.getByLabel("Email", { exact: true }).fill("binh@example.com");
-  await dialog
-    .getByLabel("Nội dung đề nghị tham gia")
-    .fill("Tôi đề nghị tham gia cộng tác.");
-  await dialog.getByRole("button", { name: "Gửi đề nghị đăng ký" }).click();
-  await expect(dialog.getByRole("status")).toContainText(
-    "Chưa gửi yêu cầu đăng ký",
-  );
-  await page.keyboard.press("Escape");
-  await expect(dialog).not.toBeVisible();
   await page
     .getByRole("button", { name: "Quên mật khẩu?", exact: true })
     .click();

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { listPublicAboutArticles } from "../api/public.js";
+import { AboutArticleSkeleton } from "../components/Skeleton.jsx";
 import { images } from "../data/images.js";
 import { sortByPublicationOrder } from "../utils/publicationOrder.js";
 
@@ -90,7 +91,7 @@ export function AboutArticles({ entries }) {
   }, [entries]);
 
   if (loading) {
-    return <p className="article-body">Đang tải nội dung giới thiệu…</p>;
+    return <AboutArticleSkeleton />;
   }
 
   if (error) {

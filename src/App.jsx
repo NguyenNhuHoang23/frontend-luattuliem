@@ -29,12 +29,10 @@ import CompanyInfoPage from "./admin/pages/CompanyInfoPage.jsx";
 import HomeAdminPage from "./admin/pages/HomeAdminPage.jsx";
 import AboutConfigPage from "./admin/pages/AboutConfigPage.jsx";
 import NewsPage from "./admin/pages/NewsPage.jsx";
-import CasesAdminPage from "./admin/pages/CasesAdminPage.jsx";
 import RecruitmentAdminPage from "./admin/pages/RecruitmentAdminPage.jsx";
 import MembersPage from "./admin/pages/MembersPage.jsx";
 import MessagesPage from "./admin/pages/MessagesPage.jsx";
 import ContactsPage from "./admin/pages/ContactsPage.jsx";
-import ApplicationsPage from "./admin/pages/ApplicationsPage.jsx";
 
 function HomeRoute() {
   const { hash, search } = useLocation();
@@ -66,12 +64,10 @@ export default function App() {
                 <Route path="trang-chu" element={<HomeAdminPage />} />
                 <Route path="gioi-thieu" element={<AboutConfigPage />} />
                 <Route path="tin-tuc" element={<NewsPage />} />
-                <Route path="an-le" element={<CasesAdminPage />} />
                 <Route path="tuyen-dung" element={<RecruitmentAdminPage />} />
                 <Route path="thanh-vien" element={<MembersPage />} />
                 <Route path="tin-nhan" element={<MessagesPage />} />
                 <Route path="lien-he" element={<ContactsPage />} />
-                <Route path="ho-so-ung-tuyen" element={<ApplicationsPage />} />
                 <Route path="*" element={<Navigate to="tong-quan" replace />} />
               </Route>
               <Route element={<SiteLayout />}>

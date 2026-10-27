@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useCms } from "../CmsProvider.jsx";
 import { Icon, PageHeader, StatusBadge } from "../components.jsx";
-import { applicationStatuses, contactStatuses } from "../nav.js";
+import { contactStatuses } from "../nav.js";
 
 function toneFor(status) {
   if (status === "moi") return "warn";
@@ -14,19 +14,12 @@ export default function OverviewPage() {
   const { data, reset } = useCms();
   const stats = [
     { label: "Tin tức", value: data.news.length, to: "/admin/tin-tuc", hint: "bài viết" },
-    { label: "Án lệ – Án hay", value: data.cases.length, to: "/admin/an-le", hint: "hồ sơ" },
     { label: "Thành viên", value: data.members.length, to: "/admin/thanh-vien", hint: "người" },
     {
       label: "Liên hệ mới",
       value: data.contacts.filter((item) => item.status === "moi").length,
       to: "/admin/lien-he",
       hint: "chưa xử lý",
-    },
-    {
-      label: "Hồ sơ mới",
-      value: data.applications.filter((item) => item.status === "moi").length,
-      to: "/admin/ho-so-ung-tuyen",
-      hint: "ứng tuyển",
     },
     {
       label: "Vị trí tuyển dụng",
@@ -48,7 +41,7 @@ export default function OverviewPage() {
       <PageHeader
         eyebrow="Bảng điều khiển"
         title="Tổng quan"
-        description="Theo dõi nhanh nội dung website, liên hệ và hồ sơ ứng tuyển."
+        description="Theo dõi nhanh nội dung website và liên hệ."
         actions={
           <button
             type="button"
@@ -87,24 +80,6 @@ export default function OverviewPage() {
           ))}
           <Link to="/admin/lien-he" className="admin-text-btn">
             Xem tất cả liên hệ
-          </Link>
-        </section>
-        <section className="admin-card">
-          <h2>Hồ sơ ứng tuyển gần đây</h2>
-          {data.applications.slice(0, 4).map((item) => (
-            <p key={item.id} style={{ margin: "0 0 12px" }}>
-              <b>{item.fullName}</b>{" "}
-              <StatusBadge tone={toneFor(item.status)}>
-                {applicationStatuses[item.status]}
-              </StatusBadge>
-              <br />
-              <span className="admin-muted">
-                {item.role} · {item.createdAt}
-              </span>
-            </p>
-          ))}
-          <Link to="/admin/ho-so-ung-tuyen" className="admin-text-btn">
-            Xem tất cả hồ sơ
           </Link>
         </section>
       </div>

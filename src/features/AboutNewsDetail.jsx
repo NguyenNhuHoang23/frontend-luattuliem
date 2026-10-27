@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getPublicNews } from "../api/public.js";
+import { AboutNewsDetailSkeleton } from "../components/Skeleton.jsx";
 
 export default function AboutNewsDetail() {
   const { id } = useParams();
@@ -34,7 +35,7 @@ export default function AboutNewsDetail() {
   }, [article]);
 
   if (loading) {
-    return <p className="article-body">Đang tải tin tức…</p>;
+    return <AboutNewsDetailSkeleton />;
   }
 
   if (error || !article) {
@@ -58,8 +59,9 @@ export default function AboutNewsDetail() {
           <img src={article.image} alt="" />
         </div>
       ) : null}
-      <p className="news-detail-date">{article.date}</p>
+      {article.date ? <p className="news-detail-date">{article.date}</p> : null}
       <h1 className="article-content-heading">{article.title}</h1>
+      {article.excerpt ? <p className="news-detail-excerpt">{article.excerpt}</p> : null}
       <div
         className="article-body news-detail-body"
         dangerouslySetInnerHTML={{ __html: article.content || "" }}

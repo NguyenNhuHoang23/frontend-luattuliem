@@ -12,6 +12,7 @@ import {
   recruitmentDocuments,
 } from "../data/recruitment.js";
 import { site } from "../data/site.js";
+import { RecruitmentSkeleton } from "../components/Skeleton.jsx";
 import { RecruitmentCard } from "../features/RecruitmentCard.jsx";
 import { RecruitmentApplicationForm } from "../features/RecruitmentApplicationForm.jsx";
 import { sortByPublicationOrder } from "../utils/publicationOrder.js";
@@ -243,9 +244,7 @@ export default function RecruitmentPage() {
             <h1 className="recruitment-content-heading">
               {page?.title || recruitmentArticle.title}
             </h1>
-            {loading ? (
-              <p className="recruitment-intro">Đang tải nội dung tuyển dụng…</p>
-            ) : null}
+            {loading ? <RecruitmentSkeleton /> : null}
             {error ? <p className="recruitment-intro">{error}</p> : null}
             {!loading && !error ? (
               <p className="recruitment-intro">
@@ -257,6 +256,7 @@ export default function RecruitmentPage() {
               aria-label="Mục tuyển dụng"
               ref={menuRef}
               tabIndex={-1}
+              hidden={loading}
             >
               {roles.map((role) => (
                 <div className="recruitment-accordion-item" key={role.id}>
@@ -368,9 +368,11 @@ export default function RecruitmentPage() {
                 </div>
               </div>
             </nav>
+            {loading ? null : (
             <p className="recruitment-contact-line">
               Liên hệ: <a href={site.phoneHref}>{site.phone}</a>
             </p>
+            )}
           </article>
         </div>
       </main>

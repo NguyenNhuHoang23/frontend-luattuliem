@@ -7,9 +7,6 @@
     max-width: none;
     margin-inline: auto;
   }
-  .page-cases .case-news-summary:first-child {
-    padding-top: 0;
-  }
   header nav a {
     border-bottom: 2px solid transparent;
   }

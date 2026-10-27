@@ -3,6 +3,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { memberGroups } from "../admin/nav.js";
 import { useToast } from "../components/toast-context.js";
 import { Modal } from "../components/Modal.jsx";
+import { MemberThreadListSkeleton } from "../components/Skeleton.jsx";
 import MemberConversation from "../features/MemberConversation.jsx";
 import MemberManagement from "../features/MemberManagement.jsx";
 import { useMemberAuth } from "../features/memberAuth.jsx";
@@ -87,6 +88,43 @@ function samePersonId(left, right) {
   return left != null && right != null && String(left) === String(right);
 }
 
+function chatInitials(name) {
+  if (!name) return "?";
+  const parts = String(name).trim().split(/\s+/);
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
+function threadDisplayName(thread, admin) {
+  if (thread.type === "cases") return thread.name;
+  if (thread.live || admin) return thread.name;
+  if (thread.type === "income") return "Các khoản thanh toán";
+  return "Giám đốc";
+}
+
+function threadPreview(thread) {
+  return (
+    thread.lastPreview ||
+    thread.messages.at(-1)?.content ||
+    (thread.type === "income"
+      ? "Chưa ghi nhận khoản thanh toán"
+      : "Chưa có trao đổi")
+  );
+}
+
+function threadTime(thread) {
+  const value = thread.messages.at(-1)?.time || "";
+  return String(value).split(",")[0].trim();
+}
+
+function sortInboxThreads(threads) {
+  return [...threads].sort((left, right) => {
+    const unreadDelta = Number(Boolean(right.unread)) - Number(Boolean(left.unread));
+    if (unreadDelta) return unreadDelta;
+    return 0;
+  });
+}
+
 function PersonPicker({ staffList, selected, onChange }) {
   return (
     <div className="member-person-picker">
@@ -146,6 +184,9 @@ export default function ForumPage() {
   const [sending, setSending] = useState(false);
   const sendingRef = useRef(false);
   const [loadingOlder, setLoadingOlder] = useState(false);
+  const [listLoading, setListLoading] = useState(false);
+  const [openingId, setOpeningId] = useState(null);
+  const [pendingApprovals, setPendingApprovals] = useState(0);
   const loadingOlderRef = useRef(false);
   const objectUrls = useRef([]);
   const listHeading = useRef(null);
@@ -159,7 +200,7 @@ export default function ForumPage() {
       person.status !== "inactive",
   );
   const selectionKey = `${actorId}-${tab}`;
-  const available =
+  const available = sortInboxThreads(
     liveChat && (tab === "messages" || tab === "cases")
       ? chatThreads.filter((thread) =>
           tab === "cases" ? thread.type === "cases" : thread.type !== "cases",
@@ -167,7 +208,8 @@ export default function ForumPage() {
       : threads.filter(
           (thread) =>
             thread.type === tab && (admin || thread.members.includes(actorId)),
-        );
+        ),
+  );
   const active = available.find(
     (thread) => thread.id === selections[selectionKey],
   );
@@ -181,19 +223,27 @@ export default function ForumPage() {
     return () => urls.forEach((url) => URL.revokeObjectURL(url));
   }, []);
   useEffect(() => {
-    if (!liveChat) return undefined;
+    if (!liveChat) {
+      setListLoading(false);
+      return undefined;
+    }
     let cancelled = false;
+    setListLoading(true);
     Promise.all([
       listConversations().catch(() => []),
       listCases().catch(() => []),
-    ]).then(([direct, cases]) => {
-      if (!cancelled) {
-        setChatThreads([
-          ...direct.map((item) => conversationToThread(item, session.id)),
-          ...cases.map((item) => conversationToThread(item, session.id)),
-        ]);
-      }
-    });
+    ])
+      .then(([direct, cases]) => {
+        if (!cancelled) {
+          setChatThreads([
+            ...direct.map((item) => conversationToThread(item, session.id)),
+            ...cases.map((item) => conversationToThread(item, session.id)),
+          ]);
+        }
+      })
+      .finally(() => {
+        if (!cancelled) setListLoading(false);
+      });
     return () => {
       cancelled = true;
     };
@@ -554,6 +604,7 @@ export default function ForumPage() {
           {
             id: "members",
             name: "Quản lý thành viên",
+            badge: pendingApprovals,
           },
         ]
       : []),
@@ -627,10 +678,11 @@ export default function ForumPage() {
             onToggleStatus={handleToggleStatus}
             onOpenDirectMessage={handleOpenDirectMessage}
             onOpenCaseThread={handleOpenCaseThread}
+            onPendingCount={setPendingApprovals}
           />
         ) : (
           <div
-            className={`member-workspace ${conversationOpen ? "conversation-open" : ""}`}
+            className={`member-workspace chat-workspace ${conversationOpen ? "conversation-open" : ""}`}
           >
             <aside className="member-list" aria-label={title}>
               <div className="member-list-heading">
@@ -650,11 +702,14 @@ export default function ForumPage() {
                 )}
               </div>
               <div className="member-thread-list">
-                {available.map((thread) => (
+                {listLoading ? <MemberThreadListSkeleton /> : null}
+                {!listLoading && available.map((thread) => {
+                  const name = threadDisplayName(thread, admin);
+                  return (
                   <button
                     key={thread.id}
                     type="button"
-                    className={`member-thread-choice ${active?.id === thread.id ? "selected" : ""} ${thread.unread ? "has-unread" : ""}`}
+                    className={`member-thread-choice chat-thread-item ${active?.id === thread.id ? "selected" : ""} ${thread.unread ? "has-unread" : ""}`}
                     aria-pressed={active?.id === thread.id}
                     onClick={async () => {
                       setSelections((previous) => ({
@@ -663,6 +718,7 @@ export default function ForumPage() {
                       }));
                       setConversationOpen(true);
                       if (thread.live) {
+                        setOpeningId(thread.id);
                         setChatThreads((previous) =>
                           previous.map((item) =>
                             item.uuid === thread.uuid
@@ -684,36 +740,37 @@ export default function ForumPage() {
                           );
                         } catch (err) {
                           showToast(err.message);
+                        } finally {
+                          setOpeningId(null);
                         }
                       }
                     }}
                   >
-                    <strong>
-                      {thread.type === "cases"
-                        ? thread.name
-                        : thread.live || admin
-                          ? thread.name
-                          : thread.type === "income"
-                            ? "Các khoản thanh toán"
-                            : "Giám đốc"}
-                    </strong>
-                    <span>
-                      {thread.lastPreview ||
-                        thread.messages.at(-1)?.content ||
-                        (thread.type === "income"
-                          ? "Chưa ghi nhận khoản thanh toán"
-                          : "Chưa có trao đổi")}
+                    <span className="chat-avatar" aria-hidden="true">
+                      {chatInitials(name)}
                     </span>
-                    {thread.type === "cases" && (
-                      <small>{thread.members.length} người tham gia</small>
-                    )}
+                    <span className="chat-thread-main">
+                      <span className="chat-thread-top">
+                        <strong>{name}</strong>
+                        {threadTime(thread) ? (
+                          <time>{threadTime(thread)}</time>
+                        ) : null}
+                      </span>
+                      <span className="chat-thread-preview">
+                        {threadPreview(thread)}
+                      </span>
+                      {thread.type === "cases" && (
+                        <small>{thread.members.length} người tham gia</small>
+                      )}
+                    </span>
                     {thread.unread ? (
                       <i className="member-unread-dot" aria-label="Chưa đọc" />
                     ) : null}
                   </button>
-                ))}
+                  );
+                })}
               </div>
-              {available.length === 0 && (
+              {!listLoading && available.length === 0 && (
                 <p className="member-empty">
                   {tab === "messages"
                     ? "Chưa có cuộc trao đổi. Giám đốc mở Nhắn tin riêng từ tab Quản lý thành viên."
@@ -728,6 +785,7 @@ export default function ForumPage() {
                 actorId={active.live ? session.id : actorId}
                 draft={draft}
                 sending={sending}
+                loading={openingId === active.id}
                 loadingOlder={loadingOlder}
                 onDraft={updateDraft}
                 onSend={send}
@@ -755,14 +813,16 @@ export default function ForumPage() {
                 }
               />
             ) : (
-              <div className="member-no-selection">
-                {tab === "messages"
-                  ? "Chọn một cuộc trao đổi bên trái để xem tin nhắn."
-                  : tab === "income"
-                    ? "Chọn một mục bên trái để xem chi tiết."
-                    : admin
-                      ? "Tạo vụ việc và chọn người phụ trách để bắt đầu."
-                      : "Chọn một vụ việc bên trái để xem trao đổi."}
+              <div className="member-no-selection chat-empty-pane">
+                <p>
+                  {tab === "messages"
+                    ? "Chọn một cuộc trao đổi bên trái để xem tin nhắn."
+                    : tab === "income"
+                      ? "Chọn một mục bên trái để xem chi tiết."
+                      : admin
+                        ? "Tạo vụ việc và chọn người phụ trách để bắt đầu."
+                        : "Chọn một vụ việc bên trái để xem trao đổi."}
+                </p>
               </div>
             )}
           </div>

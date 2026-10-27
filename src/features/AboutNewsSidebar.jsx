@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { listPublicNews } from "../api/public.js";
+import { AboutNewsSidebarSkeleton } from "../components/Skeleton.jsx";
 
 export function AboutNewsSidebar() {
   const { id: activeId } = useParams();
@@ -26,30 +27,39 @@ export function AboutNewsSidebar() {
   }, []);
 
   return (
-    <aside className="sidebar">
+    <aside className="sidebar news-sidebar">
       <h3 className="sidebar-title">TIN TỨC</h3>
-      {loading ? <p className="news-widget-empty">Đang tải tin tức…</p> : null}
+      {loading ? <AboutNewsSidebarSkeleton /> : null}
       {error ? <p className="news-widget-empty">{error}</p> : null}
       {!loading && !error && items.length === 0 ? (
         <p className="news-widget-empty">Chưa có tin tức.</p>
       ) : null}
-      <div className="news-widget-list">
-        {items.map((item) => (
-          <Link
-            className={`news-widget-item${item.id === activeId ? " is-active" : ""}`}
-            to={`/gioi-thieu/tin/${item.id}`}
-            key={item.id}
-          >
-            <div className="news-widget-thumb">
-              {item.image ? <img src={item.image} alt="" /> : null}
-            </div>
-            <div className="news-widget-content">
-              <h4 className="news-widget-title">{item.title}</h4>
-              <span className="news-widget-date">{item.date}</span>
-            </div>
-          </Link>
-        ))}
-      </div>
+      {!loading ? (
+        <div className="news-widget-list">
+          {items.map((item) => (
+            <Link
+              className={`news-widget-item${item.id === activeId ? " is-active" : ""}${item.image ? " has-thumb" : ""}`}
+              to={`/gioi-thieu/tin/${item.id}`}
+              key={item.id}
+            >
+              {item.image ? (
+                <div className="news-widget-thumb">
+                  <img src={item.image} alt="" />
+                </div>
+              ) : null}
+              <div className="news-widget-content">
+                <h4 className="news-widget-title">{item.title}</h4>
+                {item.excerpt ? (
+                  <p className="news-widget-excerpt">{item.excerpt}</p>
+                ) : null}
+                {item.date ? (
+                  <span className="news-widget-date">{item.date}</span>
+                ) : null}
+              </div>
+            </Link>
+          ))}
+        </div>
+      ) : null}
     </aside>
   );
 }

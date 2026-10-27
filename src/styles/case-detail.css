@@ -17,7 +17,9 @@
       Helvetica,
       sans-serif;
     color: var(--ink);
-    background: #ffffff;
+    background:
+      radial-gradient(circle at top left, #eef4fc 0, transparent 42%),
+      linear-gradient(#f6f8fb 0%, #ffffff 240px);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -52,22 +54,24 @@
   .page-case-detail .case-tab-btn {
     border: none;
     background: transparent;
-    padding: 10px 20px;
+    padding: 10px 16px 12px;
     font-size: 14px;
     font-weight: 700;
     color: var(--muted);
-    border-radius: 4px 4px 0 0;
+    border-radius: 0;
     cursor: pointer;
     transition: all 0.2s;
     font-family: inherit;
+    border-bottom: 2px solid transparent;
   }
   .page-case-detail .case-tab-btn:hover {
-    background: #f0f5fc;
+    background: transparent;
     color: var(--navy);
   }
   .page-case-detail .case-tab-btn.active {
-    background: var(--blue);
-    color: #ffffff;
+    background: transparent;
+    color: var(--blue);
+    border-bottom-color: var(--blue);
   }
 
   .page-case-detail .case-tabs-actions {
@@ -81,7 +85,7 @@
     padding: 8px 16px;
     font-size: 13px;
     font-weight: 700;
-    border-radius: 3px;
+    border-radius: 999px;
     cursor: pointer;
     transition: all 0.2s;
     display: inline-flex;
@@ -98,10 +102,10 @@
   .page-case-detail .court-doc-card {
     background: #ffffff;
     border: 1px solid var(--line);
-    border-top: 3px solid var(--blue);
-    border-radius: 4px;
+    border-top: 4px solid var(--blue);
+    border-radius: 12px;
     padding: 36px 42px;
-    box-shadow: 0 4px 16px rgba(17, 40, 75, 0.04);
+    box-shadow: 0 10px 28px rgba(17, 40, 75, 0.05);
     margin-bottom: 36px;
   }
 
@@ -335,7 +339,7 @@
     background: linear-gradient(135deg, #f0f5fc 0%, #ffffff 100%);
     border: 1px solid #d0deee;
     border-left: 4px solid var(--blue);
-    border-radius: 4px;
+    border-radius: 12px;
     padding: 28px 32px;
     display: flex;
     justify-content: space-between;

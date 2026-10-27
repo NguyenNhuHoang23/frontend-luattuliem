@@ -135,33 +135,6 @@ export async function deleteNewsArticle(id) {
   });
 }
 
-export async function listCaseArticles() {
-  const payload = await request("/admin/an-le");
-  return payload.data || [];
-}
-
-export async function createCaseArticle(body) {
-  const payload = await request("/admin/an-le", {
-    method: "POST",
-    body: JSON.stringify(body),
-  });
-  return payload.data;
-}
-
-export async function updateCaseArticle(id, body) {
-  const payload = await request(`/admin/an-le/${id}`, {
-    method: "PUT",
-    body: JSON.stringify(body),
-  });
-  return payload.data;
-}
-
-export async function deleteCaseArticle(id) {
-  return request(`/admin/an-le/${id}`, {
-    method: "DELETE",
-  });
-}
-
 export async function getHomePage() {
   const payload = await request("/admin/trang-chu");
   return payload.data;
@@ -279,30 +252,6 @@ export async function deleteMember(id) {
   });
 }
 
-export async function listRecruitmentApplications() {
-  const payload = await request("/admin/ho-so-ung-tuyen");
-  return payload.data || [];
-}
-
-export async function getRecruitmentApplication(id) {
-  const payload = await request(`/admin/ho-so-ung-tuyen/${id}`);
-  return payload.data ?? null;
-}
-
-export async function updateRecruitmentApplicationStatus(id, status) {
-  const payload = await request(`/admin/ho-so-ung-tuyen/${id}/status`, {
-    method: "PATCH",
-    body: JSON.stringify({ status }),
-  });
-  return payload.data;
-}
-
-export async function deleteRecruitmentApplication(id) {
-  return request(`/admin/ho-so-ung-tuyen/${id}`, {
-    method: "DELETE",
-  });
-}
-
 export async function listContactMessages() {
   const payload = await request("/admin/lien-he");
   return payload.data || [];
@@ -343,27 +292,6 @@ export async function fetchContactMessageFile(id, index) {
 
   if (!response.ok) {
     throw new Error("Không tải được tệp đính kèm.");
-  }
-
-  const blob = await response.blob();
-  return URL.createObjectURL(blob);
-}
-
-export async function fetchRecruitmentApplicationCv(id) {
-  const token = readToken();
-  const headers = { Accept: "application/pdf" };
-  if (token) headers.Authorization = `Bearer ${token}`;
-
-  const response = await fetch(`${API_URL}/admin/ho-so-ung-tuyen/${id}/cv`, {
-    headers,
-  });
-
-  if (response.status === 401) {
-    clearSession();
-  }
-
-  if (!response.ok) {
-    throw new Error("Không tải được file CV.");
   }
 
   const blob = await response.blob();

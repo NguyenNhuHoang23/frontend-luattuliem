@@ -383,11 +383,11 @@
       grid-template-columns: minmax(0, 1fr);
     }
     .news-widget-item {
-      grid-template-columns: 90px minmax(0, 1fr);
-      gap: 12px;
+      grid-template-columns: 76px minmax(0, 1fr);
+      gap: 10px;
     }
     .news-widget-thumb {
-      width: 90px;
+      width: 76px;
     }
     .contact-form-card,
     .application-box {

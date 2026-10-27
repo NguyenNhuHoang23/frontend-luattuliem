@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { MemberMessagesSkeleton } from "../components/Skeleton.jsx";
 import { people } from "../data/memberWorkspace.js";
 
 function normalize(value) {
@@ -40,11 +41,33 @@ function FileLabel({ name }) {
   );
 }
 
+function chatInitials(name) {
+  if (!name) return "?";
+  const parts = String(name).trim().split(/\s+/);
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
+function messageAuthorName(message) {
+  return (
+    message.authorName ||
+    people.find((person) => person.id === message.authorId)?.name ||
+    "Thành viên"
+  );
+}
+
+function messageDateLabel(message) {
+  const time = String(message.time || "");
+  const comma = time.indexOf(",");
+  return comma >= 0 ? time.slice(comma + 1).trim() : "";
+}
+
 export default function MemberConversation({
   thread,
   actorId,
   draft,
   sending = false,
+  loading = false,
   loadingOlder = false,
   onDraft,
   onSend,
@@ -151,28 +174,32 @@ export default function MemberConversation({
     }
     setDemoLimit((value) => value + PAGE_SIZE);
   };
+  const subtitle =
+    thread.type === "cases"
+      ? (thread.memberNames?.length
+          ? thread.memberNames
+          : thread.members.map(
+              (id) => people.find((person) => person.id === id)?.name,
+            )
+        )
+          .filter(Boolean)
+          .join(" · ")
+      : thread.type === "income"
+        ? "Ghi nhận khoản tiền và trao đổi xác nhận"
+        : "Trao đổi riêng";
+
   return (
     <section className="member-conversation" aria-label="Nội dung trao đổi">
       <div className="member-thread-header">
         <button type="button" className="member-back" onClick={onBack}>
           ← Danh sách
         </button>
+        <span className="chat-header-avatar" aria-hidden="true">
+          {chatInitials(title)}
+        </span>
         <div className="member-thread-heading">
           <h2>{title}</h2>
-          <p>
-            {thread.type === "cases"
-              ? (thread.memberNames?.length
-                  ? thread.memberNames
-                  : thread.members.map(
-                      (id) => people.find((person) => person.id === id)?.name,
-                    )
-                )
-                  .filter(Boolean)
-                  .join(" · ")
-              : thread.type === "income"
-                ? "Ghi nhận khoản tiền và trao đổi xác nhận"
-                : "Trao đổi riêng"}
-          </p>
+          <p>{subtitle}</p>
         </div>
         <div className="member-thread-actions">
           {onEditMembers && (
@@ -224,84 +251,104 @@ export default function MemberConversation({
         aria-label="Lịch sử trao đổi"
         onScroll={handleMessagesScroll}
       >
-        {hasMore || loadingOlder ? (
+        {hasMore && !loadingOlder ? (
           <p className="member-load-older" role="status">
-            {loadingOlder ? "Đang tải tin nhắn cũ…" : "Cuộn lên để xem tin nhắn cũ"}
+            Cuộn lên để xem tin nhắn cũ
           </p>
         ) : null}
-        {visible.length === 0 && (
-          <p className="member-empty">
-            {query
-              ? "Không tìm thấy tin nhắn phù hợp."
-              : thread.type === "income"
-                ? "Chưa có khoản thanh toán được ghi nhận. Bạn có thể nhắn để đối chiếu với Giám đốc."
-                : "Chưa có trao đổi. Gửi tin nhắn đầu tiên bên dưới."}
-          </p>
+        {loadingOlder ? <MemberMessagesSkeleton count={2} /> : null}
+        {loading ? (
+          <MemberMessagesSkeleton />
+        ) : (
+          <>
+            {visible.length === 0 && (
+              <p className="member-empty">
+                {query
+                  ? "Không tìm thấy tin nhắn phù hợp."
+                  : thread.type === "income"
+                    ? "Chưa có khoản thanh toán được ghi nhận. Bạn có thể nhắn để đối chiếu với Giám đốc."
+                    : "Chưa có trao đổi. Gửi tin nhắn đầu tiên bên dưới."}
+              </p>
+            )}
+            {visible.map((message, index) => {
+              const isOwn = String(message.authorId) === String(actorId);
+              const authorName = messageAuthorName(message);
+              const prev = visible[index - 1];
+              const next = visible[index + 1];
+              const followPrev =
+                prev && String(prev.authorId) === String(message.authorId);
+              const followNext =
+                next && String(next.authorId) === String(message.authorId);
+              const dateLabel = messageDateLabel(message);
+              const showDate =
+                dateLabel && dateLabel !== messageDateLabel(prev || {});
+              return (
+                <div key={message.id}>
+                  {showDate ? (
+                    <p className="chat-date-divider">{dateLabel}</p>
+                  ) : null}
+                  <article
+                    className={`member-message ${isOwn ? "is-own" : ""} ${
+                      followPrev ? "is-follow" : ""
+                    } ${followNext ? "is-stack" : ""}`}
+                  >
+                    {!isOwn ? (
+                      followNext ? (
+                        <span className="chat-msg-avatar-spacer" aria-hidden="true" />
+                      ) : (
+                        <span className="chat-msg-avatar" aria-hidden="true">
+                          {chatInitials(authorName)}
+                        </span>
+                      )
+                    ) : null}
+                    <div className="chat-msg-body">
+                      {!isOwn && !followPrev ? (
+                        <div className="member-message-meta">
+                          <b>{authorName}</b>
+                        </div>
+                      ) : null}
+                      <div className="member-message-bubble">
+                        {message.content && <p>{message.content}</p>}
+                        {message.attachments?.length > 0 && (
+                          <ul
+                            className="member-attachments"
+                            aria-label="File đính kèm"
+                          >
+                            {message.attachments.map((file) => (
+                              <li key={file.id}>
+                                <FileLabel name={file.name} />
+                                <a
+                                  href={file.url || "#"}
+                                  download={file.url ? file.name : undefined}
+                                  onClick={(event) => {
+                                    if (file.url) return;
+                                    event.preventDefault();
+                                    onDownloadAttachment?.(file);
+                                  }}
+                                >
+                                  Tải xuống
+                                </a>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                      {!followNext ? (
+                        <time className="chat-msg-time">{message.time}</time>
+                      ) : (
+                        <span className="page-heading-sr-only">
+                          {message.time}
+                        </span>
+                      )}
+                    </div>
+                  </article>
+                </div>
+              );
+            })}
+          </>
         )}
-        {visible.map((message) => (
-          <article
-            className={`member-message ${String(message.authorId) === String(actorId) ? "is-own" : ""}`}
-            key={message.id}
-          >
-            <div className="member-message-meta">
-              <b>
-                {message.authorName ||
-                  people.find((person) => person.id === message.authorId)
-                    ?.name ||
-                  "Thành viên"}
-              </b>
-              <time>{message.time}</time>
-            </div>
-            <div className="member-message-bubble">
-              {message.content && <p>{message.content}</p>}
-              {message.attachments?.length > 0 && (
-                <ul className="member-attachments" aria-label="File đính kèm">
-                  {message.attachments.map((file) => (
-                    <li key={file.id}>
-                      <FileLabel name={file.name} />
-                      <a
-                        href={file.url || "#"}
-                        download={file.url ? file.name : undefined}
-                        onClick={(event) => {
-                          if (file.url) return;
-                          event.preventDefault();
-                          onDownloadAttachment?.(file);
-                        }}
-                      >
-                        Tải xuống
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          </article>
-        ))}
       </div>
       <form className="member-composer" onSubmit={send} aria-busy={sending}>
-        <label className="page-heading-sr-only" htmlFor="member-message-text">
-          Nội dung trao đổi
-        </label>
-        <textarea
-          id="member-message-text"
-          value={draft.text}
-          onChange={(event) => onDraft({ text: event.target.value })}
-          placeholder={
-            thread.type === "income"
-              ? "Nhắn để xác nhận hoặc đối chiếu khoản tiền…"
-              : "Nhập tin nhắn…"
-          }
-          rows={2}
-          disabled={sending}
-          onKeyDown={(event) => {
-            if (
-              event.key === "Enter" &&
-              !event.shiftKey &&
-              !event.nativeEvent.isComposing
-            )
-              send(event);
-          }}
-        />
         {draft.files.length > 0 && (
           <ul className="member-pending-files" aria-label="File chờ gửi">
             {draft.files.map(({ id, file }) => (
@@ -323,7 +370,7 @@ export default function MemberConversation({
             ))}
           </ul>
         )}
-        <div className="member-composer-actions">
+        <div className="member-composer-row">
           <input
             type="file"
             multiple
@@ -338,10 +385,33 @@ export default function MemberConversation({
             className="member-attach"
             disabled={sending}
             onClick={() => fileInput.current?.click()}
+            title="Đính kèm file"
           >
             Đính kèm
           </button>
-          <small>5 file · 10 MB/file</small>
+          <label className="page-heading-sr-only" htmlFor="member-message-text">
+            Nội dung trao đổi
+          </label>
+          <textarea
+            id="member-message-text"
+            value={draft.text}
+            onChange={(event) => onDraft({ text: event.target.value })}
+            placeholder={
+              thread.type === "income"
+                ? "Nhắn để xác nhận hoặc đối chiếu khoản tiền…"
+                : "Nhập tin nhắn…"
+            }
+            rows={1}
+            disabled={sending}
+            onKeyDown={(event) => {
+              if (
+                event.key === "Enter" &&
+                !event.shiftKey &&
+                !event.nativeEvent.isComposing
+              )
+                send(event);
+            }}
+          />
           <button
             className="member-primary"
             type="submit"
@@ -350,6 +420,7 @@ export default function MemberConversation({
             {sending ? "Đang gửi…" : "Gửi"}
           </button>
         </div>
+        <small className="chat-composer-hint">Tối đa 5 file, mỗi file 10 MB</small>
       </form>
     </section>
   );

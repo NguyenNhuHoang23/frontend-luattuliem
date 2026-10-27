@@ -159,7 +159,6 @@ export default function ContactPage() {
               <h3>Thông tin văn phòng</h3>
               <ul className="office-meta-list">
                 <li className="office-meta-item">
-                  <div className="office-icon">Đ/C</div>
                   <div>
                     <b>Địa chỉ trụ sở chính:</b>{" "}
                     <p>
@@ -168,7 +167,6 @@ export default function ContactPage() {
                   </div>
                 </li>
                 <li className="office-meta-item">
-                  <div className="office-icon">SĐT</div>
                   <div>
                     <b>Hotline tiếp nhận 24/7:</b>{" "}
                     <p>
@@ -186,7 +184,6 @@ export default function ContactPage() {
                   </div>
                 </li>
                 <li className="office-meta-item">
-                  <div className="office-icon">THƯ</div>
                   <div>
                     <b>Hòm thư điện tử:</b>{" "}
                     <p>
@@ -195,7 +192,6 @@ export default function ContactPage() {
                   </div>
                 </li>
                 <li className="office-meta-item">
-                  <div className="office-icon">GIỜ</div>
                   <div>
                     <b>Thời gian làm việc:</b>{" "}
                     <p>
