@@ -49,10 +49,10 @@
   .principles article {
     border: 0;
     justify-content: center;
-    padding-inline: 16px;
+    padding-inline: 8px;
   }
   .principles article:first-child {
-    padding-left: 16px;
+    padding-left: 8px;
   }
   .principles article > div {
     text-align: center;
@@ -239,6 +239,26 @@
       line-height: 1.25;
       margin-bottom: 12px;
     }
+    .page-home .intro-copy h2 {
+      margin-bottom: 0;
+    }
+    .page-home #gioi-thieu {
+      padding-top: 20px;
+      padding-bottom: 12px;
+    }
+    .page-home .fields {
+      padding-top: 24px;
+    }
+    .page-home #hop-tac {
+      padding-bottom: 12px;
+    }
+    .page-home .news {
+      padding-top: 24px;
+      padding-bottom: 12px;
+    }
+    .page-home #lien-he {
+      padding-top: 24px;
+    }
     .page-home p {
       line-height: 1.5;
       margin-bottom: 10px;
@@ -248,7 +268,8 @@
     }
     .page-home .intro .quote {
       font-size: 16px;
-      line-height: 1.4;
+      line-height: 1.5;
+      padding: 14px 16px;
     }
     .hero-slider {
       order: 1;
@@ -320,6 +341,9 @@
     .grid3 {
       grid-template-columns: minmax(0, 1fr);
       gap: 24px;
+    }
+    .intro-body {
+      padding-top: 0;
     }
     .principles .wrap {
       gap: 0;
@@ -666,6 +690,9 @@
     .page-home .contact {
       gap: 16px;
     }
+    .page-home .intro-body {
+      padding-top: 0;
+    }
     .page-home .eyebrow {
       margin-bottom: 10px;
     }
@@ -674,14 +701,17 @@
       line-height: 1.22;
       margin-bottom: 12px;
     }
+    .page-home .intro-copy h2 {
+      margin-bottom: 0;
+    }
     .page-home p {
       line-height: 1.45;
       margin-bottom: 10px;
     }
     .page-home .intro .quote {
-      font-size: 18px;
+      font-size: 16px;
       line-height: 1.5;
-      padding-left: 18px;
+      padding: 14px 16px;
     }
     .page-home .sectionhead {
       margin-bottom: 16px;

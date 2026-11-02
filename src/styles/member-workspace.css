@@ -1064,6 +1064,11 @@
   max-height: 600px;
   background: #fbfcfe;
 }
+.dossier-view-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
 .section-dossier-title {
   font-size: 12px;
   font-weight: 700;
@@ -1085,7 +1090,6 @@
   border: 1px solid #e2e8f0;
   border-radius: 9px;
   padding: 18px 20px;
-  margin-bottom: 20px;
   box-shadow: 0 1px 3px rgba(15, 23, 42, 0.02);
 }
 .dossier-meta-grid {
@@ -1228,11 +1232,17 @@
 
 /* Chế độ Chỉnh sửa Inline */
 .dossier-inline-edit-box {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
   background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 9px;
-  padding: 22px 24px;
+  padding: 18px 24px 22px;
   box-shadow: 0 1px 4px rgba(15, 23, 42, 0.02);
+}
+.dossier-inline-edit-box .section-dossier-title {
+  margin-bottom: 0;
 }
 .dossier-edit-form {
   display: flex;
@@ -1282,7 +1292,8 @@
   margin-left: 2px;
 }
 .form-group-item input,
-.form-group-item select {
+.form-group-item select,
+.form-group-item textarea {
   padding: 9px 12px;
   border: 1px solid var(--line);
   border-radius: 6px;
@@ -1291,8 +1302,14 @@
   background: white;
   color: var(--ink);
 }
+.form-group-item textarea {
+  min-height: 84px;
+  resize: vertical;
+  line-height: 1.5;
+}
 .form-group-item input:focus,
-.form-group-item select:focus {
+.form-group-item select:focus,
+.form-group-item textarea:focus {
   outline: 2px solid var(--blue);
   border-color: var(--blue);
 }
@@ -1647,6 +1664,9 @@
   border: 1px solid var(--line);
   border-radius: 8px;
   padding: 18px 20px;
+}
+.dossier-note-card .pending-note-quote + p {
+  margin: 16px 0 0;
 }
 
 .pending-message-box {
@@ -2024,6 +2044,17 @@
 }
 .chat-workspace .member-file-icon {
   background: #e8f0ff;
+}
+
+.income-readonly-note {
+  margin: 0;
+  padding: 12px 16px 14px;
+  border-top: 1px solid #e2e8f0;
+  background: #f8fafc;
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.5;
+  text-align: center;
 }
 
 .chat-workspace .member-composer {

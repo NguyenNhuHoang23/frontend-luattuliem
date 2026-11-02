@@ -17,6 +17,7 @@ export default function HomePage() {
   const [page, setPage] = useState(defaultHomePage);
   const [applicationRole, setApplicationRole] = useState(null);
   const [submitting, setSubmitting] = useState(false);
+  const [fileNames, setFileNames] = useState([]);
 
   useEffect(() => {
     let cancelled = false;
@@ -41,6 +42,7 @@ export default function HomePage() {
       await submitPublicContactMessage(payload);
       showToast("Đã gửi yêu cầu liên hệ. Công ty sẽ liên hệ lại sớm.");
       form.reset();
+      setFileNames([]);
     } catch (err) {
       showToast(err.message);
     } finally {
@@ -73,18 +75,18 @@ export default function HomePage() {
         </div>
         <section id="gioi-thieu">
           <div className="wrap intro">
-            <div>
+            <div className="intro-copy">
               <div className="eyebrow">{intro.eyebrow}</div>
               <h2>
                 <LineBreaks text={intro.title} />
               </h2>
             </div>
-            <div>
-              <p>{intro.body}</p>
+            <div className="intro-body">
+              {intro.body ? <p>{intro.body}</p> : null}
               {intro.quote ? (
-                <div className="quote">
+                <blockquote className="quote">
                   <LineBreaks text={intro.quote} />
-                </div>
+                </blockquote>
               ) : null}
             </div>
           </div>
@@ -138,22 +140,23 @@ export default function HomePage() {
         </section>
         <section id="lien-he">
           <div className="wrap contact">
-            <div>
+            <div className="contact-copy">
               <div className="eyebrow">{contact.eyebrow}</div>
               <h2>
                 <LineBreaks text={contact.title} />
               </h2>
-              <p>{contact.body}</p>
-              <h3>
-                <a href={company.phoneHref}>{company.phone}</a>
-              </h3>
-              <p>
-                {company.name}
-                <br />
-                <LineBreaks text={company.address} />
-              </p>
+              <p className="contact-lead">{contact.body}</p>
+              <div className="contact-meta">
+                <h3 className="contact-phone">
+                  <a href={company.phoneHref}>{company.phone}</a>
+                </h3>
+                <p className="contact-office">
+                  <b>{company.name}</b>
+                  <LineBreaks text={company.address} />
+                </p>
+              </div>
             </div>
-            <form ref={formRef} onSubmit={handleSubmit}>
+            <form className="contact-form" ref={formRef} onSubmit={handleSubmit}>
               <div className="formrow">
                 <label>
                   Họ và tên *
@@ -176,14 +179,33 @@ export default function HomePage() {
                   placeholder="Bạn cần công ty hỗ trợ vấn đề gì?"
                 ></textarea>
               </label>
-              <label>
+              <label className="contact-upload">
                 Tài liệu đính kèm (ảnh hoặc PDF)
-                <input
-                  name="files[]"
-                  type="file"
-                  accept="image/*,application/pdf"
-                  multiple
-                />
+                <span className="contact-upload-box">
+                  <span className="contact-upload-title">
+                    Chọn tệp ảnh hoặc PDF
+                  </span>
+                  <span className="contact-upload-hint">
+                    Có thể chọn nhiều file
+                  </span>
+                  <input
+                    className="contact-file-input"
+                    name="files[]"
+                    type="file"
+                    accept="image/*,application/pdf"
+                    multiple
+                    onChange={(event) =>
+                      setFileNames(
+                        Array.from(event.target.files, (file) => file.name),
+                      )
+                    }
+                  />
+                  {fileNames.length > 0 ? (
+                    <span className="contact-upload-files">
+                      Đã chọn: {fileNames.join(", ")}
+                    </span>
+                  ) : null}
+                </span>
               </label>
               <button className="btn" disabled={submitting}>
                 {submitting ? "Đang gửi…" : contact.buttonLabel || "Gửi yêu cầu ↗"}

@@ -12,6 +12,45 @@
   }
 
   @media (min-width: 901px) {
+    .page-home .principles .wrap {
+      width: min(1040px, 90%);
+      max-width: 1040px;
+      column-gap: 28px;
+    }
+    .page-home #gioi-thieu {
+      padding-top: 40px;
+      padding-bottom: 28px;
+    }
+    .page-home .fields {
+      padding-top: 40px;
+    }
+    .page-home #hop-tac {
+      padding-bottom: 28px;
+    }
+    .page-home .news {
+      padding-top: 40px;
+      padding-bottom: 28px;
+    }
+    .page-home #lien-he {
+      padding-top: 40px;
+      padding-bottom: 64px;
+    }
+    .page-home #gioi-thieu .intro {
+      grid-template-columns: 1fr 1fr;
+      column-gap: 48px;
+    }
+    .page-home .intro-body > p {
+      font-size: 16.5px;
+    }
+    .page-home .principles b {
+      font-size: 18px;
+    }
+    .page-home .principles small {
+      font-size: 14px;
+    }
+    .page-home .principles .number {
+      font-size: 30px;
+    }
     .page-home .hero {
       width: min(var(--site-content-width), 90%);
       margin-inline: auto;
@@ -76,10 +115,19 @@
       line-height: 1.7;
     }
     .page-home .principles b {
-      font-size: 18px;
+      font-size: 20px;
     }
     .page-home .principles small {
-      font-size: 15px;
+      font-size: 16px;
+    }
+    .page-home .principles .number {
+      font-size: 32px;
+    }
+    .page-home .intro-body > p {
+      font-size: 17px;
+    }
+    .page-home .intro .quote {
+      font-size: 18px;
     }
     .page-home .hero .btn,
     .page-home .hero .textlink {

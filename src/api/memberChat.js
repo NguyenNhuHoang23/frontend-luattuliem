@@ -48,6 +48,24 @@ export async function listCases() {
   return payload.data || [];
 }
 
+export async function listIncomeNotices() {
+  const response = await fetch(`${API_URL}/thanh-vien/thu-nhap`, {
+    headers: authHeaders(),
+  });
+  const payload = await parsePayload(response);
+  return payload.data || [];
+}
+
+export async function sendIncomeNotice({ content, memberIds }) {
+  const response = await fetch(`${API_URL}/thanh-vien/thu-nhap`, {
+    method: "POST",
+    headers: authHeaders(true),
+    body: JSON.stringify({ content, memberIds }),
+  });
+  const payload = await parsePayload(response);
+  return payload.data || [];
+}
+
 export async function createCase({ name, memberIds }) {
   const response = await fetch(`${API_URL}/thanh-vien/vu-viec`, {
     method: "POST",

@@ -76,6 +76,7 @@ export default function MemberConversation({
   onEditMembers,
   onNotice,
   onDownloadAttachment,
+  canReply = true,
 }) {
   const [query, setQuery] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
@@ -114,10 +115,12 @@ export default function MemberConversation({
   const title =
     thread.type === "cases"
       ? thread.name
-      : thread.live || actorId === "director"
-        ? thread.name
-        : thread.type === "income"
-          ? "Thu nhập & thanh toán của tôi"
+      : thread.type === "income"
+        ? canReply
+          ? thread.name
+          : "Thông báo lương"
+        : thread.live || actorId === "director"
+          ? thread.name
           : "Giám đốc";
   const send = (event) => {
     event.preventDefault();
@@ -174,18 +177,20 @@ export default function MemberConversation({
     }
     setDemoLimit((value) => value + PAGE_SIZE);
   };
+  const casePeople = (
+    thread.memberNames?.length
+      ? thread.memberNames
+      : thread.members.map(
+          (id) => people.find((person) => person.id === id)?.name,
+        )
+  )
+    .filter(Boolean)
+    .join(" · ");
   const subtitle =
     thread.type === "cases"
-      ? (thread.memberNames?.length
-          ? thread.memberNames
-          : thread.members.map(
-              (id) => people.find((person) => person.id === id)?.name,
-            )
-        )
-          .filter(Boolean)
-          .join(" · ")
+      ? thread.description || thread.subtitle || casePeople
       : thread.type === "income"
-        ? "Ghi nhận khoản tiền và trao đổi xác nhận"
+        ? "Thông báo chuyển lương / thanh toán từ Giám đốc"
         : "Trao đổi riêng";
 
   return (
@@ -266,7 +271,7 @@ export default function MemberConversation({
                 {query
                   ? "Không tìm thấy tin nhắn phù hợp."
                   : thread.type === "income"
-                    ? "Chưa có khoản thanh toán được ghi nhận. Bạn có thể nhắn để đối chiếu với Giám đốc."
+                    ? "Chưa có thông báo lương."
                     : "Chưa có trao đổi. Gửi tin nhắn đầu tiên bên dưới."}
               </p>
             )}
@@ -348,6 +353,11 @@ export default function MemberConversation({
           </>
         )}
       </div>
+      {!canReply ? (
+        <p className="income-readonly-note" role="note">
+          Đây là thông báo từ Giám đốc. Thành viên chỉ xem, không trả lời được.
+        </p>
+      ) : (
       <form className="member-composer" onSubmit={send} aria-busy={sending}>
         {draft.files.length > 0 && (
           <ul className="member-pending-files" aria-label="File chờ gửi">
@@ -398,7 +408,7 @@ export default function MemberConversation({
             onChange={(event) => onDraft({ text: event.target.value })}
             placeholder={
               thread.type === "income"
-                ? "Nhắn để xác nhận hoặc đối chiếu khoản tiền…"
+                ? "Nhập thông báo chuyển lương / thanh toán…"
                 : "Nhập tin nhắn…"
             }
             rows={1}
@@ -422,6 +432,7 @@ export default function MemberConversation({
         </div>
         <small className="chat-composer-hint">Tối đa 5 file, mỗi file 10 MB</small>
       </form>
+      )}
     </section>
   );
 }

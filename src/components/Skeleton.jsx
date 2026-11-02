@@ -87,7 +87,6 @@ export function CasesListSkeleton() {
       <SkeletonStatus>Đang tải danh sách án lệ…</SkeletonStatus>
       {range(3).map((index) => (
         <article className="case-news-summary sk-stack" key={index}>
-          <Skeleton className="sk-line sk-line-sm" style={{ width: "180px" }} />
           <Skeleton className="sk-heading" style={{ width: index ? "72%" : "86%" }} />
           <Skeleton className="sk-line" />
           <Skeleton className="sk-line" style={{ width: "88%" }} />
@@ -97,7 +96,6 @@ export function CasesListSkeleton() {
       <ul className="case-news-list">
         {range(4).map((index) => (
           <li key={index}>
-            <Skeleton className="sk-line sk-line-sm" style={{ width: "92px" }} />
             <Skeleton className="sk-line" style={{ width: `${78 - index * 6}%` }} />
           </li>
         ))}

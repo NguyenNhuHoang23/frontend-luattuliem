@@ -48,6 +48,44 @@ function isActiveStatus(person) {
   return person?.status !== "inactive";
 }
 
+function memberIdOf(value) {
+  if (value == null) return "";
+  if (typeof value === "object") return String(value.id ?? "");
+  return String(value);
+}
+
+function threadHasMember(thread, memberId) {
+  return (thread?.members || []).some((value) =>
+    sameId(memberIdOf(value), memberId),
+  );
+}
+
+function casesForMember(member, threads = []) {
+  if (!member) return [];
+  const fromThreads = threads.filter(
+    (thread) => thread.type === "cases" && threadHasMember(thread, member.id),
+  );
+  const fromApi = Array.isArray(member.cases) ? member.cases : [];
+  const byId = new Map();
+  fromApi.forEach((item) => {
+    const id = item.uuid || item.id;
+    if (id == null) return;
+    byId.set(String(id), {
+      id,
+      uuid: item.uuid || item.id,
+      name: item.name || "Vụ việc",
+      type: "cases",
+      subtitle: item.description || item.subtitle || "",
+      description: item.description || item.subtitle || "",
+      members: item.members || [],
+    });
+  });
+  fromThreads.forEach((item) => {
+    byId.set(String(item.id), item);
+  });
+  return [...byId.values()];
+}
+
 export default function MemberManagement({
   members = [],
   threads = [],
@@ -198,13 +236,10 @@ export default function MemberManagement({
     return normalizeMember(selected);
   }, [detailMember, selectedMemberId, filteredMembers]);
 
-  // Danh sách các vụ việc mà thành viên đang chọn tham gia
-  const memberCases = useMemo(() => {
-    if (!activeMember) return [];
-    return threads.filter(
-      (t) => t.type === "cases" && t.members.includes(activeMember.id),
-    );
-  }, [threads, activeMember]);
+  const memberCases = useMemo(
+    () => casesForMember(activeMember, threads),
+    [threads, activeMember],
+  );
 
   useEffect(() => {
     const stillVisible = filteredMembers.some((person) =>
@@ -304,7 +339,11 @@ export default function MemberManagement({
     setEditFormData({
       id: activeMember.id,
       name: activeMember.name,
-      group: activeMember.group,
+      group: ["lawyer", "support", "legal"].includes(memberGroup(activeMember))
+        ? memberGroup(activeMember)
+        : memberGroup(activeMember) === "ctv"
+          ? "ctv"
+          : "lawyer",
       phone: activeMember.phone || "",
       email: activeMember.email || "",
       area: activeMember.area || "Hà Nội",
@@ -357,6 +396,8 @@ export default function MemberManagement({
       phone: editFormData.phone.trim(),
       email: editFormData.email.trim(),
       area: editFormData.area.trim(),
+      role: editFormData.group,
+      group: editFormData.group,
     });
     setIsEditing(false);
     setFormError("");
@@ -513,39 +554,27 @@ export default function MemberManagement({
               >
                 Tất cả
               </button>
-              {isDirectorAccount ? (
-                <button
-                  type="button"
-                  className={`directory-chip ${roleFilter === "ctv" ? "active" : ""}`}
-                  onClick={() => setRoleFilter("ctv")}
-                >
-                  CTV
-                </button>
-              ) : (
-                <>
-                  <button
-                    type="button"
-                    className={`directory-chip ${roleFilter === "lawyer" ? "active" : ""}`}
-                    onClick={() => setRoleFilter("lawyer")}
-                  >
-                    Luật sư
-                  </button>
-                  <button
-                    type="button"
-                    className={`directory-chip ${roleFilter === "support" ? "active" : ""}`}
-                    onClick={() => setRoleFilter("support")}
-                  >
-                    CTV hỗ trợ
-                  </button>
-                  <button
-                    type="button"
-                    className={`directory-chip ${roleFilter === "legal" ? "active" : ""}`}
-                    onClick={() => setRoleFilter("legal")}
-                  >
-                    CTV pháp lý
-                  </button>
-                </>
-              )}
+              <button
+                type="button"
+                className={`directory-chip ${roleFilter === "lawyer" ? "active" : ""}`}
+                onClick={() => setRoleFilter("lawyer")}
+              >
+                Luật sư
+              </button>
+              <button
+                type="button"
+                className={`directory-chip ${roleFilter === "support" ? "active" : ""}`}
+                onClick={() => setRoleFilter("support")}
+              >
+                CTV hỗ trợ
+              </button>
+              <button
+                type="button"
+                className={`directory-chip ${roleFilter === "legal" ? "active" : ""}`}
+                onClick={() => setRoleFilter("legal")}
+              >
+                CTV pháp lý
+              </button>
             </div>
 
             {/* Danh sách thành viên bên trái */}
@@ -564,9 +593,7 @@ export default function MemberManagement({
                     badgeClass: "badge-default",
                   };
                   const isActive = person.status !== "inactive";
-                  const casesCount = threads.filter(
-                    (t) => t.type === "cases" && t.members.includes(person.id),
-                  ).length;
+                  const casesCount = casesForMember(person, threads).length;
 
                   return (
                     <button
@@ -847,6 +874,7 @@ export default function MemberManagement({
                           <option value="lawyer">Luật sư</option>
                           <option value="support">CTV hỗ trợ</option>
                           <option value="legal">CTV pháp lý</option>
+                          <option value="ctv">CTV</option>
                         </select>
                       </div>
 
@@ -1086,9 +1114,9 @@ export default function MemberManagement({
                                 <strong className="case-item-title">
                                   {caseItem.name}
                                 </strong>
-                                {caseItem.subtitle && (
+                                {(caseItem.description || caseItem.subtitle) && (
                                   <p className="case-item-sub">
-                                    {caseItem.subtitle}
+                                    {caseItem.description || caseItem.subtitle}
                                   </p>
                                 )}
                               </div>
@@ -1097,7 +1125,9 @@ export default function MemberManagement({
                               <button
                                 type="button"
                                 className="btn-goto-case"
-                                onClick={() => onOpenCaseThread(caseItem.id)}
+                                onClick={() =>
+                                  onOpenCaseThread(caseItem.uuid || caseItem.id)
+                                }
                               >
                                 Xem trao đổi ↗
                               </button>

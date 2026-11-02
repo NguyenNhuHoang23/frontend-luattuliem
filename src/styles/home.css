@@ -82,10 +82,10 @@
     grid-template-columns: repeat(3, 1fr);
   }
   .principles article {
-    padding: 25px 28px;
+    padding: 22px 12px;
     border-right: 1px solid var(--line);
     display: flex;
-    gap: 17px;
+    gap: 14px;
     align-items: center;
   }
   .principles article:first-child {
@@ -96,7 +96,7 @@
   }
   .number {
     font:
-      800 26px/1 "Liberation Sans Web",
+      800 30px/1 "Liberation Sans Web",
       Arial,
       Helvetica,
       sans-serif;
@@ -105,25 +105,65 @@
   }
   .principles b {
     display: block;
-    font-size: 15px;
+    font-size: 18px;
+    line-height: 1.35;
   }
   .principles small {
-    font-size: 12px;
+    display: block;
+    margin-top: 4px;
+    font-size: 14px;
+    line-height: 1.45;
     color: var(--muted);
+  }
+  .page-home #gioi-thieu {
+    padding-top: 40px;
+    padding-bottom: 28px;
+  }
+  .page-home .fields {
+    padding-top: 40px;
+  }
+  .page-home #hop-tac {
+    padding-bottom: 28px;
+  }
+  .page-home .news {
+    padding-top: 40px;
+    padding-bottom: 28px;
+  }
+  .page-home #lien-he {
+    padding-top: 40px;
+    padding-bottom: 64px;
   }
   .intro {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 90px;
+    gap: 28px 48px;
+    align-items: start;
   }
-  .intro p {
-    color: var(--muted);
+  .intro-copy .eyebrow {
+    margin-bottom: 12px;
+  }
+  .intro-copy h2 {
+    margin: 0;
+  }
+  .intro-body {
+    padding-top: 30px;
+  }
+  .intro-body > p {
+    margin: 0;
+    color: #4a5c73;
+    font-size: 16px;
+    line-height: 1.75;
   }
   .intro .quote {
+    display: block;
+    margin: 22px 0 0;
+    padding: 16px 20px;
+    background: #f3f6fb;
+    border: 0;
     border-left: 3px solid var(--blue);
-    padding-left: 27px;
+    border-radius: 0 8px 8px 0;
     font:
-      500 20px/1.6 "Liberation Sans Web",
+      500 17px/1.55 "Liberation Sans Web",
       Arial,
       Helvetica,
       sans-serif;
@@ -204,11 +244,145 @@
   }
   .contact {
     display: grid;
-    grid-template-columns: 0.9fr 1.1fr;
-    gap: 80px;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: 36px 48px;
+    align-items: start;
   }
   .contact p {
     color: var(--muted);
+  }
+  .page-home .contact-copy h2 {
+    margin-bottom: 12px;
+  }
+  .page-home .contact-lead {
+    margin: 0 0 28px;
+    font-size: 16px;
+    line-height: 1.7;
+  }
+  .page-home .contact-meta {
+    padding-top: 22px;
+    border-top: 1px solid var(--line);
+  }
+  .page-home .contact-phone {
+    margin: 0 0 12px;
+    font:
+      700 28px/1.2 "Liberation Sans Web",
+      Arial,
+      Helvetica,
+      sans-serif;
+    letter-spacing: -0.02em;
+  }
+  .page-home .contact-phone a {
+    color: var(--navy);
+  }
+  .page-home .contact-phone a:hover {
+    color: var(--blue);
+  }
+  .page-home .contact-office {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.65;
+    color: #4a5c73;
+  }
+  .page-home .contact-office b {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--navy);
+    font-size: 14.5px;
+  }
+  .page-home .contact-form {
+    background: #f7f9fc;
+    border: 1px solid #e4ebf3;
+    border-radius: 8px;
+    padding: 28px;
+  }
+  .page-home .contact-form label {
+    position: relative;
+    color: var(--navy);
+    margin-bottom: 14px;
+  }
+  .page-home .contact-form input:not([type="file"]),
+  .page-home .contact-form textarea {
+    border: 1px solid #d0dbe8;
+    border-radius: 4px;
+    background: #fff;
+    transition:
+      border-color 0.2s,
+      box-shadow 0.2s;
+  }
+  .page-home .contact-form input:not([type="file"]):focus,
+  .page-home .contact-form textarea:focus {
+    outline: 0;
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(16, 57, 154, 0.1);
+  }
+  .page-home .contact-form textarea {
+    min-height: 120px;
+  }
+  .page-home .contact-upload {
+    cursor: pointer;
+  }
+  .page-home .contact-upload-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    margin-top: 6px;
+    padding: 16px 14px;
+    border: 1.5px dashed #b8c8dc;
+    border-radius: 6px;
+    background: #fff;
+    text-align: center;
+    cursor: pointer;
+    transition:
+      border-color 0.2s,
+      background 0.2s;
+  }
+  .page-home .contact-upload:hover .contact-upload-box {
+    border-color: var(--blue);
+    background: #f0f5fc;
+  }
+  .page-home .contact-upload-title {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .page-home .contact-upload-hint {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--muted);
+  }
+  .page-home .contact-upload-files {
+    margin-top: 4px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--blue);
+    word-break: break-word;
+  }
+  .page-home .contact-file-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+  .page-home .contact-form .btn {
+    margin-top: 4px;
+    padding: 12px 26px;
+    border-radius: 4px;
+  }
+  .page-home .contact-form .btn:disabled {
+    opacity: 0.7;
+    cursor: wait;
+  }
+  .page-home .contact-form .notice {
+    margin-top: 14px;
+    margin-bottom: 0;
+    line-height: 1.55;
   }
   @media (max-width: 800px) {
     .hero {
@@ -232,16 +406,36 @@
       grid-template-columns: 1fr;
     }
     .principles {
-      margin-bottom: 35px;
+      margin-bottom: 0;
     }
     .principles article {
       padding: 16px 0;
       border-right: 0;
       border-bottom: 1px solid var(--line);
     }
+    .page-home #gioi-thieu {
+      padding-top: 24px;
+      padding-bottom: 16px;
+    }
+    .page-home .fields {
+      padding-top: 28px;
+    }
+    .page-home #hop-tac {
+      padding-bottom: 16px;
+    }
+    .page-home .news {
+      padding-top: 28px;
+      padding-bottom: 16px;
+    }
+    .page-home #lien-he {
+      padding-top: 28px;
+    }
     .intro {
       grid-template-columns: 1fr;
-      gap: 30px;
+      gap: 16px;
+    }
+    .intro-body {
+      padding-top: 0;
     }
     .cooperate {
       grid-template-columns: 1fr;
@@ -249,7 +443,16 @@
     }
     .contact {
       grid-template-columns: 1fr;
-      gap: 30px;
+      gap: 24px;
+    }
+    .page-home .contact-form {
+      padding: 20px 16px;
+    }
+    .page-home .contact-phone {
+      font-size: 24px;
+    }
+    .page-home .contact-lead {
+      margin-bottom: 18px;
     }
     .grid3 {
       grid-template-columns: 1fr;
@@ -397,7 +600,7 @@
   }
   .principles {
     background: #fff;
-    margin-bottom: 60px;
+    margin-bottom: 0;
   }
   .number {
     color: #7496c7;

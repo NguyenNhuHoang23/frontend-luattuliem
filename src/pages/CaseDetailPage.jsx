@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { getPublicCase } from "../api/public.js";
 import { deleteMemberCaseArticle } from "../api/member.js";
 import { CaseDetailSkeleton } from "../components/Skeleton.jsx";
+import { MarkdownText } from "../components/MarkdownText.jsx";
 import { Modal } from "../components/Modal.jsx";
 import { useToast } from "../components/toast-context.js";
 import { images } from "../data/images.js";
@@ -210,7 +211,7 @@ export default function CaseDetailPage() {
                     Khái quát nội dung của án lệ:
                   </h2>
                   <div className="court-highlight-box">
-                    <p>{caseItem.overview}</p>
+                    <MarkdownText text={caseItem.overview} />
                   </div>
                 </section>
               )}
@@ -275,9 +276,7 @@ export default function CaseDetailPage() {
                     <article className="court-body-section" key={idx}>
                       <h3 className="court-body-title">{block.heading}</h3>
                       <div className="court-body-text">
-                        {String(block.content || "").split("\n\n").map((para, pIdx) => (
-                          <p key={pIdx}>{para}</p>
-                        ))}
+                        <MarkdownText text={block.content} />
                       </div>
                     </article>
                   ))}
@@ -287,8 +286,10 @@ export default function CaseDetailPage() {
                   <h3 className="court-body-title">
                     TÓM TẮT DIỄN BIẾN &amp; PHÁN QUYẾT
                   </h3>
-                  <p>{caseItem.description}</p>
-                  {caseItem.summary && <p>{caseItem.summary}</p>}
+                  <div className="court-body-text">
+                    <MarkdownText text={caseItem.description} />
+                    {caseItem.summary ? <MarkdownText text={caseItem.summary} /> : null}
+                  </div>
                 </div>
               )}
             </div>

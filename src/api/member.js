@@ -1,4 +1,4 @@
-import { API_URL } from "./config.js";
+import { API_URL, rewriteMediaTree } from "./config.js";
 
 const AUTH_KEY = "luattuliem-member-session";
 
@@ -32,7 +32,7 @@ async function memberRequest(path, options = {}) {
       : payload.message;
     throw new Error(details || "Không gọi được máy chủ.");
   }
-  return payload;
+  return rewriteMediaTree(payload);
 }
 
 export async function listTeamMembers() {
@@ -91,6 +91,16 @@ export async function fetchMemberApplicationCv(id) {
   return URL.createObjectURL(blob);
 }
 
+export async function uploadMemberCaseImage(file) {
+  const body = new FormData();
+  body.append("image", file);
+  const payload = await memberRequest("/thanh-vien/an-le-anh", {
+    method: "POST",
+    body,
+  });
+  return payload.data ?? null;
+}
+
 export async function createMemberCaseArticle(body) {
   const payload = await memberRequest("/thanh-vien/an-le", {
     method: "POST",
@@ -101,7 +111,7 @@ export async function createMemberCaseArticle(body) {
 
 export async function updateMemberCaseArticle(id, body) {
   const payload = await memberRequest(`/thanh-vien/an-le/${encodeURIComponent(id)}`, {
-    method: "PUT",
+    method: body instanceof FormData ? "POST" : "PUT",
     body,
   });
   return payload.data ?? null;

@@ -77,6 +77,11 @@ export function CaseSummaryModal({ entry, onClose }) {
           </p>
         ) : null}
         <div className="modal-actions">
+          {entry?.id ? (
+            <Link className="btn white" to={`/an-le/${entry.id}`}>
+              Xem toàn văn án lệ ↗
+            </Link>
+          ) : null}
           <Link className="btn" to="/lien-he">
             Tư vấn vụ việc tương tự ↗
           </Link>

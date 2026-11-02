@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   createMemberCaseArticle,
   updateMemberCaseArticle,
+  uploadMemberCaseImage,
 } from "../api/member.js";
 import { Modal } from "../components/Modal.jsx";
 import { caseCategories } from "../data/cases.js";
@@ -76,6 +77,8 @@ function emptyForm() {
     legalProvisions: "",
     relatedDocs: "",
     body: "",
+    pdfTitle: "",
+    imageCaption: "",
   };
 }
 
@@ -96,11 +99,13 @@ function articleToForm(article) {
     legalProvisions: (article.legalProvisions || []).join("\n"),
     relatedDocs: docsToText(article.relatedDocs),
     body: bodyToText(article.caseBody),
+    pdfTitle: article.pdfTitle || "",
+    imageCaption: article.imageCaption || "",
   };
 }
 
-function toPayload(form) {
-  return {
+function toFormData(form, { pdfFile, removePdf, imageFile, removeImage }) {
+  const payload = {
     title: form.title.trim(),
     caseNumber: form.caseNumber.trim(),
     code: form.code.trim() || form.caseNumber.trim(),
@@ -117,23 +122,114 @@ function toPayload(form) {
     relatedDocs: textToDocs(form.relatedDocs),
     caseBody: textToBody(form.body),
   };
+  const body = new FormData();
+  Object.entries(payload).forEach(([key, value]) => {
+    if (Array.isArray(value)) {
+      body.append(key, JSON.stringify(value));
+    } else {
+      body.append(key, value ?? "");
+    }
+  });
+  if (form.pdfTitle.trim()) body.append("pdf_title", form.pdfTitle.trim());
+  if (form.imageCaption.trim()) body.append("image_caption", form.imageCaption.trim());
+  if (removePdf) body.append("remove_pdf", "1");
+  if (removeImage) body.append("remove_image", "1");
+  if (pdfFile) body.append("pdf", pdfFile);
+  if (imageFile) body.append("image", imageFile);
+  return body;
 }
 
 export function CaseComposeModal({ open, article, onClose, onSaved }) {
+  const bodyRef = useRef(null);
+  const insertImageRef = useRef(null);
   const [form, setForm] = useState(emptyForm);
+  const [pdfFile, setPdfFile] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState("");
+  const [removePdf, setRemovePdf] = useState(false);
+  const [removeImage, setRemoveImage] = useState(false);
+  const [insertingImage, setInsertingImage] = useState(false);
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
   const editing = Boolean(article);
+  const existingPdfUrl = article?.pdfUrl && !removePdf ? article.pdfUrl : "";
+  const existingImageUrl = article?.image && !removeImage ? article.image : "";
 
   useEffect(() => {
     if (!open) return;
     setForm(article ? articleToForm(article) : emptyForm());
+    setPdfFile(null);
+    setImageFile(null);
+    setRemovePdf(false);
+    setRemoveImage(false);
     setError("");
   }, [open, article]);
+
+  useEffect(() => {
+    if (!imageFile) {
+      setImagePreview("");
+      return undefined;
+    }
+    const url = URL.createObjectURL(imageFile);
+    setImagePreview(url);
+    return () => URL.revokeObjectURL(url);
+  }, [imageFile]);
 
   function change(event) {
     const { name, value } = event.target;
     setForm((current) => ({ ...current, [name]: value }));
+  }
+
+  function changePdf(event) {
+    const file = event.target.files?.[0] || null;
+    setPdfFile(file);
+    if (!file) return;
+    setRemovePdf(false);
+    setForm((current) =>
+      current.pdfTitle.trim()
+        ? current
+        : { ...current, pdfTitle: file.name.replace(/\.pdf$/i, "") },
+    );
+  }
+
+  function changeImage(event) {
+    const file = event.target.files?.[0] || null;
+    setImageFile(file);
+    if (file) setRemoveImage(false);
+  }
+
+  function insertAtCursor(snippet) {
+    const el = bodyRef.current;
+    if (!el) {
+      setForm((current) => ({ ...current, body: `${current.body}${snippet}` }));
+      return;
+    }
+    const start = el.selectionStart ?? el.value.length;
+    const end = el.selectionEnd ?? start;
+    const next = `${el.value.slice(0, start)}${snippet}${el.value.slice(end)}`;
+    setForm((current) => ({ ...current, body: next }));
+    requestAnimationFrame(() => {
+      el.focus();
+      const pos = start + snippet.length;
+      el.setSelectionRange(pos, pos);
+    });
+  }
+
+  async function insertBodyImage(event) {
+    const file = event.target.files?.[0];
+    event.target.value = "";
+    if (!file) return;
+    setError("");
+    setInsertingImage(true);
+    try {
+      const uploaded = await uploadMemberCaseImage(file);
+      const alt = file.name.replace(/\.[^.]+$/, "") || "Ảnh";
+      insertAtCursor(`\n\n![${alt}](${uploaded.url})\n\n`);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setInsertingImage(false);
+    }
   }
 
   async function handleSubmit(event) {
@@ -141,7 +237,7 @@ export function CaseComposeModal({ open, article, onClose, onSaved }) {
     setError("");
     setSaving(true);
     try {
-      const payload = toPayload(form);
+      const payload = toFormData(form, { pdfFile, removePdf, imageFile, removeImage });
       const saved = editing
         ? await updateMemberCaseArticle(article.id, payload)
         : await createMemberCaseArticle(payload);
@@ -248,6 +344,9 @@ export function CaseComposeModal({ open, article, onClose, onSaved }) {
         <label>
           Nội dung khái quát
           <textarea name="overview" value={form.overview} onChange={change} rows={4} />
+          <span className="field-hint">
+            Dùng markdown: **in đậm**, *in nghiêng*, danh sách `- mục`.
+          </span>
         </label>
         <label>
           Từ khóa (mỗi dòng một từ khóa)
@@ -275,13 +374,121 @@ export function CaseComposeModal({ open, article, onClose, onSaved }) {
         <label>
           Nội dung vụ việc
           <textarea
+            ref={bodyRef}
             name="body"
             value={form.body}
             onChange={change}
             rows={8}
-            placeholder="Mỗi mục bắt đầu bằng ## TIÊU ĐỀ rồi đến nội dung bên dưới."
+            placeholder={"## NỘI DUNG VỤ ÁN\nPhần này dùng **in đậm** hoặc *in nghiêng*.\n\n## NHẬN ĐỊNH\n- Ý thứ nhất\n- Ý thứ hai"}
+          />
+          <span className="field-hint">
+            Mỗi mục bắt đầu bằng ## TIÊU ĐỀ. Trong nội dung dùng **in đậm**, *in
+            nghiêng*, danh sách `- mục`. Chèn ảnh bằng nút bên dưới.
+          </span>
+        </label>
+        <div className="compose-inline-actions">
+          <input
+            ref={insertImageRef}
+            type="file"
+            accept="image/jpeg,image/png,image/webp,image/gif,.jpg,.jpeg,.png,.webp,.gif"
+            style={{ display: "none" }}
+            onChange={insertBodyImage}
+          />
+          <button
+            className="btn white"
+            type="button"
+            disabled={saving || insertingImage}
+            onClick={() => insertImageRef.current?.click()}
+          >
+            {insertingImage ? "Đang tải ảnh…" : "Chèn ảnh vào nội dung"}
+          </button>
+        </div>
+        <label>
+          Ảnh minh họa
+          <input
+            type="file"
+            accept="image/jpeg,image/png,image/webp,image/gif,.jpg,.jpeg,.png,.webp,.gif"
+            onChange={changeImage}
+          />
+          <span className="field-hint">
+            Tối đa 4MB. Ảnh lớn hiện trên trang chi tiết, phía trên file PDF.
+          </span>
+        </label>
+        {imagePreview || existingImageUrl ? (
+          <p className="compose-media-preview">
+            <img
+              src={imagePreview || existingImageUrl}
+              alt={form.imageCaption || "Ảnh minh họa"}
+            />
+          </p>
+        ) : null}
+        {existingImageUrl ? (
+          <label className="pdf-remove">
+            <input
+              type="checkbox"
+              checked={removeImage}
+              onChange={(event) => {
+                setRemoveImage(event.target.checked);
+                if (event.target.checked) setImageFile(null);
+              }}
+            />
+            Gỡ ảnh minh họa khỏi bài
+          </label>
+        ) : null}
+        <label>
+          Chú thích ảnh
+          <input
+            name="imageCaption"
+            value={form.imageCaption}
+            onChange={change}
+            maxLength={255}
+            placeholder="Nguồn ảnh / mô tả ngắn"
           />
         </label>
+        <label>
+          Tiêu đề file PDF
+          <input
+            name="pdfTitle"
+            value={form.pdfTitle}
+            onChange={change}
+            maxLength={255}
+            placeholder="Toàn văn án lệ / bản án"
+          />
+        </label>
+        <label>
+          File PDF toàn văn
+          <input
+            type="file"
+            accept="application/pdf,.pdf"
+            onChange={changePdf}
+          />
+          <span className="field-hint">
+            Tối đa 20MB. File sẽ hiện khung xem PDF trên trang chi tiết.
+          </span>
+        </label>
+        {pdfFile ? (
+          <p className="pdf-current">Đã chọn: {pdfFile.name}</p>
+        ) : existingPdfUrl ? (
+          <p className="pdf-current">
+            Đang có file:{" "}
+            <a href={existingPdfUrl} target="_blank" rel="noopener noreferrer">
+              {form.pdfTitle || "Xem PDF hiện tại"}
+            </a>
+          </p>
+        ) : null}
+        {existingPdfUrl ? (
+          <label className="pdf-remove">
+            <input
+              type="checkbox"
+              checked={removePdf}
+              onChange={(event) => {
+                setRemovePdf(event.target.checked);
+                if (event.target.checked) setPdfFile(null);
+              }}
+            />
+            Gỡ file PDF khỏi bài
+          </label>
+        ) : null}
         {error ? <p className="notice">{error}</p> : null}
         <div className="modal-actions">
           <button className="btn" disabled={saving}>

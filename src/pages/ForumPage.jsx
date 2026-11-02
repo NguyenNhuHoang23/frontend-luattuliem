@@ -14,9 +14,11 @@ import {
   listCases,
   listChatMessages,
   listConversations,
+  listIncomeNotices,
   markConversationRead,
   openConversation,
   sendChatMessage,
+  sendIncomeNotice,
   subscribeConversation,
   updateCase,
 } from "../api/memberChat.js";
@@ -48,21 +50,26 @@ function mapChatMessage(message) {
 
 function conversationToThread(convo, currentId) {
   const isCase = convo.type === "case";
+  const isIncome = convo.type === "income";
   const members = Array.isArray(convo.members) ? convo.members : [];
   const memberIds = members.map((person) => person.id);
   return {
     id: convo.uuid,
     conversationId: convo.id,
     uuid: convo.uuid,
-    type: isCase ? "cases" : "messages",
+    type: isCase ? "cases" : isIncome ? "income" : "messages",
     live: true,
-    name: isCase ? convo.name || "Vụ việc" : convo.peer?.name || "Thành viên",
+    name: isCase
+      ? convo.name || "Vụ việc"
+      : convo.peer?.name || (isIncome ? "Thông báo lương" : "Thành viên"),
     ownerId: isCase ? null : convo.peer?.id,
     members: memberIds.length
       ? memberIds
       : [currentId, convo.peer?.id].filter((id) => id != null),
     memberNames: members.map((person) => person.name).filter(Boolean),
     messages: (convo.messages || []).map(mapChatMessage),
+    description: convo.description || "",
+    subtitle: convo.description || "",
     lastPreview: convo.lastMessage?.content || (convo.lastMessage ? "Đã gửi tệp đính kèm" : ""),
     unread: Boolean(convo.unread),
     hasMore: Boolean(convo.hasMore),
@@ -97,8 +104,8 @@ function chatInitials(name) {
 
 function threadDisplayName(thread, admin) {
   if (thread.type === "cases") return thread.name;
+  if (thread.type === "income") return admin ? thread.name : "Thông báo lương";
   if (thread.live || admin) return thread.name;
-  if (thread.type === "income") return "Các khoản thanh toán";
   return "Giám đốc";
 }
 
@@ -107,7 +114,7 @@ function threadPreview(thread) {
     thread.lastPreview ||
     thread.messages.at(-1)?.content ||
     (thread.type === "income"
-      ? "Chưa ghi nhận khoản thanh toán"
+      ? "Chưa có thông báo lương"
       : "Chưa có trao đổi")
   );
 }
@@ -181,6 +188,7 @@ export default function ForumPage() {
   const [quickText, setQuickText] = useState("");
   const [dialogError, setDialogError] = useState("");
   const [caseName, setCaseName] = useState("");
+  const [caseDescription, setCaseDescription] = useState("");
   const [sending, setSending] = useState(false);
   const sendingRef = useRef(false);
   const [loadingOlder, setLoadingOlder] = useState(false);
@@ -201,10 +209,8 @@ export default function ForumPage() {
   );
   const selectionKey = `${actorId}-${tab}`;
   const available = sortInboxThreads(
-    liveChat && (tab === "messages" || tab === "cases")
-      ? chatThreads.filter((thread) =>
-          tab === "cases" ? thread.type === "cases" : thread.type !== "cases",
-        )
+    liveChat
+      ? chatThreads.filter((thread) => thread.type === tab)
       : threads.filter(
           (thread) =>
             thread.type === tab && (admin || thread.members.includes(actorId)),
@@ -232,12 +238,14 @@ export default function ForumPage() {
     Promise.all([
       listConversations().catch(() => []),
       listCases().catch(() => []),
+      listIncomeNotices().catch(() => []),
     ])
-      .then(([direct, cases]) => {
+      .then(([direct, cases, income]) => {
         if (!cancelled) {
           setChatThreads([
             ...direct.map((item) => conversationToThread(item, session.id)),
             ...cases.map((item) => conversationToThread(item, session.id)),
+            ...income.map((item) => conversationToThread(item, session.id)),
           ]);
         }
       })
@@ -257,7 +265,7 @@ export default function ForumPage() {
           setMembersList(
             list.map((person) => ({
               ...person,
-              group: person.group || person.role || "ctv",
+              group: person.group || person.role || "lawyer",
             })),
           );
         }
@@ -330,6 +338,7 @@ export default function ForumPage() {
   const send = async () => {
     if (sendingRef.current) return;
     if (!draft.text.trim() && !draft.files.length) return;
+    if (active?.type === "income" && !admin) return;
     sendingRef.current = true;
     setSending(true);
     try {
@@ -416,6 +425,9 @@ export default function ForumPage() {
         : [],
     );
     setCaseName(type === "edit" ? active.name : "");
+    setCaseDescription(
+      type === "edit" ? active.description || active.subtitle || "" : "",
+    );
     setQuickText("");
   };
   const submitDialog = async (event) => {
@@ -423,12 +435,48 @@ export default function ForumPage() {
     if (!admin) return;
     if (!recipients.length)
       return setDialogError("Vui lòng chọn ít nhất một người.");
-    if (dialog === "quick") {
+    if (dialog === "quick" || dialog === "income") {
       if (!quickText.trim()) return;
+      if (dialog === "income" && liveChat) {
+        try {
+          const memberIds = recipients.filter((id) => isApiMemberId(id));
+          if (!memberIds.length) {
+            setDialogError("Vui lòng chọn ít nhất một thành viên.");
+            return;
+          }
+          const saved = await sendIncomeNotice({
+            content: quickText.trim(),
+            memberIds,
+          });
+          setChatThreads((previous) => {
+            const next = [...previous];
+            saved.forEach((item) => {
+              const thread = conversationToThread(item, session.id);
+              const index = next.findIndex((row) => row.uuid === thread.uuid);
+              if (index >= 0) next[index] = { ...thread, unread: false };
+              else next.unshift(thread);
+            });
+            return next;
+          });
+          if (saved[0]?.uuid) {
+            setSelections((previous) => ({
+              ...previous,
+              [selectionKey]: saved[0].uuid,
+            }));
+            setConversationOpen(true);
+          }
+          setDialog(null);
+          showToast("Đã gửi thông báo lương.");
+        } catch (err) {
+          setDialogError(err.message);
+        }
+        return;
+      }
       const message = newMessage(quickText.trim());
       setThreads((previous) =>
         previous.map((thread) =>
-          thread.type === "messages" && recipients.includes(thread.ownerId)
+          thread.type === (dialog === "income" ? "income" : "messages") &&
+          recipients.includes(thread.ownerId)
             ? {
                 ...thread,
                 messages: [
@@ -448,6 +496,7 @@ export default function ForumPage() {
       try {
         const payload = {
           name: caseName.trim(),
+          description: caseDescription.trim(),
           memberIds: recipients.filter((id) => isApiMemberId(id)),
         };
         if (!payload.memberIds.length) {
@@ -500,6 +549,8 @@ export default function ForumPage() {
             ? {
                 ...thread,
                 name: caseName.trim(),
+                description: caseDescription.trim(),
+                subtitle: caseDescription.trim(),
                 members: ["director", ...recipients],
               }
             : thread,
@@ -510,6 +561,8 @@ export default function ForumPage() {
         id: `case-${crypto.randomUUID()}`,
         type: "cases",
         name: caseName.trim(),
+        description: caseDescription.trim(),
+        subtitle: caseDescription.trim(),
         members: ["director", ...recipients],
         messages: [],
       };
@@ -621,8 +674,8 @@ export default function ForumPage() {
           : "Vụ việc tôi tham gia"
         : tab === "income"
           ? admin
-            ? "Thu nhập theo thành viên"
-            : "Thu nhập của tôi"
+            ? "Thông báo lương"
+            : "Thông báo lương của tôi"
           : "Quản lý thành viên";
 
   if (!session) {
@@ -673,7 +726,7 @@ export default function ForumPage() {
         {admin && tab === "members" ? (
           <MemberManagement
             members={membersList}
-            threads={threads}
+            threads={liveChat ? chatThreads : threads}
             onUpdateMember={handleUpdateMember}
             onToggleStatus={handleToggleStatus}
             onOpenDirectMessage={handleOpenDirectMessage}
@@ -689,15 +742,25 @@ export default function ForumPage() {
                 <h2 ref={listHeading} tabIndex={-1}>
                   {title}
                 </h2>
-                {admin && tab !== "income" && !(liveChat && tab === "messages") && (
+                {admin && !(liveChat && tab === "messages") && (
                   <button
                     type="button"
                     className="member-text-action"
                     onClick={() =>
-                      openDialog(tab === "cases" ? "create" : "quick")
+                      openDialog(
+                        tab === "cases"
+                          ? "create"
+                          : tab === "income"
+                            ? "income"
+                            : "quick",
+                      )
                     }
                   >
-                    {tab === "cases" ? "+ Tạo vụ việc" : "+ Gửi nhanh"}
+                    {tab === "cases"
+                      ? "+ Tạo vụ việc"
+                      : tab === "income"
+                        ? "+ Thông báo lương"
+                        : "+ Gửi nhanh"}
                   </button>
                 )}
               </div>
@@ -774,7 +837,11 @@ export default function ForumPage() {
                 <p className="member-empty">
                   {tab === "messages"
                     ? "Chưa có cuộc trao đổi. Giám đốc mở Nhắn tin riêng từ tab Quản lý thành viên."
-                    : "Chưa có vụ việc được phân công."}
+                    : tab === "income"
+                      ? admin
+                        ? "Chưa có thông báo lương. Gửi thông báo chuyển tiền cho thành viên."
+                        : "Chưa nhận thông báo lương từ Giám đốc."
+                      : "Chưa có vụ việc được phân công."}
                 </p>
               )}
             </aside>
@@ -808,6 +875,7 @@ export default function ForumPage() {
                   });
                   requestAnimationFrame(() => listHeading.current?.focus());
                 }}
+                canReply={active.type !== "income" || admin}
                 onEditMembers={
                   admin && tab === "cases" ? () => openDialog("edit") : null
                 }
@@ -818,7 +886,7 @@ export default function ForumPage() {
                   {tab === "messages"
                     ? "Chọn một cuộc trao đổi bên trái để xem tin nhắn."
                     : tab === "income"
-                      ? "Chọn một mục bên trái để xem chi tiết."
+                      ? "Chọn một thông báo lương bên trái để xem."
                       : admin
                         ? "Tạo vụ việc và chọn người phụ trách để bắt đầu."
                         : "Chọn một vụ việc bên trái để xem trao đổi."}
@@ -829,7 +897,7 @@ export default function ForumPage() {
         )}
         <p className="member-demo-note" role="note">
           {liveChat
-            ? "Tin nhắn riêng và vụ việc (nhóm) được lưu trên máy chủ và gửi realtime qua socket. Có thể đính kèm file và tải lại từ lịch sử."
+            ? "Tin nhắn riêng, vụ việc và thông báo lương được lưu trên máy chủ. Thông báo lương do Giám đốc gửi, thành viên chỉ xem không trả lời."
             : "Bản xem thử với dữ liệu mẫu. Tin nhắn, tài liệu và phân công chỉ tồn tại trong phiên này, chưa được lưu trên máy chủ."}
         </p>
         <Modal
@@ -838,15 +906,17 @@ export default function ForumPage() {
           title={
             dialog === "quick"
               ? "Gửi tin nhắn nhanh"
-              : dialog === "edit"
-                ? "Thành viên vụ việc"
-                : "Tạo vụ việc"
+              : dialog === "income"
+                ? "Thông báo lương / chuyển tiền"
+                : dialog === "edit"
+                  ? "Thành viên vụ việc"
+                  : "Tạo vụ việc"
           }
           className="member-workspace-dialog"
         >
           {dialog && (
             <form onSubmit={submitDialog}>
-              {dialog !== "quick" && (
+              {dialog !== "quick" && dialog !== "income" && (
                 <label>
                   Tên vụ việc
                   <input
@@ -858,13 +928,28 @@ export default function ForumPage() {
                   />
                 </label>
               )}
+              {dialog !== "quick" && dialog !== "income" && (
+                <label>
+                  Mô tả vụ việc
+                  <textarea
+                    name="caseDescription"
+                    value={caseDescription}
+                    onChange={(event) => setCaseDescription(event.target.value)}
+                    rows={3}
+                    maxLength={500}
+                    placeholder="Tóm tắt hồ sơ, loại tranh chấp, ghi chú phân công…"
+                  />
+                </label>
+              )}
               <p className="member-picker-label">
                 {dialog === "quick"
                   ? "Gửi riêng cho những người được chọn"
-                  : "Chọn hoặc thay đổi người phụ trách"}
+                  : dialog === "income"
+                    ? "Gửi thông báo lương cho những người được chọn"
+                    : "Chọn hoặc thay đổi người phụ trách"}
               </p>
               <PersonPicker staffList={staff} selected={recipients} onChange={setRecipients} />
-              {dialog === "quick" && (
+              {(dialog === "quick" || dialog === "income") && (
                 <>
                   <details className="member-broadcast">
                     <summary>Gửi cho toàn thể</summary>
@@ -882,10 +967,14 @@ export default function ForumPage() {
                       />
                       Chọn toàn bộ luật sư và cộng tác viên
                     </label>
-                    <p>Tin được gửi vào cuộc trao đổi riêng của từng người.</p>
+                    <p>
+                      {dialog === "income"
+                        ? "Mỗi người nhận một thông báo lương riêng, không lẫn với tin nhắn."
+                        : "Tin được gửi vào cuộc trao đổi riêng của từng người."}
+                    </p>
                   </details>
                   <label>
-                    Nội dung tin nhắn
+                    {dialog === "income" ? "Nội dung thông báo" : "Nội dung tin nhắn"}
                     <textarea
                       name="quickMessage"
                       required
@@ -908,9 +997,11 @@ export default function ForumPage() {
                 <button className="member-primary" type="submit">
                   {dialog === "quick"
                     ? "Gửi tin nhắn"
-                    : dialog === "edit"
-                      ? "Lưu thành viên"
-                      : "Tạo vụ việc"}
+                    : dialog === "income"
+                      ? "Gửi thông báo"
+                      : dialog === "edit"
+                        ? "Lưu thành viên"
+                        : "Tạo vụ việc"}
                 </button>
               </div>
             </form>

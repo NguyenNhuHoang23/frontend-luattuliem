@@ -80,13 +80,13 @@ test("Thành viên chỉ thấy tin nhắn, vụ việc và thu nhập của mì
     page.getByRole("button", { name: "Thành viên", exact: true }),
   ).toHaveCount(0);
   await tab(page, "Thu nhập");
-  await choose(page, "Các khoản thanh toán");
+  await choose(page, "Thông báo lương");
   await expect(page.locator(".member-message-list")).toContainText(
     "10.000.000đ",
   );
-  await send(page, "Em chưa nhận được, anh kiểm tra lại giúp em.");
-  await expect(page.locator(".member-message-list")).toContainText(
-    "Em chưa nhận được",
+  await expect(compose(page)).toHaveCount(0);
+  await expect(page.locator(".income-readonly-note")).toContainText(
+    "Thành viên chỉ xem, không trả lời được",
   );
 });
 

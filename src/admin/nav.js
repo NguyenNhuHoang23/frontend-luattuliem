@@ -12,6 +12,9 @@ export const adminNav = [
 
 export const memberGroups = {
   director: "Giám đốc",
+  lawyer: "Luật sư",
+  support: "CTV hỗ trợ",
+  legal: "CTV pháp lý",
   ctv: "CTV",
 };
 

@@ -329,15 +329,6 @@ export function MemberApplicationDetail({
 
           {pending ? (
             <>
-              <div className="dossier-info-guide-card">
-                <div className="guide-text">
-                  <strong>Cấp tài khoản CTV sau khi duyệt</strong>
-                  <p>
-                    Hồ sơ đến từ form tuyển dụng. Giám đốc đặt tên đăng nhập và mật khẩu, rồi gửi
-                    lại cho thành viên khi chấp thuận.
-                  </p>
-                </div>
-              </div>
               <form
                 className="dossier-inline-edit-box"
                 onSubmit={(event) => {
