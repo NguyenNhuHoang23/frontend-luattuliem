@@ -39,86 +39,7 @@
     width: min(1200px, 92%);
     margin: auto;
   }
-  .page-about .top {
-    background: #f0f5fc;
-    color: #496280;
-    font-size: 12px;
-    padding: 7px 0;
-    border-bottom: 1px solid #e1e9f4;
-  }
-  .page-about .top .wrap {
-    display: flex;
-    justify-content: space-between;
-  }
-  .page-about header {
-    background: #fff;
-    border-bottom: 1px solid var(--line);
-  }
-  .page-about .brandrow {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 18px 0;
-  }
-  .page-about .brand {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-  .page-about .brand img {
-    width: 76px;
-    height: 76px;
-    border-radius: 4px;
-  }
-  .page-about .brand small {
-    font-size: 11px;
-    letter-spacing: 2px;
-  }
-  .page-about .brand strong {
-    display: block;
-    font-family: "Liberation Sans Web", Arial, Helvetica, sans-serif;
-    font-weight: 800;
-    color: var(--blue);
-    font-size: 27px;
-    letter-spacing: 0.5px;
-    line-height: 1.25;
-  }
-  .page-about .contacttop {
-    font-size: 15px;
-    color: var(--muted);
-  }
-  .page-about .contacttop b {
-    display: block;
-    font-size: 22px;
-    color: var(--blue);
-  }
-  .page-about nav {
-    border-top: 1px solid #eef1f5;
-  }
-  .page-about nav .wrap {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 36px;
-  }
-  .page-about nav a {
-    font-size: 14px;
-    padding: 16px 0;
-    white-space: nowrap;
-    transition: color 0.2s;
-  }
-  .page-about nav a:hover,
-  .page-about nav a.active {
-    color: var(--blue);
-    font-weight: bold;
-  }
-  .page-about nav a.active {
-    border-bottom: 2px solid var(--blue);
-  }
-  .page-about .memberlink {
-    color: var(--blue);
-    font-weight: bold;
-  }
+  /* Header/nav dùng style chung từ base.css */
 
   /* Two-column Editorial Layout matching user screenshot */
   .page-about .main-container {
@@ -166,7 +87,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-bottom: 24px;
+    margin-bottom: 12px;
   }
 
   /* Featured Law Poster Card (matching screenshot style) */
@@ -280,25 +201,33 @@
 
   /* Article Body Content */
   .page-about .article-body {
-    font-size: 15px;
-    line-height: 1.75;
+    font-size: 16.5px;
+    line-height: 1.7;
     color: #334155;
   }
   .page-about .article-section-title {
     font:
-      700 20px/1.35 "Liberation Sans Web",
+      700 21px/1.4 "Liberation Sans Web",
       Arial,
       Helvetica,
       sans-serif;
     letter-spacing: -0.01em;
     color: var(--navy);
-    margin: 36px 0 16px;
-    padding-bottom: 10px;
+    margin: 28px 0 14px;
+    padding-bottom: 8px;
     border-bottom: 2px solid #eef2f7;
     position: relative;
+    scroll-margin-top: 120px;
+    outline: none;
+  }
+
+  .page-about .article-section-title:focus-visible,
+  .page-about .article-section-title.is-targeted {
+    box-shadow: 0 0 0 3px rgba(16, 57, 154, 0.25);
+    border-radius: 4px;
   }
   .page-about .article-body > .article-section-title:first-child {
-    margin-top: 22px;
+    margin-top: 14px;
   }
   .page-about .article-section-title::after {
     content: "";
@@ -317,15 +246,15 @@
       sans-serif;
     letter-spacing: -0.01em;
     color: var(--navy);
-    margin: 32px 0 14px;
-    padding-bottom: 8px;
+    margin: 20px 0 10px;
+    padding-bottom: 6px;
     border-bottom: 2px solid #eef2f7;
   }
   .page-about .article-body p {
     margin: 0 0 16px;
   }
   .page-about .article-cta-box {
-    margin-top: 40px;
+    margin-top: 24px;
     padding: 28px 32px;
     background: linear-gradient(135deg, #f0f5fc 0%, #ffffff 100%);
     border: 1px solid #d0deee;
@@ -348,7 +277,7 @@
     font-size: 14.5px;
     color: #4b5e76;
     margin: 0 0 20px;
-    line-height: 1.6;
+    line-height: 1.4;
   }
   .page-about .article-cta-box .btn {
     display: inline-flex;
@@ -419,23 +348,23 @@
     top: 20px;
   }
   .page-about .news-sidebar {
-    background: #fff;
-    border: 1px solid #dce4ee;
-    border-radius: 12px;
-    padding: 18px 16px 12px;
-    box-shadow: 0 10px 24px rgba(17, 40, 75, 0.04);
+    background: #f8fafc;
+    border: 1px solid #e8eef5;
+    border-radius: 10px;
+    padding: 14px 12px;
+    box-shadow: none;
   }
   .page-about .sidebar-title {
     display: flex;
     align-items: center;
-    font-size: 14px;
-    font-weight: 800;
-    color: var(--navy);
-    letter-spacing: 0.08em;
-    margin: 0 0 14px;
-    padding: 0 0 12px 10px;
-    border-left: 4px solid var(--blue);
-    border-bottom: 1px solid #eef2f6;
+    font-size: 12px;
+    font-weight: 700;
+    color: #64748b;
+    letter-spacing: 0.1em;
+    margin: 0 0 10px;
+    padding: 0 0 10px;
+    border-left: 0;
+    border-bottom: 1px solid #e8eef5;
     text-transform: uppercase;
   }
   .page-about .news-widget-list {
@@ -447,19 +376,20 @@
   .page-about .news-widget-item {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
-    gap: 12px;
-    padding: 12px;
-    margin: 0 0 6px;
+    gap: 10px;
+    padding: 10px;
+    margin: 0 0 4px;
     border: 1px solid transparent;
-    border-radius: 10px;
+    border-radius: 8px;
     color: inherit;
     text-decoration: none;
+    background: transparent;
     transition:
       background 0.2s,
       border-color 0.2s;
   }
   .page-about .news-widget-item.has-thumb {
-    grid-template-columns: 88px minmax(0, 1fr);
+    grid-template-columns: 72px minmax(0, 1fr);
   }
   .page-about .news-widget-item:focus-visible {
     outline: 2px solid var(--blue);
@@ -520,7 +450,7 @@
     margin: 0 0 22px;
     color: var(--muted);
     font-size: 16px;
-    line-height: 1.65;
+    line-height: 1.45;
   }
   .page-about .news-detail-body h2,
   .page-about .news-detail-body h3 {
@@ -542,12 +472,12 @@
     text-decoration: underline;
   }
   .page-about .news-widget-thumb {
-    width: 88px;
-    height: 66px;
-    border-radius: 8px;
+    width: 72px;
+    height: 54px;
+    border-radius: 6px;
     overflow: hidden;
     border: 1px solid #e2e8f0;
-    background: #eef3f9;
+    background: #e8eef5;
     flex-shrink: 0;
   }
   .page-about .news-widget-thumb img {
@@ -555,6 +485,31 @@
     height: 100%;
     object-fit: cover;
     display: block;
+  }
+  .page-about .news-widget-thumb.is-broken,
+  .page-about .news-detail-cover.is-broken {
+    display: none;
+  }
+  .page-about .news-widget-thumb.is-placeholder,
+  .page-about .gallery-card.is-placeholder img {
+    display: none;
+  }
+  .page-about .news-widget-thumb.is-placeholder::after,
+  .page-about .gallery-card.is-placeholder::before {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 54px;
+    background:
+      linear-gradient(135deg, #e8eef5 0%, #f5f7fa 50%, #e2e8f0 100%);
+  }
+  .page-about .gallery-card.is-placeholder {
+    min-height: 140px;
+    background: #eef3f9;
+  }
+  .page-about .news-widget-item:not(.has-thumb) .news-widget-thumb {
+    display: none;
   }
   .page-about .news-widget-content {
     display: flex;
@@ -593,29 +548,6 @@
     gap: 5px;
   }
 
-  .page-about footer {
-    background: #edf3fb;
-    color: #5c708b;
-    padding: 35px 0;
-    font-size: 12px;
-    border-top: 1px solid #dce6f3;
-  }
-  .page-about footer strong {
-    color: var(--blue);
-  }
-  .page-about footer .wrap {
-    display: flex;
-    justify-content: space-between;
-    gap: 30px;
-  }
-  .page-about .demo {
-    background: #f8faff;
-    color: #687c98;
-    text-align: center;
-    padding: 7px 15px;
-    font-size: 11px;
-  }
-
   @media (max-width: 900px) {
     .page-about .editorial-grid {
       grid-template-columns: 1fr;
@@ -639,24 +571,6 @@
     .page-about .article-gallery {
       grid-template-columns: 1fr;
     }
-    .page-about .brand strong {
-      font-size: 22px;
-    }
-    .page-about .brand img {
-      width: 60px;
-      height: 60px;
-    }
-    .page-about .contacttop {
-      display: none;
-    }
-    .page-about nav .wrap {
-      overflow: auto;
-      justify-content: flex-start;
-      gap: 25px;
-    }
-    .page-about nav a {
-      font-size: 12px;
-    }
     .page-about .poster-values {
       grid-template-columns: repeat(2, 1fr);
     }
@@ -679,7 +593,7 @@
       Arial,
       Helvetica,
       sans-serif;
-    margin: 0 0 24px;
+    margin: 0 0 12px;
     letter-spacing: -0.015em;
     text-wrap: normal;
   }

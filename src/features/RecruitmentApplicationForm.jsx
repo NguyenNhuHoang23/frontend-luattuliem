@@ -270,9 +270,21 @@ export function RecruitmentApplicationForm({
                 href="/documents/02_Mau_van_ban_chap_thuan_hop_tac_CTV.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-preview-paper"
+                className="btn-preview-paper btn-with-arrow"
               >
-                Xem trước mẫu chấp thuận (.pdf) ↗
+                <span>Xem trước mẫu chấp thuận (.pdf)</span>
+                <svg
+                  width="13"
+                  height="13"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.4"
+                  aria-hidden="true"
+                >
+                  <line x1="7" y1="17" x2="17" y2="7" />
+                  <polyline points="7 7 17 7 17 17" />
+                </svg>
               </a>
             </div>
           </div>

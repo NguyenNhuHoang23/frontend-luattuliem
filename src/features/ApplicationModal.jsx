@@ -76,8 +76,26 @@ export function ApplicationModal({ role, onClose }) {
           <input name="cv" type="file" required accept=".pdf,application/pdf" />
         </label>
         {error ? <p className="notice">{error}</p> : null}
-        <button className="btn" disabled={submitting}>
-          {submitting ? "Đang gửi hồ sơ…" : "Gửi hồ sơ ↗"}
+        <button className="btn btn-with-arrow" disabled={submitting}>
+          {submitting ? (
+            "Đang gửi hồ sơ…"
+          ) : (
+            <>
+              <span>Gửi hồ sơ</span>
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.4"
+                aria-hidden="true"
+              >
+                <line x1="7" y1="17" x2="17" y2="7" />
+                <polyline points="7 7 17 7 17 17" />
+              </svg>
+            </>
+          )}
         </button>
       </form>
     </Modal>

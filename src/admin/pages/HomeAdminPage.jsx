@@ -30,7 +30,12 @@ function clonePage(data) {
     ...defaultHomePage,
     ...(data || {}),
     hero: { ...defaultHomePage.hero, ...(data?.hero || {}) },
-    intro: { ...defaultHomePage.intro, ...(data?.intro || {}) },
+    intro: {
+      ...defaultHomePage.intro,
+      ...(data?.intro || {}),
+      file: null,
+      preview: "",
+    },
     fields: { ...defaultHomePage.fields, ...(data?.fields || {}) },
     cooperate: { ...defaultHomePage.cooperate, ...(data?.cooperate || {}) },
     articles: { ...defaultHomePage.articles, ...(data?.articles || {}) },
@@ -125,7 +130,16 @@ export default function HomeAdminPage() {
     const payload = {
       hero: form.hero,
       principles: form.principles,
-      intro: form.intro,
+      intro: {
+        eyebrow: form.intro.eyebrow,
+        title: form.intro.title,
+        body: form.intro.body,
+        quote: form.intro.quote,
+        imageCaption: form.intro.imageCaption,
+        imagePath: form.intro.imagePath || null,
+        buttonLabel: form.intro.buttonLabel,
+        buttonHref: form.intro.buttonHref,
+      },
       fields: form.fields,
       cooperate: form.cooperate,
       articles: form.articles,
@@ -140,6 +154,9 @@ export default function HomeAdminPage() {
     form.slides.forEach((slide, index) => {
       if (slide.file) body.append(`slides[${index}][image]`, slide.file);
     });
+    if (form.intro.file) {
+      body.append("intro[image]", form.intro.file);
+    }
     try {
       setForm(clonePage(await updateHomePage(body)));
       setNotice("Đã lưu trang chủ. Tải lại website để xem thay đổi.");
@@ -357,6 +374,61 @@ export default function HomeAdminPage() {
 
         <section className="admin-home-section">
         <h2>Giới thiệu</h2>
+        <div className="admin-slide-card">
+          <div className="admin-slide-preview-wrap">
+            {form.intro.preview || form.intro.image ? (
+              <img
+                className="admin-slide-preview"
+                src={form.intro.preview || form.intro.image}
+                alt={form.intro.imageCaption || "Ảnh giới thiệu"}
+              />
+            ) : (
+              <div className="admin-slide-preview is-empty">Chưa có ảnh</div>
+            )}
+            <p className="admin-slide-hint">
+              {form.intro.preview
+                ? form.intro.file?.name
+                  ? `Ảnh mới chọn: ${form.intro.file.name}`
+                  : "Ảnh mới chọn, chưa lưu."
+                : form.intro.image
+                  ? "Ảnh đã lưu, đang hiện trên trang chủ."
+                  : "Đang dùng ảnh mặc định trên trang chủ."}
+            </p>
+          </div>
+          <div className="admin-slide-fields">
+            <Field
+              label="Chú thích ảnh"
+              name="introImageCaption"
+              value={form.intro.imageCaption}
+              onChange={(event) =>
+                patch("intro", "imageCaption", event.target.value)
+              }
+            />
+            <label className="admin-field">
+              <span>Ảnh giới thiệu</span>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(event) => {
+                  const file = event.target.files?.[0] || null;
+                  setForm((current) => {
+                    if (current.intro.preview?.startsWith("blob:")) {
+                      URL.revokeObjectURL(current.intro.preview);
+                    }
+                    return {
+                      ...current,
+                      intro: {
+                        ...current.intro,
+                        file,
+                        preview: file ? URL.createObjectURL(file) : "",
+                      },
+                    };
+                  });
+                }}
+              />
+            </label>
+          </div>
+        </div>
         <Field
           label="Nhãn nhỏ"
           name="introEyebrow"
@@ -373,7 +445,7 @@ export default function HomeAdminPage() {
           required
         />
         <Field
-          label="Nội dung"
+          label="Đoạn 1"
           name="introBody"
           type="textarea"
           rows={4}
@@ -381,12 +453,24 @@ export default function HomeAdminPage() {
           onChange={(event) => patch("intro", "body", event.target.value)}
         />
         <Field
-          label="Câu trích"
+          label="Đoạn 2"
           name="introQuote"
           type="textarea"
-          rows={2}
+          rows={3}
           value={form.intro.quote}
           onChange={(event) => patch("intro", "quote", event.target.value)}
+        />
+        <Field
+          label="Nhãn nút"
+          name="introButtonLabel"
+          value={form.intro.buttonLabel}
+          onChange={(event) => patch("intro", "buttonLabel", event.target.value)}
+        />
+        <Field
+          label="Liên kết nút"
+          name="introButtonHref"
+          value={form.intro.buttonHref}
+          onChange={(event) => patch("intro", "buttonHref", event.target.value)}
         />
         </section>
 

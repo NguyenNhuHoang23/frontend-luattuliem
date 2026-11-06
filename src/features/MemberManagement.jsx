@@ -36,10 +36,19 @@ function memberGroup(person) {
   return person?.role || person?.group || "ctv";
 }
 
+function memberRoles(person) {
+  if (Array.isArray(person?.roles) && person.roles.length) {
+    return person.roles;
+  }
+  return [memberGroup(person)];
+}
+
 function normalizeMember(item) {
   if (!item) return item;
+  const roles = memberRoles(item);
   return {
     ...item,
+    roles,
     group: memberGroup(item),
   };
 }
@@ -210,7 +219,8 @@ export default function MemberManagement({
         (person.email && person.email.toLowerCase().includes(term)) ||
         (person.area && person.area.toLowerCase().includes(term));
 
-      const matchRole = roleFilter === "all" || memberGroup(person) === roleFilter;
+      const matchRole =
+        roleFilter === "all" || memberRoles(person).includes(roleFilter);
       const matchStatus =
         viewMode === "inactive" ? !isActiveStatus(person) : isActiveStatus(person);
       return matchSearch && matchRole && matchStatus;
@@ -287,14 +297,14 @@ export default function MemberManagement({
     setApplicationFormError("");
   };
 
-  const handleApproveApplication = async ({ username, password, area }) => {
+  const handleApproveApplication = async ({ username, password, area, roles }) => {
     if (!selectedApplication) return;
     setApplicationSaving(true);
     setApplicationFormError("");
     try {
       const { application, member, message } = await approveMemberApplication(
         selectedApplication.id,
-        { username, password, area },
+        { username, password, area, roles },
       );
       setApplications((prev) =>
         prev.map((item) => (sameId(item.id, application.id) ? application : item)),
@@ -403,12 +413,15 @@ export default function MemberManagement({
     setFormError("");
   };
 
-  const roleInfo = activeMember
-    ? ROLE_CONFIG[memberGroup(activeMember)] || {
-        label: "Thành viên",
-        badgeClass: "badge-default",
-      }
-    : null;
+  const roleInfos = activeMember
+    ? memberRoles(activeMember).map(
+        (roleId) =>
+          ROLE_CONFIG[roleId] || {
+            label: "Thành viên",
+            badgeClass: "badge-default",
+          },
+      )
+    : [];
 
   return (
     <div
@@ -588,10 +601,13 @@ export default function MemberManagement({
               {!listLoading && filteredMembers.length > 0 ? (
                 filteredMembers.map((person) => {
                   const isSelected = sameId(activeMember?.id, person.id);
-                  const personRole = ROLE_CONFIG[memberGroup(person)] || {
-                    label: "Thành viên",
-                    badgeClass: "badge-default",
-                  };
+                  const personRoleLabels = memberRoles(person).map(
+                    (roleId) =>
+                      ROLE_CONFIG[roleId] || {
+                        label: "Thành viên",
+                        badgeClass: "badge-default",
+                      },
+                  );
                   const isActive = person.status !== "inactive";
                   const casesCount = casesForMember(person, threads).length;
 
@@ -619,9 +635,14 @@ export default function MemberManagement({
                           ></span>
                         </div>
                         <div className="directory-item-row-meta">
-                          <span className={`role-badge-mini ${personRole.badgeClass}`}>
-                            {personRole.label}
-                          </span>
+                          {personRoleLabels.map((personRole, index) => (
+                            <span
+                              key={`${person.id}-role-${index}`}
+                              className={`role-badge-mini ${personRole.badgeClass}`}
+                            >
+                              {personRole.label}
+                            </span>
+                          ))}
                           <span className="directory-case-count">
                             {casesCount > 0 ? `${casesCount} vụ việc` : "—"}
                           </span>
@@ -681,9 +702,14 @@ export default function MemberManagement({
                 <div>
                   <div className="dossier-title-row">
                     <h2>{activeMember.name}</h2>
-                    <span className={`role-badge ${roleInfo?.badgeClass}`}>
-                      {roleInfo?.label}
-                    </span>
+                    {roleInfos.map((roleInfo, index) => (
+                      <span
+                        key={`active-role-${index}`}
+                        className={`role-badge ${roleInfo.badgeClass}`}
+                      >
+                        {roleInfo.label}
+                      </span>
+                    ))}
                     <span
                       className={`status-pill ${
                         activeMember.status !== "inactive"

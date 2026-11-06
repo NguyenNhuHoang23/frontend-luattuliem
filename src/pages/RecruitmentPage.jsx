@@ -11,7 +11,6 @@ import {
   recruitmentArticle,
   recruitmentDocuments,
 } from "../data/recruitment.js";
-import { site } from "../data/site.js";
 import { RecruitmentSkeleton } from "../components/Skeleton.jsx";
 import { RecruitmentCard } from "../features/RecruitmentCard.jsx";
 import { RecruitmentApplicationForm } from "../features/RecruitmentApplicationForm.jsx";
@@ -153,84 +152,109 @@ export default function RecruitmentPage() {
       className="application-box recruitment-topic"
     >
       <h2 className="form-title" ref={detailHeadingRef} tabIndex={-1}>
-        Cách gửi hồ sơ ứng tuyển
+        Gửi hồ sơ ứng tuyển
       </h2>
-      {recruitmentArticle.application.map((text) => (
-        <p key={text}>{text}</p>
-      ))}
-
-      <div className="recruitment-documents-card">
-        <h3 className="recruitment-docs-title">
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden="true"
-          >
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-            <polyline points="14 2 14 8 20 8" />
-            <line x1="16" y1="13" x2="8" y2="13" />
-            <line x1="16" y1="17" x2="8" y2="17" />
-            <polyline points="10 9 9 9 8 9" />
-          </svg>
-          Tài liệu &amp; Biểu mẫu dành cho ứng viên
-        </h3>
-        <p className="recruitment-docs-intro">
-          Ứng viên gửi hồ sơ qua bưu điện vui lòng tải và điền Đơn đề nghị hợp
-          tác theo mẫu. Bạn cũng có thể xem trước mẫu văn bản chấp thuận hợp tác
-          của Công ty:
-        </p>
-        <div className="recruitment-doc-list">
-          {recruitmentDocuments.map((doc) => (
-            <div className="recruitment-doc-item" key={doc.id}>
-              <div>
-                <div className="recruitment-doc-header">
-                  <span className={`recruitment-doc-badge ${doc.badgeClass}`}>
-                    {doc.fileType}
-                  </span>
-                  <strong className="recruitment-doc-name">{doc.title}</strong>
-                </div>
-                <p className="recruitment-doc-desc">{doc.description}</p>
-              </div>
-              <div className="recruitment-doc-actions">
-                {doc.previewUrl && (
-                  <a
-                    href={doc.previewUrl}
-                    className="recruitment-doc-btn"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Xem trước ↗
-                  </a>
-                )}
-                <a
-                  href={doc.fileUrl}
-                  className="recruitment-doc-btn"
-                  {...(doc.isDownload
-                    ? { download: doc.fileName }
-                    : {
-                        target: "_blank",
-                        rel: "noopener noreferrer",
-                      })}
-                >
-                  {doc.actionLabel}
-                </a>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+      <p className="recruitment-apply-lead">
+        Điền biểu mẫu bên dưới để gửi hồ sơ. Hướng dẫn và tài liệu mẫu có thể
+        mở thêm khi cần.
+      </p>
 
       <RecruitmentApplicationForm
         selectedRole={selectedRole}
         onRoleChange={setSelectedRole}
         roles={roles}
       />
+
+      <details className="recruitment-apply-help">
+        <summary>Cách gửi hồ sơ &amp; tài liệu mẫu</summary>
+        <div className="recruitment-apply-help-body">
+          {recruitmentArticle.application.map((text) => (
+            <p key={text}>{text}</p>
+          ))}
+          <div className="recruitment-documents-card">
+            <h3 className="recruitment-docs-title">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+                <line x1="16" y1="13" x2="8" y2="13" />
+                <line x1="16" y1="17" x2="8" y2="17" />
+                <polyline points="10 9 9 9 8 9" />
+              </svg>
+              Tài liệu &amp; Biểu mẫu dành cho ứng viên
+            </h3>
+            <p className="recruitment-docs-intro">
+              Ứng viên gửi hồ sơ qua bưu điện vui lòng tải và điền Đơn đề nghị
+              hợp tác theo mẫu. Bạn cũng có thể xem trước mẫu văn bản chấp thuận
+              hợp tác của Công ty:
+            </p>
+            <div className="recruitment-doc-list">
+              {recruitmentDocuments.map((doc) => (
+                <div className="recruitment-doc-item" key={doc.id}>
+                  <div>
+                    <div className="recruitment-doc-header">
+                      <span
+                        className={`recruitment-doc-badge ${doc.badgeClass}`}
+                      >
+                        {doc.fileType}
+                      </span>
+                      <strong className="recruitment-doc-name">
+                        {doc.title}
+                      </strong>
+                    </div>
+                    <p className="recruitment-doc-desc">{doc.description}</p>
+                  </div>
+                  <div className="recruitment-doc-actions">
+                    {doc.previewUrl && (
+                      <a
+                        href={doc.previewUrl}
+                        className="recruitment-doc-btn"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Xem trước
+                        <svg
+                          width="13"
+                          height="13"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2.4"
+                          aria-hidden="true"
+                        >
+                          <line x1="7" y1="17" x2="17" y2="7" />
+                          <polyline points="7 7 17 7 17 17" />
+                        </svg>
+                      </a>
+                    )}
+                    <a
+                      href={doc.fileUrl}
+                      className="recruitment-doc-btn"
+                      {...(doc.isDownload
+                        ? { download: doc.fileName }
+                        : {
+                            target: "_blank",
+                            rel: "noopener noreferrer",
+                          })}
+                    >
+                      {doc.actionLabel}
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </details>
     </section>
   );
 
@@ -267,7 +291,7 @@ export default function RecruitmentPage() {
                     aria-controls={role.id}
                     onClick={() => toggleTopic(role.id)}
                   >
-                    <span>{role.name}</span>
+                    <span className="recruitment-topic-name">{role.name}</span>
                     <span className="recruitment-topic-arrow" aria-hidden="true">
                       <svg
                         width="18"
@@ -368,11 +392,6 @@ export default function RecruitmentPage() {
                 </div>
               </div>
             </nav>
-            {loading ? null : (
-            <p className="recruitment-contact-line">
-              Liên hệ: <a href={site.phoneHref}>{site.phone}</a>
-            </p>
-            )}
           </article>
         </div>
       </main>

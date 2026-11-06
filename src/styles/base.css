@@ -13,7 +13,7 @@
   body {
     margin: 0;
     font:
-      15px/1.65 "Liberation Sans Web",
+      15px/1.45 "Liberation Sans Web",
       Arial,
       Helvetica,
       sans-serif;
@@ -21,6 +21,36 @@
     background: white;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+  p,
+  li,
+  dd,
+  blockquote,
+  .article-body,
+  .article-body p,
+  .recruitment-intro,
+  .contact-lead,
+  .page-subtitle {
+    line-height: 1.45;
+  }
+  /* Rút khoảng cách giữa các ý / đoạn trên mọi trang */
+  p {
+    margin: 0 0 10px;
+  }
+  ul,
+  ol {
+    margin: 0 0 12px;
+  }
+  li + li {
+    margin-top: 4px;
+  }
+  h1 + p,
+  h2 + p,
+  h3 + p,
+  .article-content-heading + *,
+  .recruitment-content-heading + *,
+  .article-section-title + p {
+    margin-top: 0;
   }
   a {
     color: inherit;
@@ -39,47 +69,145 @@
     width: min(1200px, 90%);
     margin: auto;
   }
-  .top {
+  .top,
+  .site-topbar {
     background: var(--navy);
     color: #dce5f3;
     font-size: 12px;
-    padding: 7px 0;
+    padding: 8px 0;
   }
-  .top .wrap {
+  .top .wrap,
+  .site-topbar .wrap {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    gap: 16px;
   }
-  header {
+  .site-topbar-left,
+  .site-topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    min-width: 0;
+  }
+  .site-topbar-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: inherit;
+    min-width: 0;
+  }
+  .site-topbar-item svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    opacity: 0.9;
+  }
+  header,
+  .site-header {
     background: #fff;
-    border-bottom: 1px solid var(--line);
+    border-bottom: 0;
   }
   .brandrow {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 20px 0;
+    gap: 24px;
+    padding: 18px 0;
   }
   .brand {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 14px;
+    min-width: 0;
   }
-  .brand img {
-    width: 76px;
-    height: 76px;
+  .brand img:not(.brand-logo-img) {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
   }
   .brand small {
+    display: block;
     font-size: 11px;
-    letter-spacing: 2px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 700;
   }
   .brand strong {
     display: block;
     font-family: "Liberation Sans Web", Arial, Helvetica, sans-serif;
     font-weight: 800;
     color: var(--blue);
-    font-size: 27px;
-    letter-spacing: 0.5px;
+    font-size: 28px;
+    letter-spacing: 0.4px;
+    line-height: 1.15;
+    text-transform: uppercase;
+  }
+  .header-aside {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-left: auto;
+  }
+  .header-email {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    color: inherit;
+  }
+  .header-email-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #eef3fb;
+    color: var(--blue);
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+  }
+  .header-email-icon svg {
+    width: 18px;
+    height: 18px;
+  }
+  .header-email small {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .header-email b {
+    display: block;
+    font-size: 16px;
+    color: var(--blue);
     line-height: 1.25;
+  }
+  .header-email em {
+    display: block;
+    font-style: normal;
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  .header-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 18px;
+    border-radius: 4px;
+    background: var(--navy);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .header-cta:hover {
+    background: var(--blue);
   }
   .contacttop {
     font-size: 15px;
@@ -90,25 +218,49 @@
     font-size: 22px;
     color: var(--blue);
   }
-  nav {
-    border-top: 1px solid #eef1f5;
+  /* Chỉ áp cho menu điều hướng site — không đụng nav nội dung trang (vd. tuyển dụng). */
+  header nav:not(.primary-nav),
+  .site-header nav:not(.primary-nav) {
+    background: var(--navy);
   }
-  nav .wrap {
+  header nav .wrap,
+  .site-header nav .wrap {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
-    gap: 36px;
+    justify-content: space-between;
+    gap: 24px;
   }
-  nav a {
+  .site-nav-links {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    min-width: 0;
+  }
+  header nav:not(.primary-nav) a,
+  .site-header nav:not(.primary-nav) a {
     font-size: 14px;
-    padding: 17px 0;
+    padding: 15px 0;
+    white-space: nowrap;
+    color: #e7eef8;
+  }
+  header nav:not(.primary-nav) a:hover,
+  .site-header nav:not(.primary-nav) a:hover {
+    color: #fff;
+  }
+  header nav:not(.primary-nav) a.active,
+  .site-header nav:not(.primary-nav) a.active {
+    color: #f0c36a;
+    font-weight: 700;
+    border-bottom: 2px solid #f0c36a;
+  }
+  .site-nav-tagline {
+    margin: 0;
+    color: #f0c36a;
+    font-size: 12px;
+    font-weight: 700;
     white-space: nowrap;
   }
-  nav a:hover {
-    color: var(--blue);
-  }
   .memberlink {
-    color: var(--blue);
     font-weight: bold;
   }
   .eyebrow {
@@ -129,6 +281,14 @@
     font-size: 14px;
     border-radius: 3px;
   }
+  .btn-with-arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .btn-with-arrow svg {
+    flex-shrink: 0;
+  }
   .btn.light {
     background: white;
     color: var(--navy);
@@ -139,7 +299,7 @@
     color: var(--blue);
   }
   :where(.page-home, .portal, .application-dialog) section {
-    padding: 80px 0;
+    padding: 48px 0;
     scroll-margin-top: 20px;
   }
   :where(.page-home, .portal, .application-dialog) h2 {
@@ -150,7 +310,7 @@
       sans-serif;
     letter-spacing: -0.02em;
     color: var(--navy);
-    margin: 0 0 22px;
+    margin: 0 0 14px;
   }
   :where(.page-home, .portal, .application-dialog) h3 {
     font:
@@ -229,27 +389,124 @@
     grid-template-columns: 1fr 1fr;
     gap: 15px;
   }
-  footer {
-    background: var(--navy);
-    color: #bdc9da;
-    padding: 35px 0;
-    font-size: 12px;
+  .site-footer {
+    --footer-gold: #c9a227;
+    background: #f6f9fd;
+    color: #4a5c73;
+    border-top: 1px solid #e4ebf3;
+    padding: 0;
+    font-size: 15px;
   }
-  footer strong {
-    color: white;
-    font-size: 16px;
+  .site-footer a {
+    color: inherit;
+    text-decoration: none;
   }
-  footer .wrap {
+  .site-footer a:hover {
+    color: var(--blue);
+  }
+  .site-footer-main {
+    display: grid;
+    grid-template-columns: minmax(220px, 1.35fr) repeat(3, minmax(140px, 1fr));
+    gap: 28px 40px;
+    padding: 40px 0 32px;
+  }
+  .site-footer-brand {
     display: flex;
-    justify-content: space-between;
-    gap: 30px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    max-width: 540px;
+  }
+  .site-footer-logo {
+    width: auto;
+    height: 132px;
+    max-width: 520px;
+    border-radius: 0;
+    object-fit: contain;
+    display: block;
+    background: transparent;
+    box-shadow: none;
+  }
+  .site-footer-name {
+    display: block;
+    color: var(--navy);
+    font-family: "Times New Roman", Times, "Liberation Serif", serif;
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: 0.02em;
+  }
+  .site-footer-slogan {
+    margin: 0;
+    color: #4a5c73;
+    font-size: 14.5px;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+  .site-footer-heading {
+    margin: 0 0 10px;
+    color: var(--navy);
+    font-size: 14.5px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    line-height: 1.2;
+  }
+  .site-footer-heading::after {
+    content: "";
+    display: block;
+    width: 36px;
+    height: 2px;
+    margin-top: 7px;
+    background: var(--footer-gold);
+  }
+  .site-footer-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 6px;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+  .site-footer-list li + li {
+    margin-top: 0;
+  }
+  .site-footer-bottom {
+    border-top: 1px solid #e4ebf3;
+    background: #f6f9fd;
+  }
+  .site-footer-bottom-inner {
+    display: grid;
+    grid-template-columns: 1.2fr 1.4fr auto;
+    gap: 12px 24px;
+    align-items: center;
+    padding: 14px 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: #5c708b;
+    line-height: 1.3;
+  }
+  .site-footer-copy,
+  .site-footer-note {
+    margin: 0;
+  }
+  .site-footer-note {
+    text-align: center;
+    letter-spacing: 0.02em;
+  }
+  .site-footer-top {
+    color: var(--footer-gold) !important;
+    font-weight: 700;
+    white-space: nowrap;
+    justify-self: end;
+  }
+  .site-footer-top:hover {
+    color: #a8861a !important;
   }
   .demo {
-    background: #edf2fb;
-    color: #485e80;
-    text-align: center;
-    padding: 7px 15px;
-    font-size: 11px;
+    display: none;
   }
   .hidden {
     display: none !important;
@@ -333,9 +590,6 @@
       align-items: flex-start;
       flex-direction: column;
     }
-    footer .wrap {
-      flex-direction: column;
-    }
     .formrow {
       grid-template-columns: 1fr;
     }
@@ -345,24 +599,48 @@
     .top span:last-child {
       display: none;
     }
+    .site-footer-main {
+      grid-template-columns: 1fr 1fr;
+      gap: 22px 24px;
+      padding: 32px 0 26px;
+    }
+    .site-footer-brand {
+      grid-column: 1 / -1;
+      max-width: none;
+      gap: 8px;
+    }
+    .site-footer-logo {
+      width: auto;
+      height: 92px;
+      max-width: 360px;
+    }
+    .site-footer-name {
+      font-size: 20px;
+    }
+    .site-footer-bottom-inner {
+      grid-template-columns: 1fr;
+      text-align: center;
+      gap: 10px;
+    }
+    .site-footer-note {
+      text-align: center;
+    }
+    .site-footer-top {
+      justify-self: center;
+    }
   }
 
-  /* Light homepage: unfiltered photograph, separate editorial text column. */
-  .top {
-    background: #f0f5fc;
-    color: #496280;
-    border-bottom: 1px solid #e1e9f4;
+  /* Thanh trên giữ nền navy. */
+  .top,
+  .site-topbar {
+    background: var(--navy);
+    color: #dce5f3;
+    border-bottom: 0;
   }
-  footer {
-    background: #edf3fb;
-    color: #5c708b;
-    border-top: 1px solid #dce6f3;
-  }
-  footer strong {
-    color: var(--blue);
-  }
-  .demo {
-    background: #f8faff;
-    color: #687c98;
+
+  @media (max-width: 560px) {
+    .site-footer-main {
+      grid-template-columns: 1fr;
+    }
   }
 }

@@ -3,6 +3,30 @@ import { Link, useParams } from "react-router-dom";
 import { listPublicNews } from "../api/public.js";
 import { AboutNewsSidebarSkeleton } from "../components/Skeleton.jsx";
 
+function NewsWidgetItem({ item, active }) {
+  const [hasThumb, setHasThumb] = useState(Boolean(item.image));
+
+  return (
+    <Link
+      className={`news-widget-item${active ? " is-active" : ""}${hasThumb ? " has-thumb" : ""}`}
+      to={`/gioi-thieu/tin/${item.id}`}
+    >
+      {item.image && hasThumb ? (
+        <div className="news-widget-thumb">
+          <img src={item.image} alt="" onError={() => setHasThumb(false)} />
+        </div>
+      ) : null}
+      <div className="news-widget-content">
+        <h4 className="news-widget-title">{item.title}</h4>
+        {item.excerpt ? (
+          <p className="news-widget-excerpt">{item.excerpt}</p>
+        ) : null}
+        {item.date ? <span className="news-widget-date">{item.date}</span> : null}
+      </div>
+    </Link>
+  );
+}
+
 export function AboutNewsSidebar() {
   const { id: activeId } = useParams();
   const [items, setItems] = useState([]);
@@ -37,26 +61,11 @@ export function AboutNewsSidebar() {
       {!loading ? (
         <div className="news-widget-list">
           {items.map((item) => (
-            <Link
-              className={`news-widget-item${item.id === activeId ? " is-active" : ""}${item.image ? " has-thumb" : ""}`}
-              to={`/gioi-thieu/tin/${item.id}`}
+            <NewsWidgetItem
               key={item.id}
-            >
-              {item.image ? (
-                <div className="news-widget-thumb">
-                  <img src={item.image} alt="" />
-                </div>
-              ) : null}
-              <div className="news-widget-content">
-                <h4 className="news-widget-title">{item.title}</h4>
-                {item.excerpt ? (
-                  <p className="news-widget-excerpt">{item.excerpt}</p>
-                ) : null}
-                {item.date ? (
-                  <span className="news-widget-date">{item.date}</span>
-                ) : null}
-              </div>
-            </Link>
+              item={item}
+              active={item.id === activeId}
+            />
           ))}
         </div>
       ) : null}

@@ -11,6 +11,24 @@ const STATUS_LABEL = {
   rejected: "Đã từ chối",
 };
 
+const ASSIGNABLE_ROLES = [
+  { id: "lawyer", name: "Luật sư" },
+  { id: "support", name: "Hỗ trợ" },
+  { id: "legal", name: "Pháp lý" },
+];
+
+export function roleIdsFromLabel(label) {
+  const value = String(label || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+  const roles = [];
+  if (value.includes("luat su") || value.includes("lawyer")) roles.push("lawyer");
+  if (value.includes("ho tro") || value.includes("support")) roles.push("support");
+  if (value.includes("phap ly") || value.includes("legal")) roles.push("legal");
+  return roles.length ? roles : ["lawyer"];
+}
+
 function sameId(left, right) {
   return left != null && right != null && String(left) === String(right);
 }
@@ -177,6 +195,7 @@ export function MemberApplicationDetail({
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [area, setArea] = useState("");
+  const [roles, setRoles] = useState(["lawyer"]);
   const [rejectNote, setRejectNote] = useState("");
   const [cvError, setCvError] = useState("");
   const [cvLoading, setCvLoading] = useState(false);
@@ -186,9 +205,18 @@ export function MemberApplicationDetail({
     setUsername(suggestUsername(application.name));
     setPassword(randomMemberPassword());
     setArea(application.area || "Hà Nội");
+    setRoles(roleIdsFromLabel(application.role));
     setRejectNote("");
     setCvError("");
   }, [application?.id]);
+
+  function toggleRole(roleId) {
+    setRoles((prev) =>
+      prev.includes(roleId)
+        ? prev.filter((id) => id !== roleId)
+        : [...prev, roleId],
+    );
+  }
 
   async function openCv() {
     if (!application?.hasCv) return;
@@ -333,10 +361,12 @@ export function MemberApplicationDetail({
                 className="dossier-inline-edit-box"
                 onSubmit={(event) => {
                   event.preventDefault();
+                  if (!roles.length) return;
                   onApprove({
                     username: username.trim(),
                     password,
                     area: area.trim(),
+                    roles,
                   });
                 }}
               >
@@ -373,6 +403,27 @@ export function MemberApplicationDetail({
                     </div>
                   </div>
                 </div>
+                <fieldset className="form-group-item approve-role-fieldset">
+                  <legend>Vai trò *</legend>
+                  <p className="approve-role-hint">Có thể chọn nhiều vai trò cho thành viên.</p>
+                  <div className="approve-role-options" role="group" aria-label="Chọn vai trò">
+                    {ASSIGNABLE_ROLES.map((role) => (
+                      <label key={role.id} className="approve-role-option">
+                        <input
+                          type="checkbox"
+                          checked={roles.includes(role.id)}
+                          onChange={() => toggleRole(role.id)}
+                        />
+                        <span>{role.name}</span>
+                      </label>
+                    ))}
+                  </div>
+                  {!roles.length ? (
+                    <p className="member-dialog-error" role="alert">
+                      Vui lòng chọn ít nhất một vai trò.
+                    </p>
+                  ) : null}
+                </fieldset>
                 <div className="form-group-item">
                   <label htmlFor="approveArea">Địa bàn công tác</label>
                   <input
@@ -408,7 +459,7 @@ export function MemberApplicationDetail({
                   <button
                     type="submit"
                     className="btn-dossier-action btn-hero-approve"
-                    disabled={saving}
+                    disabled={saving || !roles.length}
                   >
                     {saving ? "Đang xử lý…" : "Duyệt và cấp tài khoản"}
                   </button>

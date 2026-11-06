@@ -5,6 +5,8 @@ import image3 from "../assets/site/cover_3.jpg";
 import image4 from "../assets/site/logo.jpg";
 import image5 from "../assets/site/toa-an-nhan-dan-toi-cao.png";
 import image6 from "../assets/site/email-tranh-chap-lao-dong.jpg";
+import image7 from "../assets/site/law-office-hero.png";
+import image8 from "../assets/site/logo-wordmark.png";
 
 export const images = {
   "assets/about_team.jpg": image0,
@@ -14,4 +16,6 @@ export const images = {
   "assets/logo.jpg": image4,
   "assets/toa-an-nhan-dan-toi-cao.png": image5,
   "assets/email-tranh-chap-lao-dong.jpg": image6,
+  "assets/law-office-hero.png": image7,
+  "assets/logo-wordmark.png": image8,
 };

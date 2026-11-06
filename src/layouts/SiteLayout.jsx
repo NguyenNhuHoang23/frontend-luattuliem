@@ -30,11 +30,12 @@ export function SiteLayout() {
     });
     return () => cancelAnimationFrame(frame);
   }, [location.pathname, location.hash]);
+  const hideFooter = location.pathname.startsWith("/dien-dan");
   return (
     <CompanyInfoProvider>
       <Header />
       <Outlet />
-      <Footer />
+      {hideFooter ? null : <Footer />}
     </CompanyInfoProvider>
   );
 }

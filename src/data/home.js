@@ -3,7 +3,7 @@ export const defaultHomePage = {
     title: "ĐỒNG HÀNH CÙNG\nQUYỀN LỢI CỦA BẠN.",
     subtitle:
       "Lắng nghe để hiểu đúng. Phân tích để làm rõ.\nCùng bạn lựa chọn hướng giải quyết phù hợp.",
-    primaryButton: { label: "Gửi yêu cầu hỗ trợ ↗", href: "/lien-he" },
+    primaryButton: { label: "Gửi yêu cầu hỗ trợ", href: "/lien-he" },
     secondaryButton: { label: "Tìm hiểu về chúng tôi", href: "/gioi-thieu" },
   },
   slides: [],
@@ -25,10 +25,16 @@ export const defaultHomePage = {
     },
   ],
   intro: {
-    eyebrow: "Về chúng tôi",
-    title: "Gần hơn với khách hàng.\nRõ hơn trong từng việc.",
-    body: "Công ty Luật TNHH MTV Từ Liêm hướng đến việc kết nối luật sư và cộng tác viên tại địa phương, giúp khách hàng thuận tiện hơn trong quá trình trao đổi và giải quyết công việc.",
-    quote: "Tối ưu nguồn nhân lực địa phương,\nhướng đến lợi ích của khách hàng.",
+    eyebrow: "Câu chuyện của chúng tôi",
+    title: "Để mỗi người đóng góp đúng sở trường",
+    body: "Tại Công ty Luật TNHH MTV Từ Liêm, luật sư chuyên nghiệp và cộng tác viên địa phương cùng phối hợp theo từng vụ việc. Mỗi người phát huy đúng sở trường của mình, công việc được phân công rõ ràng và khách hàng được đồng hành sát hơn.",
+    quote:
+      "Công ty kết nối nguồn lực để khách hàng tiếp cận dịch vụ pháp lý thuận tiện hơn, tiết kiệm chi phí và nhận được sự hỗ trợ phù hợp với hoàn cảnh thực tế tại địa phương.",
+    imageCaption: "Hình ảnh minh họa · Văn phòng luật",
+    imagePath: null,
+    image: "",
+    buttonLabel: "Đọc giới thiệu công ty",
+    buttonHref: "/gioi-thieu",
   },
   fields: {
     eyebrow: "Lĩnh vực hoạt động",
@@ -40,21 +46,21 @@ export const defaultHomePage = {
         title: "Đất đai & nhà ở",
         description:
           "Trao đổi về quyền sử dụng đất, nhà ở và những vướng mắc liên quan.",
-        buttonLabel: "Gửi yêu cầu →",
+        buttonLabel: "Gửi yêu cầu",
         buttonHref: "/lien-he",
       },
       {
         title: "Dân sự & gia đình",
         description:
           "Những vấn đề về hợp đồng, thừa kế, hôn nhân và quyền lợi cá nhân.",
-        buttonLabel: "Gửi yêu cầu →",
+        buttonLabel: "Gửi yêu cầu",
         buttonHref: "/lien-he",
       },
       {
         title: "Tham gia tố tụng",
         description:
           "Tiếp nhận yêu cầu luật sư tham gia bảo vệ quyền và lợi ích hợp pháp.",
-        buttonLabel: "Gửi yêu cầu →",
+        buttonLabel: "Gửi yêu cầu",
         buttonHref: "/lien-he",
       },
     ],
@@ -106,7 +112,7 @@ export const defaultHomePage = {
     eyebrow: "Gửi yêu cầu – Liên hệ",
     title: "Hãy bắt đầu\nbằng một trao đổi.",
     body: "Để lại thông tin và nội dung cần hỗ trợ.",
-    buttonLabel: "Gửi yêu cầu ↗",
+    buttonLabel: "Gửi yêu cầu",
     notice:
       "Yêu cầu được gửi về quản trị Liên hệ. Công ty sẽ liên hệ lại sau khi tiếp nhận.",
   },

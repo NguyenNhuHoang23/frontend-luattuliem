@@ -85,18 +85,21 @@
   }
   @media (max-width: 900px) {
     .wrap {
-      width: calc(100% - 32px);
+      width: calc(100% - 24px);
     }
-    .top .wrap {
-      display: block;
-      font-size: 10px;
-      line-height: 1.5;
+    .top .wrap,
+    .site-topbar .wrap {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 11px;
+      line-height: 1.4;
     }
-    .top span:last-child {
+    .site-topbar-right {
       display: none;
     }
     header .brandrow {
-      padding: 14px 0;
+      padding: 12px 0;
       gap: 12px;
     }
     header .brand {
@@ -114,10 +117,14 @@
       letter-spacing: 1px;
     }
     header .brand strong {
-      font-size: 22px;
+      font-size: 20px;
       letter-spacing: 0.3px;
     }
+    header .header-aside,
     header .contacttop {
+      display: none;
+    }
+    .site-nav-tagline {
       display: none;
     }
     .menu-toggle {
@@ -143,13 +150,13 @@
       height: 20px;
       flex-shrink: 0;
     }
-    header.navigation-ready nav {
+    header.navigation-ready nav:not(.primary-nav) {
       display: none;
     }
-    header.navigation-ready.menu-open nav {
+    header.navigation-ready.menu-open nav:not(.primary-nav) {
       display: block;
     }
-    header.navigation-ready nav .wrap {
+    header.navigation-ready nav:not(.primary-nav) .wrap {
       display: flex;
       flex-direction: column;
       align-items: stretch;
@@ -157,20 +164,29 @@
       overflow: visible;
       padding: 6px 0 12px;
     }
-    header.navigation-ready nav a {
+    header.navigation-ready .site-nav-links {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+      width: 100%;
+    }
+    header.navigation-ready nav:not(.primary-nav) a {
       display: flex;
       align-items: center;
       min-height: 48px;
       padding: 12px;
       font-size: 15px;
       white-space: normal;
-      border-bottom: 1px solid #eef1f5;
+      border-bottom: 1px solid #243a5d;
+      color: #e7eef8;
     }
-    header.navigation-ready nav a.active {
-      background: #f0f5fc;
-      border-bottom-color: var(--blue);
+    header.navigation-ready nav:not(.primary-nav) a.active {
+      background: #1a3358;
+      color: #f0c36a;
+      border-bottom-color: #f0c36a;
     }
-    header.navigation-ready nav a:last-child {
+    header.navigation-ready nav:not(.primary-nav) a:last-child {
       border-bottom: 0;
     }
     a:focus-visible,
@@ -180,10 +196,10 @@
     }
     .editorial-grid {
       grid-template-columns: minmax(0, 1fr);
-      gap: 32px;
+      gap: 20px;
     }
     .main-container {
-      padding: 24px 0 40px;
+      padding: 16px 0 28px;
     }
     .sidebar {
       position: static;
@@ -193,7 +209,7 @@
     .breadcrumb {
       font-size: 12px;
       overflow-wrap: anywhere;
-      line-height: 1.7;
+      line-height: 1.5;
     }
     .breadcrumb a {
       white-space: normal;
@@ -205,21 +221,23 @@
       overflow-wrap: break-word;
     }
     .page-subtitle {
-      margin-bottom: 24px;
+      margin-bottom: 14px;
+      font-size: 14px;
+      line-height: 1.45;
     }
     .hero {
-      display: flex;
-      flex-direction: column;
+      display: block;
       min-height: 0;
     }
-    .hero > .wrap {
-      width: calc(100% - 32px);
-      padding: 0;
-      margin: auto;
+    .hero-inner {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding-block: 20px 16px;
     }
     .herotext {
       max-width: 100%;
-      padding: 20px 0 16px;
+      padding: 0;
     }
     .hero h1 {
       font-size: clamp(22px, 6vw, 26px);
@@ -234,6 +252,16 @@
     .page-home .hero .actions {
       margin-top: 16px;
     }
+    .page-home .hero-layout-split .hero-slider {
+      height: auto;
+      min-height: 0;
+      max-height: 320px;
+      max-width: 100%;
+      aspect-ratio: 4 / 3;
+    }
+    .page-home .hero-layout-split .hero-slide-img {
+      object-fit: cover;
+    }
     .page-home h2 {
       font-size: clamp(20px, 5.4vw, 24px);
       line-height: 1.25;
@@ -243,21 +271,28 @@
       margin-bottom: 0;
     }
     .page-home #gioi-thieu {
-      padding-top: 20px;
-      padding-bottom: 12px;
+      padding-top: 8px !important;
+      padding-bottom: 8px !important;
     }
-    .page-home .fields {
-      padding-top: 24px;
+    .page-home .fields,
+    .page-home .home-section.fields {
+      padding-top: 4px !important;
+      padding-bottom: 18px;
     }
-    .page-home #hop-tac {
-      padding-bottom: 12px;
+    .page-home #hop-tac,
+    .page-home .home-section.home-cooperate {
+      padding-top: 6px !important;
+      padding-bottom: 12px !important;
     }
-    .page-home .news {
-      padding-top: 24px;
-      padding-bottom: 12px;
+    .page-home .news,
+    .page-home .home-section.articles,
+    .page-home #an-le {
+      padding-top: 6px !important;
+      padding-bottom: 14px;
     }
     .page-home #lien-he {
-      padding-top: 24px;
+      padding-top: 10px !important;
+      padding-bottom: 18px !important;
     }
     .page-home p {
       line-height: 1.5;
@@ -271,7 +306,8 @@
       line-height: 1.5;
       padding: 14px 16px;
     }
-    .hero-slider {
+    .page-home .hero:not(.hero-layout-split) .hero-slider,
+    .hero:not(.hero-layout-split) .hero-slider {
       order: 1;
       width: 100%;
       height: clamp(230px, 65vw, 380px);
@@ -290,7 +326,7 @@
       left: 12px;
       right: 12px;
       bottom: 12px;
-      justify-content: flex-end;
+      justify-content: space-between;
       gap: 8px;
     }
     .slider-controls .caption {
@@ -459,7 +495,7 @@
     .featured-case,
     .case-card,
     .role-card {
-      padding: 22px 18px;
+      padding: 16px 14px;
     }
     .case-header,
     .case-footer,
@@ -467,7 +503,7 @@
     .role-footer,
     .featured-actions {
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 8px;
     }
     .role-footer .btn-apply {
       width: 100%;
@@ -481,28 +517,29 @@
       white-space: normal;
     }
     .policy-highlight {
-      padding: 20px 18px;
+      padding: 14px 14px;
     }
     .sidebar-box,
     .office-card,
     .process-box,
     .directions-box {
-      padding: 22px 18px;
+      padding: 14px;
     }
     .office-meta-item > div {
       min-width: 0;
       overflow-wrap: anywhere;
     }
     .portal {
-      padding: 24px 0 40px;
+      padding: 16px 0 28px;
     }
     .portalbar {
       flex-direction: column;
       align-items: flex-start;
-      gap: 18px;
+      gap: 10px;
+      margin-bottom: 16px;
     }
     .portalbar h2 {
-      font-size: 25px;
+      font-size: 22px;
     }
     .switch {
       flex-wrap: wrap;
@@ -528,10 +565,10 @@
       min-width: 0;
     }
     .panel {
-      padding: 20px 16px;
+      padding: 14px 12px;
     }
     .panel h3 {
-      font-size: 21px;
+      font-size: 18px;
     }
     .thread {
       padding-left: 12px;
@@ -578,20 +615,46 @@
       max-width: none;
       padding: 16px;
     }
-    footer {
-      padding: 28px 0;
-    }
-    footer .wrap {
-      flex-direction: column;
+    .site-footer-main {
       gap: 18px;
+      padding: 28px 0 22px;
     }
-    footer .wrap > div {
-      min-width: 0;
-      overflow-wrap: anywhere;
+    .site-footer-logo {
+      width: auto;
+      height: 78px;
+      max-width: 300px;
     }
-    .demo {
-      padding: 10px 16px;
-      line-height: 1.6;
+    .site-footer-name {
+      font-size: 18px;
+      font-weight: 800;
+      line-height: 1.15;
+    }
+    .site-footer-heading {
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+    .site-footer-heading::after {
+      width: 28px;
+      margin-top: 6px;
+    }
+    .site-footer-slogan {
+      font-size: 13.5px;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+    .site-footer-list {
+      gap: 5px;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+    .site-footer-bottom-inner {
+      padding: 12px 0;
+      gap: 6px;
+      font-size: 12.5px;
+      font-weight: 600;
     }
   }
   @media (max-width: 360px) {
@@ -602,9 +665,15 @@
     header .brand strong {
       font-size: 20px;
     }
-    header .brand img {
+    header .brand img:not(.brand-logo-img) {
       width: 44px;
       height: 44px;
+    }
+    header .brand img.brand-logo-img {
+      width: auto;
+      height: 58px;
+      max-width: 220px;
+      border-radius: 0;
     }
     .menu-toggle {
       gap: 5px;
@@ -628,16 +697,6 @@
     text-transform: none;
   }
 
-  /* Căn giữa nội dung trong cột chữ của banner. */
-  .hero > .wrap {
-    justify-content: center;
-  }
-  @media (min-width: 901px) {
-    .hero > .wrap {
-      padding-inline: 24px;
-    }
-  }
-
   /* Tiêu đề chính của banner căn trái như bố cục ban đầu. */
   .hero h1 {
     text-align: left;
@@ -652,10 +711,10 @@
     text-align: left;
   }
 
-  /* Nhóm nút lấy trục giữa theo khối chữ, không theo phần cột còn trống. */
+  /* Khối chữ và nút cùng trục trái. */
   .herotext {
-    width: fit-content;
-    text-align: center;
+    width: 100%;
+    text-align: left;
   }
 
   /* Nhóm nút căn trái, thẳng hàng với nội dung banner. */
@@ -666,65 +725,87 @@
   }
   /* Nhịp nội dung gọn hơn trên điện thoại. */
   @media (max-width: 600px) {
+    .wrap {
+      width: calc(100% - 20px);
+    }
     .page-home .principles {
-      margin-top: 8px;
+      margin-top: 6px;
     }
     .page-home .principles article {
-      padding-block: 12px;
+      padding-block: 10px;
       align-items: flex-start;
     }
     .page-home .principles b {
-      line-height: 1.4;
-      margin-bottom: 4px;
+      line-height: 1.35;
+      margin-bottom: 2px;
+      font-size: 14px;
     }
     .page-home .principles small {
       display: block;
-      font-size: 13px;
-      line-height: 1.5;
+      font-size: 12px;
+      line-height: 1.4;
     }
     .page-home section {
-      padding-block: 28px;
+      padding-block: 20px;
+    }
+    .page-home .page-hero.hero-layout-split {
+      padding: 16px 0 24px;
     }
     .page-home .intro,
     .page-home .cooperate,
     .page-home .contact {
-      gap: 16px;
+      gap: 12px;
     }
     .page-home .intro-body {
       padding-top: 0;
     }
     .page-home .eyebrow {
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
     .page-home h2 {
-      font-size: 22px;
-      line-height: 1.22;
-      margin-bottom: 12px;
+      font-size: 20px;
+      line-height: 1.2;
+      margin-bottom: 8px;
     }
     .page-home .intro-copy h2 {
       margin-bottom: 0;
     }
     .page-home p {
-      line-height: 1.45;
-      margin-bottom: 10px;
+      line-height: 1.4;
+      margin-bottom: 8px;
     }
     .page-home .intro .quote {
-      font-size: 16px;
-      line-height: 1.5;
-      padding: 14px 16px;
+      font-size: 15px;
+      line-height: 1.45;
+      padding: 12px 14px;
     }
     .page-home .sectionhead {
-      margin-bottom: 16px;
+      margin-bottom: 12px;
     }
     .page-home .sectionhead p {
-      margin-top: 10px;
+      margin-top: 6px;
     }
     .page-home details {
-      padding-block: 14px;
+      padding-block: 10px;
     }
     .page-home summary {
-      font-size: 17px;
-      line-height: 1.45;
+      font-size: 15px;
+      line-height: 1.4;
+    }
+    .page-about section,
+    .page-cases section,
+    .page-recruitment section,
+    .page-contact section,
+    .page-case-detail .main-container {
+      padding-top: 16px;
+      padding-bottom: 20px;
+    }
+    .breadcrumb {
+      margin-bottom: 10px;
+    }
+    .page-title,
+    .article-title {
+      margin-bottom: 8px;
     }
   }
 }

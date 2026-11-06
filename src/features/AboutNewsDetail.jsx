@@ -1,7 +1,18 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getPublicNews } from "../api/public.js";
+import { IconArrowLeft } from "../components/IconArrow.jsx";
 import { AboutNewsDetailSkeleton } from "../components/Skeleton.jsx";
+
+function CoverImage({ src }) {
+  const [broken, setBroken] = useState(!src);
+  if (!src || broken) return null;
+  return (
+    <div className="news-detail-cover">
+      <img src={src} alt="" onError={() => setBroken(true)} />
+    </div>
+  );
+}
 
 export default function AboutNewsDetail() {
   const { id } = useParams();
@@ -42,8 +53,9 @@ export default function AboutNewsDetail() {
     return (
       <div className="article-body">
         <p>{error || "Không tìm thấy tin tức."}</p>
-        <Link className="news-detail-back" to="/gioi-thieu">
-          ← Quay lại giới thiệu
+        <Link className="news-detail-back btn-with-arrow" to="/gioi-thieu">
+          <IconArrowLeft size={13} />
+          <span>Quay lại giới thiệu</span>
         </Link>
       </div>
     );
@@ -51,17 +63,16 @@ export default function AboutNewsDetail() {
 
   return (
     <article className="news-detail">
-      <Link className="news-detail-back" to="/gioi-thieu">
-        ← Quay lại giới thiệu
+      <Link className="news-detail-back btn-with-arrow" to="/gioi-thieu">
+        <IconArrowLeft size={13} />
+        <span>Quay lại giới thiệu</span>
       </Link>
-      {article.image ? (
-        <div className="news-detail-cover">
-          <img src={article.image} alt="" />
-        </div>
-      ) : null}
+      <CoverImage src={article.image} />
       {article.date ? <p className="news-detail-date">{article.date}</p> : null}
       <h1 className="article-content-heading">{article.title}</h1>
-      {article.excerpt ? <p className="news-detail-excerpt">{article.excerpt}</p> : null}
+      {article.excerpt ? (
+        <p className="news-detail-excerpt">{article.excerpt}</p>
+      ) : null}
       <div
         className="article-body news-detail-body"
         dangerouslySetInnerHTML={{ __html: article.content || "" }}

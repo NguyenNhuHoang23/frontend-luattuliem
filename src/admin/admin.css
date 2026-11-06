@@ -493,6 +493,13 @@
   font-size: 13px;
 }
 
+.admin-section-title {
+  margin: 28px 0 8px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--admin-navy);
+}
+
 .admin-title-cell {
   display: flex;
   flex-direction: column;

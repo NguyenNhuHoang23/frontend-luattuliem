@@ -57,18 +57,26 @@ export function CasePdfViewer({ url, title }) {
             href={url}
             target="_blank"
             rel="noopener noreferrer"
-            className="pdf-action-btn secondary"
+            className="pdf-action-btn secondary btn-with-arrow"
             title="Mở trong tab mới"
           >
-            Mở tab mới ↗
+            <span>Mở tab mới</span>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" aria-hidden="true">
+              <line x1="7" y1="17" x2="17" y2="7" />
+              <polyline points="7 7 17 7 17 17" />
+            </svg>
           </a>
           <a
             href={url}
             download
-            className="pdf-action-btn secondary"
+            className="pdf-action-btn secondary btn-with-arrow"
             title="Tải văn bản PDF về máy"
           >
-            Tải về ↓
+            <span>Tải về</span>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" aria-hidden="true">
+              <line x1="12" y1="5" x2="12" y2="19" />
+              <polyline points="19 12 12 19 5 12" />
+            </svg>
           </a>
         </div>
       </div>
@@ -83,8 +91,17 @@ export function CasePdfViewer({ url, title }) {
 
       <p className="pdf-fallback-text">
         Nếu trình duyệt không tự động hiển thị tài liệu, bạn có thể{" "}
-        <a href={url} target="_blank" rel="noopener noreferrer">
-          nhấn vào đây để xem toàn văn file PDF ↗
+        <a
+          className="btn-with-arrow"
+          href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span>nhấn vào đây để xem toàn văn file PDF</span>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" aria-hidden="true">
+            <line x1="7" y1="17" x2="17" y2="7" />
+            <polyline points="7 7 17 7 17 17" />
+          </svg>
         </a>
       </p>
     </section>

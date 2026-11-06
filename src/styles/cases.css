@@ -38,86 +38,7 @@
     width: min(1200px, 92%);
     margin: auto;
   }
-  .page-cases .top {
-    background: #f0f5fc;
-    color: #496280;
-    font-size: 12px;
-    padding: 7px 0;
-    border-bottom: 1px solid #e1e9f4;
-  }
-  .page-cases .top .wrap {
-    display: flex;
-    justify-content: space-between;
-  }
-  .page-cases header {
-    background: #fff;
-    border-bottom: 1px solid var(--line);
-  }
-  .page-cases .brandrow {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 18px 0;
-  }
-  .page-cases .brand {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-  .page-cases .brand img {
-    width: 76px;
-    height: 76px;
-    border-radius: 4px;
-  }
-  .page-cases .brand small {
-    font-size: 11px;
-    letter-spacing: 2px;
-  }
-  .page-cases .brand strong {
-    display: block;
-    font-family: "Liberation Sans Web", Arial, Helvetica, sans-serif;
-    font-weight: 800;
-    color: var(--blue);
-    font-size: 27px;
-    letter-spacing: 0.5px;
-    line-height: 1.25;
-  }
-  .page-cases .contacttop {
-    font-size: 15px;
-    color: var(--muted);
-  }
-  .page-cases .contacttop b {
-    display: block;
-    font-size: 22px;
-    color: var(--blue);
-  }
-  .page-cases nav {
-    border-top: 1px solid #eef1f5;
-  }
-  .page-cases nav .wrap {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 36px;
-  }
-  .page-cases nav a {
-    font-size: 14px;
-    padding: 16px 0;
-    white-space: nowrap;
-    transition: color 0.2s;
-  }
-  .page-cases nav a:hover,
-  .page-cases nav a.active {
-    color: var(--blue);
-    font-weight: bold;
-  }
-  .page-cases nav a.active {
-    border-bottom: 2px solid var(--blue);
-  }
-  .page-cases .memberlink {
-    color: var(--blue);
-    font-weight: bold;
-  }
+  /* Header/nav dùng style chung từ base.css */
 
   /* Main Layout */
   .page-cases .main-container {
@@ -162,7 +83,10 @@
   .page-cases .page-subtitle {
     color: var(--muted);
     font-size: 14px;
-    margin: 0 0 24px;
+    margin: 0 0 14px;
+  }
+  .page-cases p {
+    margin: 0 0 10px;
   }
 
   /* Category Filter Tabs */
@@ -230,7 +154,7 @@
   .page-cases .featured-case p {
     color: #475569;
     font-size: 14px;
-    line-height: 1.7;
+    line-height: 1.5;
     margin: 0 0 16px;
   }
   .page-cases .case-summary-box {
@@ -314,7 +238,7 @@
   .page-cases .case-card p {
     color: var(--muted);
     font-size: 13.5px;
-    line-height: 1.65;
+    line-height: 1.45;
     margin: 0 0 16px;
   }
   .page-cases .case-footer {
@@ -426,7 +350,7 @@
     font-size: 13px;
     color: #cad5e2;
     margin: 0 0 16px;
-    line-height: 1.6;
+    line-height: 1.4;
   }
   .page-cases .btn {
     display: inline-block;
@@ -484,58 +408,17 @@
   }
   .page-cases .dialog-content {
     font-size: 14px;
-    line-height: 1.7;
+    line-height: 1.5;
     color: #334155;
   }
   .page-cases .dialog-content b {
     color: var(--navy);
   }
 
-  .page-cases footer {
-    background: #edf3fb;
-    color: #5c708b;
-    padding: 35px 0;
-    font-size: 12px;
-    border-top: 1px solid #dce6f3;
-  }
-  .page-cases footer strong {
-    color: var(--blue);
-  }
-  .page-cases footer .wrap {
-    display: flex;
-    justify-content: space-between;
-    gap: 30px;
-  }
-  .page-cases .demo {
-    background: #f8faff;
-    color: #687c98;
-    text-align: center;
-    padding: 7px 15px;
-    font-size: 11px;
-  }
-
   @media (max-width: 900px) {
     .page-cases .editorial-grid {
       grid-template-columns: 1fr;
       gap: 35px;
-    }
-    .page-cases .brand strong {
-      font-size: 22px;
-    }
-    .page-cases .brand img {
-      width: 60px;
-      height: 60px;
-    }
-    .page-cases .contacttop {
-      display: none;
-    }
-    .page-cases nav .wrap {
-      overflow: auto;
-      justify-content: flex-start;
-      gap: 25px;
-    }
-    .page-cases nav a {
-      font-size: 12px;
     }
   }
   .page-cases .case-news {
@@ -546,9 +429,13 @@
     justify-content: flex-end;
     margin: 0 0 8px;
   }
+  .page-cases .case-news-toolbar .btn {
+    padding: 6px 18px;
+    line-height: 1.2;
+  }
   .page-cases .case-news-manage {
     position: absolute;
-    top: 18px;
+    top: 12px;
     right: 0;
     z-index: 1;
     display: flex;
@@ -644,7 +531,7 @@
   }
   .page-cases .case-news-summary {
     position: relative;
-    padding: 22px 0 20px;
+    padding: 12px 0 10px;
     border-bottom: 1px solid #e6ebf2;
     background: none;
   }
@@ -652,9 +539,9 @@
     padding-right: 88px;
   }
   .page-cases .case-news-summary h2 {
-    margin: 0 0 8px;
+    margin: 0 0 4px;
     font-size: 21px;
-    line-height: 1.4;
+    line-height: 1.25;
   }
   .page-cases .case-news-title {
     display: block;
@@ -673,30 +560,58 @@
     color: var(--blue);
   }
   .page-cases .case-news-excerpt {
-    margin: 0 0 12px;
+    margin: 0;
     color: var(--muted);
     font-size: 14.5px;
-    line-height: 1.7;
+    line-height: 1.35;
   }
   .page-cases .case-news-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
     padding: 0;
     border: 0;
     background: none;
     color: var(--blue);
     font: inherit;
+    text-decoration: none;
     font-weight: 700;
-    font-size: 14px;
+    font-size: inherit;
+    line-height: inherit;
+    white-space: nowrap;
     cursor: pointer;
+    vertical-align: baseline;
   }
   .page-cases .case-news-more:hover {
     text-decoration: underline;
+  }
+  .page-cases .case-news-summary-link {
+    display: inline;
+    margin-left: 10px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: #64748b;
+    font: inherit;
+    font-size: 0.95em;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    cursor: pointer;
+  }
+  .page-cases .case-news-summary-link:hover {
+    color: var(--blue);
+  }
+  .page-cases .case-news-list .case-news-summary-link {
+    display: inline-block;
+    margin: 4px 0 0;
   }
   .page-cases .case-news-list {
     list-style: none;
   }
   .page-cases .case-news-list li {
     position: relative;
-    padding: 16px 0;
+    padding: 8px 0;
     border-bottom: 1px solid #e6ebf2;
   }
   .page-cases .case-news-list li:has(.case-news-manage) {
@@ -705,10 +620,10 @@
   .page-cases .case-news-list .case-news-title {
     font-size: 16px;
     font-weight: 800;
-    line-height: 1.45;
+    line-height: 1.25;
   }
   .page-cases .case-news-list .case-news-manage {
-    top: 16px;
+    top: 8px;
   }
   .page-cases .case-news-empty {
     margin: 12px 0 0;
@@ -747,16 +662,16 @@
   }
   @media (max-width: 700px) {
     .page-cases .case-news-summary {
-      padding: 18px 0 16px;
+      padding: 10px 0 8px;
     }
     .page-cases .case-news-summary h2 {
       font-size: 18px;
     }
     .page-cases .case-news-list li {
-      padding: 14px 0;
+      padding: 7px 0;
     }
     .page-cases .case-news-manage {
-      top: 14px;
+      top: 7px;
       gap: 8px;
     }
     .page-cases .case-news-summary:has(.case-news-manage),

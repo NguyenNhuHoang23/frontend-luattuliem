@@ -18,22 +18,27 @@
       column-gap: 28px;
     }
     .page-home #gioi-thieu {
-      padding-top: 40px;
-      padding-bottom: 28px;
+      padding-top: 28px;
+      padding-bottom: 12px;
     }
-    .page-home .fields {
-      padding-top: 40px;
+    .page-home .fields,
+    .page-home .home-section.fields {
+      padding-top: 4px;
     }
-    .page-home #hop-tac {
-      padding-bottom: 28px;
+    .page-home #hop-tac,
+    .page-home .home-section.home-cooperate {
+      padding-top: 8px !important;
+      padding-bottom: 16px !important;
     }
-    .page-home .news {
-      padding-top: 40px;
-      padding-bottom: 28px;
+    .page-home .news,
+    .page-home .home-section.articles,
+    .page-home #an-le {
+      padding-top: 8px;
+      padding-bottom: 20px;
     }
     .page-home #lien-he {
-      padding-top: 40px;
-      padding-bottom: 64px;
+      padding-top: 12px !important;
+      padding-bottom: 24px !important;
     }
     .page-home #gioi-thieu .intro {
       grid-template-columns: 1fr 1fr;
@@ -52,16 +57,15 @@
       font-size: 30px;
     }
     .page-home .hero {
+      width: 100%;
+      margin-inline: 0;
+      min-height: 0;
+    }
+    .page-home .hero-inner {
       width: min(var(--site-content-width), 90%);
       margin-inline: auto;
-      grid-template-columns: 46% 54%;
-      min-height: 510px;
-    }
-    .page-home .hero > .wrap {
-      width: auto;
-      padding-inline: clamp(28px, 3vw, 56px);
-      margin: 0;
-      justify-content: flex-start;
+      grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+      gap: clamp(28px, 3vw, 48px);
     }
     .page-home .herotext {
       width: 100%;
@@ -69,11 +73,15 @@
       text-align: left;
     }
     .page-home .hero-slider {
-      min-height: 510px;
-      max-height: none;
+      min-height: 0;
+      max-height: 420px;
+      max-width: 580px;
     }
-    .page-home .hero-slide img {
+    .page-home .hero-slide img,
+    .page-home .hero-slide-img {
       max-height: none;
+      height: 100%;
+      object-fit: cover;
     }
   }
 
@@ -102,17 +110,19 @@
       max-width: 80ch;
     }
     .page-home .hero {
-      min-height: 600px;
+      min-height: 0;
     }
     .page-home .hero-slider {
-      min-height: 600px;
+      height: auto;
+      max-height: 420px;
+      max-width: 580px;
     }
     .page-home .hero h1 {
-      font-size: clamp(53px, 3.3vw, 64px);
+      font-size: clamp(38px, 2.8vw, 46px);
     }
     .page-home .hero p {
       font-size: 18px;
-      line-height: 1.7;
+      line-height: 1.5;
     }
     .page-home .principles b {
       font-size: 20px;

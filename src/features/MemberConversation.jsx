@@ -90,7 +90,7 @@ export default function MemberConversation({
   const loadLockRef = useRef(false);
   const [demoLimit, setDemoLimit] = useState(PAGE_SIZE);
   useEffect(() => {
-    if (searchOpen) searchInput.current?.focus();
+    if (searchOpen) searchInput.current?.focus({ preventScroll: true });
   }, [searchOpen]);
   useEffect(() => {
     setDemoLimit(PAGE_SIZE);
@@ -129,8 +129,13 @@ export default function MemberConversation({
     onSend();
     setQuery("");
     requestAnimationFrame(() => {
-      if (messagesRef.current)
-        messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
+      const el = messagesRef.current;
+      if (!el) return;
+      const pageY = window.scrollY;
+      el.scrollTop = el.scrollHeight;
+      if (window.scrollY !== pageY) {
+        window.scrollTo({ top: pageY, left: 0, behavior: "instant" });
+      }
     });
   };
   const pickFiles = (event) => {
@@ -149,16 +154,19 @@ export default function MemberConversation({
   };
   useEffect(() => {
     const el = messagesRef.current;
-    if (!el) return;
+    if (!el || loading) return;
+    const pageY = window.scrollY;
     if (restoreHeightRef.current != null) {
       el.scrollTop = el.scrollHeight - restoreHeightRef.current;
       restoreHeightRef.current = null;
-      return;
-    }
-    if (stickToBottomRef.current) {
+    } else if (stickToBottomRef.current) {
       el.scrollTop = el.scrollHeight;
     }
-  }, [visible.length, thread.id, loadingOlder]);
+    // Giữ nguyên vị trí trang — không để mở chat kéo cả trang xuống dưới
+    if (window.scrollY !== pageY) {
+      window.scrollTo({ top: pageY, left: 0, behavior: "instant" });
+    }
+  }, [visible.length, thread.id, loadingOlder, loading]);
   const handleMessagesScroll = () => {
     const el = messagesRef.current;
     if (!el) return;
@@ -196,8 +204,16 @@ export default function MemberConversation({
   return (
     <section className="member-conversation" aria-label="Nội dung trao đổi">
       <div className="member-thread-header">
-        <button type="button" className="member-back" onClick={onBack}>
-          ← Danh sách
+        <button
+          type="button"
+          className="member-back"
+          onClick={onBack}
+          aria-label="Quay lại danh sách"
+        >
+          <span className="member-back-full">← Danh sách</span>
+          <span className="member-back-short" aria-hidden="true">
+            ←
+          </span>
         </button>
         <span className="chat-header-avatar" aria-hidden="true">
           {chatInitials(title)}

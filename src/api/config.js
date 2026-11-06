@@ -1,9 +1,17 @@
+function normalizeApiUrl(value) {
+  const url = String(value || "").trim().replace(/\/+$/, "");
+  if (!url) return "/api";
+  if (url === "/api" || url.endsWith("/api")) return url;
+  if (/^https?:\/\//i.test(url)) return `${url}/api`;
+  return url.startsWith("/") ? url : `/${url}`;
+}
+
 const rawApiUrl =
   import.meta.env.VITE_API_URL ||
   import.meta.env.API_URL ||
   "/api";
 
-export const API_URL = String(rawApiUrl).replace(/\/$/, "");
+export const API_URL = normalizeApiUrl(rawApiUrl);
 
 function apiOrigin() {
   if (/^https?:\/\//i.test(API_URL)) {

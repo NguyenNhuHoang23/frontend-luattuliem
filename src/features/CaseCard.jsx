@@ -1,6 +1,11 @@
 import { Link } from "react-router-dom";
 import { Modal } from "../components/Modal.jsx";
-export function CaseCard({ entry, onOpen }) {
+import {
+  IconArrowExternal,
+  IconArrowRight,
+} from "../components/IconArrow.jsx";
+
+export function CaseCard({ entry }) {
   if (entry.featured)
     return (
       <article className="featured-case" data-category={entry.category}>
@@ -14,11 +19,13 @@ export function CaseCard({ entry, onOpen }) {
             .trim()}
         </div>
         <div className="featured-actions">
-          <Link className="btn" to={`/an-le/${entry.id}`}>
-            Xem chi tiết án lệ ↗
+          <Link className="btn btn-with-arrow" to={`/an-le/${entry.id}`}>
+            <span>Xem chi tiết án lệ</span>
+            <IconArrowExternal size={14} />
           </Link>
-          <Link className="read-more" to="/lien-he">
-            Yêu cầu tư vấn vụ việc tương tự →
+          <Link className="read-more btn-with-arrow" to="/lien-he">
+            <span>Yêu cầu tư vấn vụ việc tương tự</span>
+            <IconArrowRight size={13} />
           </Link>
         </div>
       </article>
@@ -31,20 +38,20 @@ export function CaseCard({ entry, onOpen }) {
           <span className="case-code">{entry.code}</span>
         </div>
         <h3>
-          <Link to={`/an-le/${entry.id}`}>
-            {entry.title}
-          </Link>
+          <Link to={`/an-le/${entry.id}`}>{entry.title}</Link>
         </h3>
         <p>{entry.description}</p>
       </div>
       <div className="case-footer">
-        <Link className="read-more" to={`/an-le/${entry.id}`}>
-          Xem chi tiết án lệ →
+        <Link className="read-more btn-with-arrow" to={`/an-le/${entry.id}`}>
+          <span>Xem chi tiết án lệ</span>
+          <IconArrowRight size={13} />
         </Link>
       </div>
     </article>
   );
 }
+
 export function CaseSummaryModal({ entry, onClose }) {
   return (
     <Modal
@@ -68,22 +75,26 @@ export function CaseSummaryModal({ entry, onClose }) {
           <p className="case-source">
             Nguồn: {entry.source.name} · Tác giả: {entry.source.author}.{" "}
             <a
+              className="btn-with-arrow"
               href={entry.source.url}
               target="_blank"
               rel="noopener noreferrer"
             >
-              Đọc toàn văn trên {entry.source.name} ↗
+              <span>Đọc toàn văn trên {entry.source.name}</span>
+              <IconArrowExternal size={13} />
             </a>
           </p>
         ) : null}
         <div className="modal-actions">
           {entry?.id ? (
-            <Link className="btn white" to={`/an-le/${entry.id}`}>
-              Xem toàn văn án lệ ↗
+            <Link className="btn white btn-with-arrow" to={`/an-le/${entry.id}`}>
+              <span>Xem toàn văn án lệ</span>
+              <IconArrowExternal size={14} />
             </Link>
           ) : null}
-          <Link className="btn" to="/lien-he">
-            Tư vấn vụ việc tương tự ↗
+          <Link className="btn btn-with-arrow" to="/lien-he">
+            <span>Tư vấn vụ việc tương tự</span>
+            <IconArrowExternal size={14} />
           </Link>
           <button className="btn white" onClick={onClose}>
             Đóng lại

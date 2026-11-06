@@ -135,12 +135,21 @@
   .member-account-links {
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
     justify-content: space-between;
     gap: 8px 16px;
     margin-top: 20px;
   }
+  .member-account-links .inline-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 0;
+    padding: 0;
+    line-height: 1.4;
+    text-align: left;
+  }
   .member-account-links button {
-    min-height: 44px;
+    min-height: 0;
     text-align: left;
   }
   .member-feedback {

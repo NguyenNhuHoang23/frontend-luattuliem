@@ -2,6 +2,10 @@ import { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { getPublicCase } from "../api/public.js";
 import { deleteMemberCaseArticle } from "../api/member.js";
+import {
+  IconArrowExternal,
+  IconArrowLeft,
+} from "../components/IconArrow.jsx";
 import { CaseDetailSkeleton } from "../components/Skeleton.jsx";
 import { MarkdownText } from "../components/MarkdownText.jsx";
 import { Modal } from "../components/Modal.jsx";
@@ -9,6 +13,7 @@ import { useToast } from "../components/toast-context.js";
 import { images } from "../data/images.js";
 import { CaseComposeModal } from "../features/CaseComposeModal.jsx";
 import { CasePdfViewer } from "../features/CasePdfViewer.jsx";
+import { CaseRelatedSuggestions } from "../features/CaseRelatedSuggestions.jsx";
 import { useMemberAuth } from "../features/memberAuth.jsx";
 
 function caseImageSrc(image) {
@@ -80,8 +85,9 @@ export default function CaseDetailPage() {
               {error ||
                 "Bản án bạn tìm kiếm không tồn tại hoặc đã được cập nhật đường dẫn mới."}
             </p>
-            <Link to="/an-le" className="btn">
-              ← Quay lại danh mục Án lệ
+            <Link to="/an-le" className="btn btn-with-arrow">
+              <IconArrowLeft size={14} />
+              <span>Quay lại danh mục Án lệ</span>
             </Link>
           </div>
         </main>
@@ -167,11 +173,12 @@ export default function CaseDetailPage() {
                 </>
               ) : null}
               <button
-                className="case-action-btn"
+                className="case-action-btn btn-with-arrow"
                 onClick={handlePrint}
                 title="In nội dung án lệ"
               >
-                Tải về / In án ↗
+                <span>Tải về / In án</span>
+                <IconArrowExternal size={13} />
               </button>
             </div>
           </div>
@@ -299,11 +306,13 @@ export default function CaseDetailPage() {
             <p className="case-source">
               Nguồn: {caseItem.source.name} · Tác giả: {caseItem.source.author}.{" "}
               <a
+                className="btn-with-arrow"
                 href={caseItem.source.url}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Đọc toàn văn trên {caseItem.source.name} ↗
+                <span>Đọc toàn văn trên {caseItem.source.name}</span>
+                <IconArrowExternal size={13} />
               </a>
             </p>
           )}
@@ -394,6 +403,11 @@ export default function CaseDetailPage() {
             </div>
           )}
 
+          <CaseRelatedSuggestions
+            currentId={caseItem.id}
+            currentCategory={caseItem.category}
+          />
+
           {/* Khối CTA & Hỗ trợ pháp lý cuối trang */}
           <div className="case-detail-cta">
             <div className="case-cta-content">
@@ -405,11 +419,13 @@ export default function CaseDetailPage() {
               </p>
             </div>
             <div className="case-cta-actions">
-              <Link to="/lien-he" className="btn">
-                Yêu cầu tư vấn vụ việc tương tự ↗
+              <Link to="/lien-he" className="btn btn-with-arrow">
+                <span>Yêu cầu tư vấn vụ việc tương tự</span>
+                <IconArrowExternal size={14} />
               </Link>
-              <Link to="/an-le" className="btn ghost">
-                ← Danh mục Án lệ
+              <Link to="/an-le" className="btn ghost btn-with-arrow">
+                <IconArrowLeft size={14} />
+                <span>Danh mục Án lệ</span>
               </Link>
             </div>
           </div>

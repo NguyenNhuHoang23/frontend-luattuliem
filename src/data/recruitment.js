@@ -33,7 +33,7 @@ export const recruitmentDocuments = [
     previewUrl: "/documents/01_Don_de_nghi_hop_tac_CTV.pdf",
     fileType: "DOCX",
     badgeClass: "badge-docx",
-    actionLabel: "Tải file Word (.docx) ↓",
+    actionLabel: "Tải file Word (.docx)",
     isDownload: true,
   },
   {
@@ -45,7 +45,7 @@ export const recruitmentDocuments = [
     fileName: "02_Mau_van_ban_chap_thuan_hop_tac_CTV.pdf",
     fileType: "PDF",
     badgeClass: "badge-pdf",
-    actionLabel: "Xem / Tải file PDF ↗",
+    actionLabel: "Xem / Tải file PDF",
     isDownload: false,
   },
 ];

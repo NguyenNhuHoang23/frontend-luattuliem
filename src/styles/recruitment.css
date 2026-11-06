@@ -39,90 +39,11 @@
     width: min(1200px, 92%);
     margin: auto;
   }
-  .page-recruitment .top {
-    background: #f0f5fc;
-    color: #496280;
-    font-size: 12px;
-    padding: 7px 0;
-    border-bottom: 1px solid #e1e9f4;
-  }
-  .page-recruitment .top .wrap {
-    display: flex;
-    justify-content: space-between;
-  }
-  .page-recruitment header {
-    background: #fff;
-    border-bottom: 1px solid var(--line);
-  }
-  .page-recruitment .brandrow {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 18px 0;
-  }
-  .page-recruitment .brand {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-  .page-recruitment .brand img {
-    width: 76px;
-    height: 76px;
-    border-radius: 4px;
-  }
-  .page-recruitment .brand small {
-    font-size: 11px;
-    letter-spacing: 2px;
-  }
-  .page-recruitment .brand strong {
-    display: block;
-    font-family: "Liberation Sans Web", Arial, Helvetica, sans-serif;
-    font-weight: 800;
-    color: var(--blue);
-    font-size: 27px;
-    letter-spacing: 0.5px;
-    line-height: 1.25;
-  }
-  .page-recruitment .contacttop {
-    font-size: 15px;
-    color: var(--muted);
-  }
-  .page-recruitment .contacttop b {
-    display: block;
-    font-size: 22px;
-    color: var(--blue);
-  }
-  .page-recruitment nav {
-    border-top: 1px solid #eef1f5;
-  }
-  .page-recruitment nav .wrap {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 36px;
-  }
-  .page-recruitment nav a {
-    font-size: 14px;
-    padding: 16px 0;
-    white-space: nowrap;
-    transition: color 0.2s;
-  }
-  .page-recruitment nav a:hover,
-  .page-recruitment nav a.active {
-    color: var(--blue);
-    font-weight: bold;
-  }
-  .page-recruitment nav a.active {
-    border-bottom: 2px solid var(--blue);
-  }
-  .page-recruitment .memberlink {
-    color: var(--blue);
-    font-weight: bold;
-  }
+  /* Header/nav dùng style chung từ base.css */
 
   /* Layout */
   .page-recruitment .main-container {
-    padding: 30px 0 65px;
+    padding: 12px 0 48px;
   }
   .page-recruitment .editorial-grid {
     display: grid;
@@ -163,7 +84,7 @@
     color: var(--muted);
     font-size: 14px;
     margin: 0 0 28px;
-    line-height: 1.65;
+    line-height: 1.45;
   }
 
   /* Core Policy Banner */
@@ -190,7 +111,7 @@
     margin: 0;
     color: #475569;
     font-size: 13.5px;
-    line-height: 1.65;
+    line-height: 1.45;
   }
 
   /* Role Positions Section */
@@ -223,13 +144,14 @@
     background: #fff;
     border: 1px solid var(--line);
     border-radius: 6px;
-    padding: 24px 28px;
+    padding: 16px 20px;
     transition:
       transform 0.2s,
       box-shadow 0.2s;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    line-height: 1.35;
   }
   .page-recruitment .role-card:hover {
     transform: translateY(-2px);
@@ -254,18 +176,18 @@
   }
   .page-recruitment .role-card h3 {
     font:
-      700 18px/1.3 "Liberation Sans Web",
+      700 16px/1.25 "Liberation Sans Web",
       Arial,
       Helvetica,
       sans-serif;
     letter-spacing: -0.01em;
     color: var(--navy);
-    margin: 0 0 10px;
+    margin: 0 0 4px;
   }
   .page-recruitment .role-desc {
     color: #475569;
     font-size: 13.5px;
-    line-height: 1.65;
+    line-height: 1.45;
     margin: 0 0 14px;
   }
   .page-recruitment .role-details {
@@ -384,7 +306,7 @@
   .page-recruitment .form-textarea {
     min-height: 100px;
     resize: vertical;
-    line-height: 1.6;
+    line-height: 1.4;
   }
 
   /* Upload CV Box */
@@ -431,7 +353,7 @@
     border-radius: 3px;
     font-size: 12.5px;
     color: #475569;
-    line-height: 1.65;
+    line-height: 1.45;
     margin: 20px 0 24px;
   }
   .page-recruitment .commitment-box b {
@@ -488,7 +410,7 @@
     gap: 12px;
     margin-bottom: 16px;
     font-size: 13px;
-    line-height: 1.6;
+    line-height: 1.4;
   }
   .page-recruitment .step-item:last-child {
     margin-bottom: 0;
@@ -523,7 +445,7 @@
   .page-recruitment .rule-list li {
     font-size: 13px;
     color: #475569;
-    line-height: 1.6;
+    line-height: 1.4;
     position: relative;
     padding-left: 16px;
   }
@@ -605,7 +527,7 @@
     border-radius: 6px;
     box-shadow: 0 12px 35px rgba(17, 40, 75, 0.35);
     font-size: 13.5px;
-    line-height: 1.6;
+    line-height: 1.4;
     z-index: 9999;
     border-left: 5px solid #0ca678;
     animation: slideIn 0.3s ease-out;
@@ -619,29 +541,6 @@
       transform: translateX(0);
       opacity: 1;
     }
-  }
-
-  .page-recruitment footer {
-    background: #edf3fb;
-    color: #5c708b;
-    padding: 35px 0;
-    font-size: 12px;
-    border-top: 1px solid #dce6f3;
-  }
-  .page-recruitment footer strong {
-    color: var(--blue);
-  }
-  .page-recruitment footer .wrap {
-    display: flex;
-    justify-content: space-between;
-    gap: 30px;
-  }
-  .page-recruitment .demo {
-    background: #f8faff;
-    color: #687c98;
-    text-align: center;
-    padding: 7px 15px;
-    font-size: 11px;
   }
 
   @media (max-width: 900px) {
@@ -659,24 +558,6 @@
     }
     .page-recruitment .application-box {
       padding: 24px 20px;
-    }
-    .page-recruitment .brand strong {
-      font-size: 22px;
-    }
-    .page-recruitment .brand img {
-      width: 60px;
-      height: 60px;
-    }
-    .page-recruitment .contacttop {
-      display: none;
-    }
-    .page-recruitment nav .wrap {
-      overflow: auto;
-      justify-content: flex-start;
-      gap: 25px;
-    }
-    .page-recruitment nav a {
-      font-size: 12px;
     }
   }
 }
@@ -703,15 +584,21 @@
 
 @layer react {
   .page-recruitment .recruitment-content-heading {
-    margin: 0 0 24px;
+    margin: 0 0 8px;
     color: var(--navy);
     font:
-      700 clamp(23px, 2.2vw, 30px)/1.4 "Liberation Sans Web",
+      700 clamp(23px, 2.2vw, 30px)/1.25 "Liberation Sans Web",
       Arial,
       Helvetica,
       sans-serif;
     letter-spacing: -0.015em;
     text-transform: uppercase;
+  }
+  .page-recruitment .recruitment-intro {
+    margin: 0 0 10px;
+  }
+  .page-recruitment .recruitment-article p {
+    margin: 0 0 10px;
   }
   .page-recruitment .recruitment-intro a {
     color: var(--blue);
@@ -720,33 +607,42 @@
   }
   .page-recruitment .recruitment-editorial-section {
     padding: 0;
-    margin: 32px 0;
+    margin: 20px 0;
   }
   .page-recruitment .recruitment-editorial-section h2,
   .page-recruitment .recruitment-role-title {
-    margin: 0 0 18px;
+    margin: 0 0 8px;
     color: var(--navy);
-    font-size: 22px;
-    line-height: 1.4;
+    font-size: 20px;
+    line-height: 1.25;
   }
-  .page-recruitment .recruitment-article p {
-    line-height: 1.75;
+  .page-recruitment .recruitment-article p,
+  .page-recruitment .role-card p {
+    line-height: 1.35;
+    margin: 0 0 6px;
   }
-  .page-recruitment .recruitment-article ul {
-    padding-left: 22px;
+  .page-recruitment .recruitment-article ul,
+  .page-recruitment .role-card ul {
+    padding-left: 20px;
+    margin: 0 0 8px;
   }
-  .page-recruitment .recruitment-article li {
-    margin-bottom: 9px;
-    line-height: 1.75;
+  .page-recruitment .recruitment-article li,
+  .page-recruitment .role-card li {
+    margin: 0;
+    line-height: 1.35;
+  }
+  .page-recruitment .recruitment-article li + li,
+  .page-recruitment .role-card li + li {
+    margin-top: 2px;
   }
   .page-recruitment .recruitment-role-section {
-    margin: 24px 0;
+    margin: 8px 0;
   }
   .page-recruitment .recruitment-role-section h3 {
-    margin: 0 0 12px;
+    margin: 0 0 4px;
     color: var(--navy);
-    font-size: 17px;
-    line-height: 1.5;
+    font-size: 16px;
+    line-height: 1.3;
   }
   .page-recruitment .role-card {
     scroll-margin-top: 24px;
@@ -756,6 +652,8 @@
   }
   .page-recruitment .role-footer {
     justify-content: flex-start;
+    margin-top: 10px;
+    padding-top: 10px;
   }
   .page-recruitment .btn-apply {
     white-space: normal;
@@ -847,7 +745,7 @@
     font-size: 13.5px;
     color: #475569;
     margin: 0 0 16px;
-    line-height: 1.6;
+    line-height: 1.4;
   }
   .page-recruitment .recruitment-doc-list {
     display: grid;
@@ -975,19 +873,41 @@
   }
 
   .page-recruitment .role-card {
-    padding: clamp(24px, 2.5vw, 36px);
+    padding: clamp(14px, 1.8vw, 22px);
   }
   .page-recruitment .recruitment-intro {
-    margin: 0 0 24px;
+    margin: 0 0 14px;
     color: var(--muted);
     max-width: 76ch;
+    line-height: 1.4;
+  }
+  .page-recruitment .role-card p,
+  .page-recruitment .role-card li {
+    line-height: 1.35;
+  }
+  .page-recruitment .role-card p {
+    margin: 0 0 6px;
+  }
+  .page-recruitment .role-card ul {
+    margin: 0 0 8px;
+  }
+  .page-recruitment .role-card li + li {
+    margin-top: 2px;
+  }
+  .page-recruitment .recruitment-role-section {
+    margin: 8px 0;
+  }
+  .page-recruitment .recruitment-role-section h3 {
+    margin: 0 0 4px;
   }
   .page-recruitment .recruitment-topic-menu {
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 8px;
     border: 0;
-    margin: 0 0 24px;
+    margin: 0 0 16px;
+    background: transparent;
+    padding: 0;
   }
   .page-recruitment .recruitment-accordion-item {
     display: flex;
@@ -998,9 +918,9 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 16px;
-    min-height: 64px;
-    padding: 16px 20px;
+    gap: 12px;
+    min-height: 0;
+    padding: 14px 18px;
     border: 1px solid var(--line);
     border-radius: 6px;
     background: white;
@@ -1008,6 +928,7 @@
     font: inherit;
     font-size: 16px;
     font-weight: 700;
+    line-height: 1.25;
     text-align: left;
     cursor: pointer;
     width: 100%;
@@ -1017,9 +938,9 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 36px;
-    height: 36px;
-    min-width: 36px;
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
     border-radius: 50%;
     background: #edf3fb;
     color: var(--blue);
@@ -1036,6 +957,11 @@
     width: 18px;
     height: 18px;
   }
+  .page-recruitment .recruitment-topic-name {
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    line-height: 1.35;
+  }
   .page-recruitment .recruitment-topic-btn span[aria-hidden="true"] {
     display: inline-flex;
   }
@@ -1043,6 +969,7 @@
     border-color: var(--blue);
     background: #edf3fb;
     color: var(--blue);
+    box-shadow: inset 3px 0 0 var(--blue);
   }
   .page-recruitment .recruitment-topic-btn[aria-pressed="true"] .recruitment-topic-arrow {
     background: var(--blue);
@@ -1054,6 +981,61 @@
   .page-recruitment .recruitment-topic-apply-wrapper {
     margin-top: 14px;
     margin-bottom: 10px;
+    max-width: none;
+    width: 100%;
+  }
+  .page-recruitment .recruitment-topic-content .recruitment-topic,
+  .page-recruitment .application-box {
+    max-width: none;
+    width: 100%;
+  }
+  .page-recruitment .recruitment-apply-lead {
+    margin: -4px 0 18px;
+    color: var(--muted);
+    font-size: 14.5px;
+    line-height: 1.55;
+  }
+  .page-recruitment .recruitment-apply-help {
+    margin-top: 24px;
+    border: 1px solid #d7e2f0;
+    border-radius: 6px;
+    background: #f8faff;
+  }
+  .page-recruitment .recruitment-apply-help > summary {
+    cursor: pointer;
+    list-style: none;
+    padding: 14px 16px;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .page-recruitment .recruitment-apply-help > summary::-webkit-details-marker {
+    display: none;
+  }
+  .page-recruitment .recruitment-apply-help > summary::after {
+    content: "";
+    float: right;
+    width: 10px;
+    height: 10px;
+    margin-top: 4px;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(45deg);
+  }
+  .page-recruitment .recruitment-apply-help[open] > summary::after {
+    transform: rotate(225deg);
+    margin-top: 8px;
+  }
+  .page-recruitment .recruitment-apply-help-body {
+    padding: 0 16px 16px;
+  }
+  .page-recruitment .recruitment-apply-help-body .recruitment-documents-card {
+    margin-top: 12px;
+  }
+  .page-recruitment .recruitment-doc-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
   }
   .page-recruitment .recruitment-topic[hidden] {
     display: none;
@@ -1090,7 +1072,7 @@
   .page-recruitment .recruitment-paper-desc {
     margin: 0 0 16px;
     font-size: 14px;
-    line-height: 1.6;
+    line-height: 1.4;
     color: #334155;
   }
   .page-recruitment .recruitment-paper-buttons {
@@ -1139,7 +1121,7 @@
   .page-recruitment .recruitment-contact-line {
     color: var(--muted);
     font-size: 14px;
-    margin: 24px 0 0;
+    margin: 12px 0 0;
   }
   .page-recruitment .recruitment-contact-line a {
     font-weight: 700;
@@ -1295,14 +1277,14 @@
   }
   @media (max-width: 600px) {
     .page-recruitment .recruitment-topic-menu {
-      gap: 10px;
+      gap: 7px;
     }
     .page-recruitment .recruitment-topic-btn {
-      min-height: 60px;
-      padding: 14px 16px;
+      min-height: 0;
+      padding: 9px 14px;
     }
     .page-recruitment .recruitment-content-heading {
-      margin-bottom: 16px;
+      margin-bottom: 8px;
     }
     .page-recruitment .application-box {
       padding: 24px 18px;

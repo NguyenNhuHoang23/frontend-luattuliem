@@ -13,6 +13,11 @@ export const defaultCompanyInfo = {
     "Thứ 2 – Thứ 6: 08:00 – 17:30\nThứ 7: 08:00 – 12:00\n(Các vụ việc khẩn cấp tiếp nhận 24/7)",
   website: site.website,
   slogan: site.slogan,
+  headerContactType: "email",
+  headerContactLabel: "Email tiếp nhận",
+  headerContactValue: "contact@luattuliem.vn",
+  headerContactHref: "mailto:contact@luattuliem.vn",
+  headerContactHint: "Gửi email để được tư vấn pháp lý",
 };
 
 const CompanyInfoContext = createContext(defaultCompanyInfo);

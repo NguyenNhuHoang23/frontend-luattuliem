@@ -66,21 +66,21 @@ export async function sendIncomeNotice({ content, memberIds }) {
   return payload.data || [];
 }
 
-export async function createCase({ name, memberIds }) {
+export async function createCase({ name, description, address, memberIds }) {
   const response = await fetch(`${API_URL}/thanh-vien/vu-viec`, {
     method: "POST",
     headers: authHeaders(true),
-    body: JSON.stringify({ name, memberIds }),
+    body: JSON.stringify({ name, description, address, memberIds }),
   });
   const payload = await parsePayload(response);
   return payload.data ?? null;
 }
 
-export async function updateCase(uuid, { name, memberIds }) {
+export async function updateCase(uuid, { name, description, address, memberIds }) {
   const response = await fetch(`${API_URL}/thanh-vien/vu-viec/${uuid}`, {
     method: "PATCH",
     headers: authHeaders(true),
-    body: JSON.stringify({ name, memberIds }),
+    body: JSON.stringify({ name, description, address, memberIds }),
   });
   const payload = await parsePayload(response);
   return payload.data ?? null;

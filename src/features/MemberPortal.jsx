@@ -115,10 +115,6 @@ export default function MemberPortal() {
               autoComplete="current-password"
             />
           </label>
-          <p className="notice" id="member-login-note">
-            Dùng tên đăng nhập và mật khẩu do công ty cấp. Vai trò:{" "}
-            {Object.values(memberGroups).join(", ")}.
-          </p>
           {error ? (
             <p className="member-feedback" role="alert">
               {error}

@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { listPublicCases } from "../api/public.js";
 import { deleteMemberCaseArticle } from "../api/member.js";
 import { CasesListSkeleton } from "../components/Skeleton.jsx";
+import { IconArrowRight } from "../components/IconArrow.jsx";
 import { Modal } from "../components/Modal.jsx";
 import { useToast } from "../components/toast-context.js";
 import { CaseSummaryModal } from "../features/CaseCard.jsx";
@@ -66,24 +67,24 @@ export function CasesNews({ entries, canManage, onEdit, onDelete }) {
               />
             ) : null}
             <h2>
+              <Link className="case-news-title" to={`/an-le/${entry.id}`}>
+                {entry.title}
+              </Link>
+            </h2>
+            <p className="case-news-excerpt">
+              {entry.description ? <span>{entry.description} </span> : null}
+              <Link className="case-news-more" to={`/an-le/${entry.id}`}>
+                Đọc tiếp
+                <IconArrowRight size={13} />
+              </Link>
               <button
-                className="case-news-title"
+                className="case-news-summary-link"
                 type="button"
                 onClick={() => setSelectedCase(entry)}
               >
-                {entry.title}
+                Tóm tắt
               </button>
-            </h2>
-            {entry.description ? (
-              <p className="case-news-excerpt">{entry.description}</p>
-            ) : null}
-            <button
-              className="case-news-more"
-              type="button"
-              onClick={() => setSelectedCase(entry)}
-            >
-              Đọc tiếp →
-            </button>
+            </p>
           </article>
         ))}
       </div>
@@ -97,12 +98,15 @@ export function CasesNews({ entries, canManage, onEdit, onDelete }) {
                   onDelete={() => onDelete(entry)}
                 />
               ) : null}
+              <Link className="case-news-title" to={`/an-le/${entry.id}`}>
+                {entry.title}
+              </Link>
               <button
-                className="case-news-title"
+                className="case-news-summary-link"
                 type="button"
                 onClick={() => setSelectedCase(entry)}
               >
-                {entry.title}
+                Tóm tắt
               </button>
             </li>
           ))}

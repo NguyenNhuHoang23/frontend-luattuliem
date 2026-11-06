@@ -7,11 +7,11 @@
     max-width: none;
     margin-inline: auto;
   }
-  header nav a {
+  header nav:not(.primary-nav) a {
     border-bottom: 2px solid transparent;
   }
   @media (min-width: 901px) {
-    header nav a::after {
+    header nav:not(.primary-nav) a::after {
       content: attr(data-label);
       display: block;
       height: 0;
@@ -41,50 +41,28 @@
     margin-top: 0;
   }
 
-  header .brand img {
-    flex-shrink: 0;
+  .site-header .brand .brand-logo-img {
+    width: auto;
+    height: 80px;
+    max-width: 340px;
+    border-radius: 0;
     object-fit: contain;
-  }
-  @media (min-width: 901px) {
-    header .brand {
-      gap: 22px;
-    }
-    header .brand img {
-      width: 162px;
-      height: 162px;
-    }
-    header .brand small {
-      display: block;
-      font-size: 20px;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      font-weight: 700;
-      line-height: 1.25;
-      margin-bottom: 3px;
-    }
-    header .brand strong {
-      font-size: 52px;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      line-height: 1.15;
-    }
+    flex-shrink: 0;
   }
   @media (max-width: 900px) {
-    header .brand img {
-      width: 76px;
+    .site-header .brand .brand-logo-img {
       height: 76px;
+      max-width: 280px;
     }
   }
-  @media (max-width: 360px) {
-    header .brand img {
-      width: 60px;
-      height: 60px;
+  @media (max-width: 640px) {
+    .site-header .brand .brand-logo-img {
+      height: 64px;
+      max-width: 240px;
     }
   }
-  header nav a.active {
-    color: var(--blue);
-    font-weight: bold;
-    border-bottom: 2px solid var(--blue);
+  .site-header .primary-nav a.active {
+    border-bottom: 0;
   }
   .not-found {
     min-height: 50vh;

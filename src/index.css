@@ -1,6 +1,7 @@
 @layer base, pages, responsive, react;
 @import "./styles/base.css";
 @import "./styles/home.css";
+@import "./styles/home-layout.css";
 @import "./styles/member.css";
 @import "./styles/about.css";
 @import "./styles/cases.css";
@@ -11,4 +12,5 @@
 @import "./styles/react.css";
 @import "./styles/skeleton.css";
 @import "./styles/wide-screen.css";
+@import "./styles/site-chrome.css";
 @import "./admin/admin.css";
