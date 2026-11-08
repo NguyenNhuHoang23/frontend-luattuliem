@@ -585,7 +585,7 @@
 @layer react {
   .page-recruitment .recruitment-content-heading {
     margin: 0 0 8px;
-    color: var(--navy);
+    color: var(--blue);
     font:
       700 clamp(23px, 2.2vw, 30px)/1.25 "Liberation Sans Web",
       Arial,
@@ -919,10 +919,10 @@
     align-items: center;
     justify-content: space-between;
     gap: 12px;
-    min-height: 0;
+    min-height: 56px;
     padding: 14px 18px;
     border: 1px solid var(--line);
-    border-radius: 6px;
+    border-radius: 8px;
     background: white;
     color: var(--navy);
     font: inherit;
@@ -958,9 +958,29 @@
     height: 18px;
   }
   .page-recruitment .recruitment-topic-name {
+    flex: 1;
+    min-width: 0;
     font-weight: 800;
     letter-spacing: -0.01em;
     line-height: 1.35;
+  }
+
+  .page-recruitment .recruitment-topic-icon {
+    flex: 0 0 52px;
+    align-items: center;
+    justify-content: flex-start;
+    padding-right: 12px;
+    border-right: 1px solid var(--line);
+    color: var(--blue);
+  }
+
+  .page-recruitment .recruitment-topic-icon svg {
+    display: block;
+    width: 36px;
+    height: 36px;
+    padding: 5px;
+    border-radius: 6px;
+    background: #edf3fb;
   }
   .page-recruitment .recruitment-topic-btn span[aria-hidden="true"] {
     display: inline-flex;
@@ -1285,6 +1305,13 @@
     }
     .page-recruitment .recruitment-content-heading {
       margin-bottom: 8px;
+      font-size: clamp(15px, 4.8vw, 24px);
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+    }
+    .page-recruitment .recruitment-intro {
+      font-size: 14px;
+      line-height: 1.55;
     }
     .page-recruitment .application-box {
       padding: 24px 18px;

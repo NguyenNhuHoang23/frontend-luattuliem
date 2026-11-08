@@ -84,7 +84,6 @@ export function Header() {
   const company = useCompanyInfo();
   const location = useLocation();
   const [menu, setMenu] = useState({ key: null, open: false });
-  const [scrolled, setScrolled] = useState(false);
   const toggleRef = useRef(null);
   const open = menu.key === location.key && menu.open;
   const closeMenu = () => setMenu({ key: location.key, open: false });
@@ -101,13 +100,6 @@ export function Header() {
     const close = () => setMenu({ key: null, open: false });
     media.addEventListener("change", close);
     return () => media.removeEventListener("change", close);
-  }, []);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   const handleKeyDown = (event) => {
@@ -137,7 +129,7 @@ export function Header() {
       </aside>
 
       <header
-        className={`site-header navigation-ready${open ? " menu-open" : ""}${scrolled ? " is-scrolled" : ""}`}
+        className={`site-header navigation-ready${open ? " menu-open" : ""}`}
         id="siteHeader"
         onKeyDown={handleKeyDown}
       >
@@ -145,9 +137,13 @@ export function Header() {
           <Link className="brand" to="/" aria-label={`${site.name} - Về trang chủ`} onClick={closeMenu}>
             <img
               className="brand-logo-img"
-              src={images["assets/logo-wordmark.png"] || images["assets/logo.jpg"]}
+              src={images["assets/logo.jpg"]}
               alt={site.name}
             />
+            <div className="brand-text">
+              <small>{company.brandPrefix || site.brandPrefix}</small>
+              <strong>{company.brandName || site.brandName}</strong>
+            </div>
           </Link>
 
           <div className="header-actions">
@@ -183,16 +179,23 @@ export function Header() {
             </Link>
             <button
               ref={toggleRef}
-              className="mobile-menu-btn masthead-menu-btn"
+              className="menu-toggle masthead-menu-btn"
               type="button"
               aria-controls="site-navigation"
               aria-expanded={open}
               aria-label={open ? "Đóng menu" : "Mở menu"}
               onClick={() => setMenu({ key: location.key, open: !open })}
             >
-              <span />
-              <span />
-              <span />
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                aria-hidden="true"
+              >
+                <path d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+              <span>Menu</span>
             </button>
           </div>
         </div>

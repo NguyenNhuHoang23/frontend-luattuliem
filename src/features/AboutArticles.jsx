@@ -3,8 +3,33 @@ import { Link, useLocation } from "react-router-dom";
 import { listPublicAboutArticles } from "../api/public.js";
 import { IconArrowRight } from "../components/IconArrow.jsx";
 import { AboutArticleSkeleton } from "../components/Skeleton.jsx";
+import { aboutArticles as defaultAboutArticles } from "../data/about.js";
 import { images } from "../data/images.js";
 import { sortByPublicationOrder } from "../utils/publicationOrder.js";
+
+const regularWeightPhrases = new Set([
+  "Một người hiểu chuyện, một người hiểu luật, cùng phối hợp có thể giúp khách hàng bớt nhiều bước đường.",
+  "luật sư chuyên nghiệp và cộng tác viên tại địa phương",
+  "cộng tác viên hỗ trợ khách hàng hoặc cộng tác viên pháp lý",
+]);
+
+function isExcludedAboutBlock(block) {
+  if (!block) return true;
+  if (block.type === "gallery") return true;
+  if (
+    block.type === "heading" &&
+    /hình ảnh hoạt động/i.test(block.text || "")
+  ) {
+    return true;
+  }
+  if (
+    block.type === "paragraph" &&
+    /tiếp nhận, nghiên cứu hồ sơ cho đến khi cử luật sư/i.test(block.text || "")
+  ) {
+    return true;
+  }
+  return false;
+}
 
 function GalleryImage({ item }) {
   const src = images[item.image] || item.image;
@@ -50,30 +75,36 @@ function ArticleBlock({ block, headingId }) {
           ))}
         </div>
       );
-    case "cta":
+    case "cta": {
+      const title =
+        block.title || "Cơ hội hợp tác cùng Công ty Luật TNHH MTV Từ Liêm";
+      const description =
+        block.description ||
+        "Tham gia mạng lưới cộng tác viên tại địa phương để cùng phát huy sở trường và phát triển bền vững.";
       return (
         <div className="article-cta-box">
-          {block.title ? <h3>{block.title}</h3> : null}
-          {block.description ? <p>{block.description}</p> : null}
+          <h3>{title}</h3>
+          <p>{description}</p>
           <Link to={block.link || "/tuyen-dung"} className="btn btn-with-arrow">
-            <span>{block.text}</span>
+            <span>{block.text || "Tìm hiểu cơ hội hợp tác cùng Luật Từ Liêm"}</span>
             <IconArrowRight size={14} />
           </Link>
         </div>
       );
+    }
     default:
       return (
         <p>
           {block.lead ? <strong>{block.lead}</strong> : null}
           {block.parts ? (
             block.parts.map((part, index) =>
-              part.strong ? (
+              part.strong && !regularWeightPhrases.has(part.text.trim()) ? (
                 <strong key={index}>{part.text}</strong>
               ) : (
                 <span key={index}>{part.text}</span>
               ),
             )
-          ) : block.strong ? (
+          ) : block.strong && !regularWeightPhrases.has(block.text?.trim()) ? (
             <strong>{block.text}</strong>
           ) : (
             block.text
@@ -147,32 +178,42 @@ export function AboutArticles({ entries }) {
     return <p className="article-body">{error}</p>;
   }
 
-  if (!articles?.length) {
-    return <p className="article-body">Nội dung giới thiệu đang được cập nhật.</p>;
-  }
+  const totalBlocks = (articles || []).reduce(
+    (sum, a) => sum + (a.blocks?.length || 0),
+    0,
+  );
+  const displayArticles =
+    !articles?.length || totalBlocks <= 4 ? defaultAboutArticles : articles;
 
   let headingIndex = 0;
 
-  return sortByPublicationOrder(articles, "oldest").map((entry, index) => {
-    const Heading = index === 0 ? "h1" : "h2";
-    return (
-      <article className="about-post" key={entry.id} id={entry.id}>
-        <Heading
-          className={
-            entry.showTitle ? "article-content-heading" : "page-heading-sr-only"
-          }
-        >
-          {entry.title}
-        </Heading>
+  return (
+    <>
+      {sortByPublicationOrder(displayArticles, "oldest").map((entry, index) => {
+        const Heading = index === 0 ? "h1" : "h2";
+        const visibleBlocks = (entry.blocks || []).filter(
+          (b) => !isExcludedAboutBlock(b),
+        );
+        return (
+          <article className="about-post" key={entry.id} id={entry.id}>
+            <Heading
+              className={
+                entry.showTitle ? "article-content-heading" : "page-heading-sr-only"
+              }
+            >
+              {entry.title}
+            </Heading>
 
-        <div className="article-body">
-          {(entry.blocks || []).map((block, i) => {
-            const headingId =
-              block.type === "heading" ? `muc-${++headingIndex}` : undefined;
-            return <ArticleBlock key={i} block={block} headingId={headingId} />;
-          })}
-        </div>
-      </article>
-    );
-  });
+            <div className="article-body">
+              {visibleBlocks.map((block, i) => {
+                const headingId =
+                  block.type === "heading" ? `muc-${++headingIndex}` : undefined;
+                return <ArticleBlock key={i} block={block} headingId={headingId} />;
+              })}
+            </div>
+          </article>
+        );
+      })}
+    </>
+  );
 }

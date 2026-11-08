@@ -24,7 +24,6 @@ function SectionHeading({ overline, title, description }) {
     <div className="section-heading">
       {overline ? <div className="overline">{overline}</div> : null}
       <h2>{title}</h2>
-      <div className="gold-rule" aria-hidden="true" />
       {description ? <p>{description}</p> : null}
     </div>
   );
@@ -105,6 +104,7 @@ export default function HomePage() {
                     images["assets/about_team.jpg"]
                   })`,
                 }}
+                role="img"
                 aria-label={intro.imageCaption || "Hình ảnh minh họa văn phòng luật"}
               />
               {intro.imageCaption ? (
@@ -114,17 +114,12 @@ export default function HomePage() {
               ) : null}
             </div>
             <div className="intro-content">
-              {intro.eyebrow ? (
-                <div className="intro-kicker">
-                  <span className="intro-kicker-line" aria-hidden="true" />
-                  <span>{intro.eyebrow}</span>
-                </div>
-              ) : null}
+              {intro.eyebrow ? <div className="intro-eyebrow">{intro.eyebrow}</div> : null}
               <h2>
                 <LineBreaks text={intro.title} />
               </h2>
               {intro.body ? <p>{intro.body}</p> : null}
-              {intro.quote ? <p>{intro.quote}</p> : null}
+              {intro.quote ? <p className="intro-note">{intro.quote}</p> : null}
               <Link
                 className="btn intro-story-btn btn-with-arrow"
                 to={intro.buttonHref || "/gioi-thieu"}
@@ -145,7 +140,11 @@ export default function HomePage() {
             <SectionHeading
               overline={fields.eyebrow}
               title={fields.title}
-              description={fields.description}
+              description={
+                fields.description && !fields.description.includes("nội dung minh họa")
+                  ? fields.description
+                  : ""
+              }
             />
             <ServiceCards items={fields.items || []} />
           </div>
@@ -156,29 +155,41 @@ export default function HomePage() {
             <SectionHeading
               overline={articles.eyebrow}
               title={articles.title}
-              description="Các nội dung đang có trên trang chủ."
             />
             <HomeArticles items={articles.items || []} />
           </div>
         </section>
 
-        <section className="home-section pale home-cooperate" id="hop-tac">
-          <div className="wrap">
-            <SectionHeading
-              overline={cooperate.eyebrow}
-              title={<LineBreaks text={cooperate.title} />}
-              description={cooperate.body}
-            />
-            {cooperate.notice ? (
-              <p className="notice home-section-notice">{cooperate.notice}</p>
-            ) : null}
-            <HomeRecruitmentRoles
-              roles={cooperate.roles || []}
-              onApply={setApplicationRole}
-            />
-            {cooperate.hint ? (
-              <p className="notice home-section-notice">{cooperate.hint}</p>
-            ) : null}
+        <section className="home-section home-cooperate" id="hop-tac">
+          <div className="wrap cooperate-split">
+            <div className="cooperate-summary">
+              <div className="cooperate-heading">
+                {cooperate.eyebrow ? (
+                  <div className="overline">{cooperate.eyebrow}</div>
+                ) : null}
+                <h2 className="cooperate-title">
+                  {cooperate.title?.replace(/\n/g, " ")}
+                </h2>
+              </div>
+              {cooperate.body ? (
+                <p className="cooperate-body">{cooperate.body}</p>
+              ) : null}
+              <div className="cooperate-footer">
+                <Link
+                  className="btn btn-cooperate-link btn-with-arrow"
+                  to="/tuyen-dung"
+                >
+                  <span>Tìm hiểu chính sách hợp tác</span>
+                  <IconArrowRight size={14} />
+                </Link>
+              </div>
+            </div>
+            <div className="cooperate-roles-column">
+              <HomeRecruitmentRoles
+                roles={cooperate.roles || []}
+                onApply={setApplicationRole}
+              />
+            </div>
           </div>
         </section>
 

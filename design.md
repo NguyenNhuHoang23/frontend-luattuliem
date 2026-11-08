@@ -21,7 +21,7 @@ colors:
 > **Ràng buộc đã được duyệt:** Không tự thêm breadcrumb, tiêu đề trang/bài lặp lại, ngày đăng/chuyên mục hoặc mô tả đầu trang vào các trang nội dung. Các mẫu trang bài viết và gợi ý trong `.agents/skills/` không được dùng để khôi phục các phần này. Quy định cụ thể tại mục 6 có ưu tiên hơn các mô tả kiểu chữ chung. Tiêu đề nội dung bên trong bài, tiêu đề tin trong danh sách, ngày trong nội dung pháp lý và hero trang chủ vẫn được giữ.
 
 
-Tài liệu tổng hợp từ source React đang sử dụng tại dự án `react-app`, cập nhật ngày 16/10/2026. Các quy định dưới đây ghi lại giao diện hiện tại và các quyết định đã thống nhất để tiếp tục chỉnh sửa nhất quán. Đây là tài liệu thiết kế, không phải xác nhận website đã có backend hoặc dữ liệu nghiệp vụ thực tế.
+Tài liệu của frontend React/Vite Luật Từ Liêm. Các quy định ghi lại quyết định thiết kế đã thống nhất và các luồng frontend đối chiếu với source ngày 06/11/2026. Khi chỉnh UI, kiểm tra component, dữ liệu API và CSS đang áp dụng trước khi dùng các thông số tham chiếu trong tài liệu. Việc frontend có tích hợp API không xác nhận backend của một môi trường cụ thể đang chạy.
 
 ## 1. Thương hiệu và định hướng
 
@@ -58,9 +58,9 @@ Website hiện chưa có bộ token trạng thái thành công/cảnh báo/lỗi
 
 ### Font và khả năng hiển thị
 
-Font dùng chung: **Liberation Sans Web**, dự phòng `Arial, Helvetica, sans-serif`. Các file font được lưu cùng dự án tại `src/assets/site/fonts/`, nạp bằng `@font-face` với `font-display: swap`.
+Font nền tảng: **Liberation Sans Web**, dự phòng `Arial, Helvetica, sans-serif`. Các file font được lưu cùng dự án tại `src/assets/site/fonts/`, nạp bằng `@font-face` với `font-display: swap`. Trang chủ dùng **Be Vietnam Pro** với Liberation Sans Web làm font dự phòng. Một số dòng chữ trang trí ở đầu trang dùng **Playfair Display**.
 
-Có bốn mặt chữ: Regular 400, Bold 700, Italic 400 và Bold Italic 700. Một số khai báo CSS dùng độ đậm 600 hoặc 800, nhưng dự án không có file font riêng cho hai độ đậm này. Không hiểu các giá trị đó là đã có đầy đủ bộ font tương ứng.
+Liberation Sans Web có bốn mặt chữ cục bộ: Regular 400, Bold 700, Italic 400 và Bold Italic 700. Kiểm tra font thực tế được trình duyệt nạp ở từng khu vực khi thay đổi độ đậm hoặc cỡ chữ.
 
 Dùng chung font cho nội dung, nút, input, textarea, select và placeholder. Tránh việc biểu mẫu hoặc một trang riêng rơi về font hệ thống khác, gây chênh lệch giữa thiết bị.
 
@@ -68,7 +68,7 @@ Dùng chung font cho nội dung, nút, input, textarea, select và placeholder. 
 
 | Thành phần | Desktop | Mobile / lưu ý |
 | --- | --- | --- |
-| Nội dung nền tảng | 15px, line-height 1.65 | Giữ khả năng đọc và xuống dòng tự nhiên |
+| Nội dung nền tảng | 15px, line-height 1.45 trong `base.css` | CSS theo trang có thể ghi đè; giữ khả năng đọc và xuống dòng tự nhiên |
 | Tiêu đề hero | `clamp(35px, 3.65vw, 53px)`, line-height 1.22, đậm | `clamp(30px, 8vw, 39px)` khi chiều rộng ≤ 900px |
 | Tiêu đề khối trang chủ | 32px, line-height 1.25 | 28px ở breakpoint ≤ 900px |
 | Tiêu đề trang nội dung | Thường 24–26px, đậm | `clamp(21px, 5.6vw, 26px)` cho các tiêu đề được lớp responsive áp dụng |
@@ -79,7 +79,7 @@ Dùng chung font cho nội dung, nút, input, textarea, select và placeholder. 
 | Nhãn biểu mẫu | Thường 13px, đậm | Đặt trên ô nhập |
 | Ngày cập nhật, chú thích | Khoảng 12–13px | Không cạnh tranh với nội dung chính |
 
-Tiêu đề dùng xanh hải quân hoặc xanh thương hiệu. Nội dung mô tả dùng xanh xám. Giữ khoảng cách đủ để dấu tiếng Việt không bị cắt. Không tự chuyển toàn bộ tiêu đề, nhãn khối hoặc tên công ty sang chữ hoa giãn cách.
+Tiêu đề dùng xanh hải quân hoặc xanh thương hiệu. Nội dung mô tả dùng xanh xám. Giữ khoảng cách đủ để dấu tiếng Việt không bị cắt. Theo yêu cầu mới, mọi tiêu đề được tạo mới hoặc chỉnh sửa phải hiển thị CHỮ IN HOA có đầy đủ dấu tiếng Việt; ưu tiên `text-transform: uppercase` và giữ nguyên dữ liệu nguồn. Ngoại lệ: các đề mục H2 trong bài Giới thiệu chỉ viết hoa chữ cái đầu câu. Kiểm tra desktop/mobile, cho phép xuống dòng tự nhiên; không tự viết hoa nhãn menu, nút hoặc đoạn văn và không tự giãn rộng chữ.
 
 ## 4. Bố cục và khoảng cách
 
@@ -113,7 +113,7 @@ Các breakpoint được kế thừa qua CSS layers; cần kiểm tra quy tắc 
 
 ### Header và điều hướng
 
-Thanh trên hiển thị tên công ty và thông điệp đồng hành. Hàng thương hiệu có logo bên trái, chữ thương hiệu kế bên; desktop có số điện thoại liên hệ bên phải. Logo dùng chung kích thước trên mọi trang: 108px ở desktop, 76px khi màn hình ≤ 900px và 60px khi ≤ 360px; không đổi kích thước theo đường dẫn.
+Thanh thông tin nhanh hiển thị giờ làm việc và thông điệp đồng hành. Hàng thương hiệu có logo và tên công ty bên trái; desktop có thông tin liên hệ theo cấu hình công ty và nút tư vấn bên phải. Header dùng chung trên các trang công khai; khi chỉnh kích thước logo hoặc chữ, kiểm tra `site-chrome.css` ở desktop, mobile và trạng thái sau khi cuộn.
 
 Thứ tự điều hướng: **Trang chủ → Giới thiệu → Án lệ – Án hay → Tuyển dụng – Hợp tác → Thành viên → Liên hệ**. Giữ chữ có dấu và thứ tự đã thống nhất.
 
@@ -150,20 +150,34 @@ Các trang nội dung không hiển thị cụm đầu trang gồm breadcrumb, t
 
 ### Trang chủ `/`
 
-Hero desktop chia thành vùng chữ bên trái và ảnh tòa án bên phải. Vùng chữ gồm nhãn công ty, thông điệp chính, mô tả và hai hành động. **Khối chữ và nhóm nút căn trái**; không tự chuyển về căn giữa.
+Khối “Về chúng tôi” dùng mẫu đã duyệt: nền `#f6f9fd`, ảnh văn phòng luật bên trái và nội dung bên phải trên desktop. Tiêu đề “Gần hơn với khách hàng. / Rõ hơn trong từng việc.”, hai đoạn mô tả thường, nút “Đọc giới thiệu công ty”. Nhãn khối viết hoa nhỏ kèm nét vàng và nút viền vàng nhạt là ngoại lệ theo mẫu cho riêng khối này. Mobile xếp ảnh trước nội dung thành một cột, giữ chú thích ảnh và nút có vùng chạm tối thiểu 44px; đoạn cuối không dùng khung trích dẫn.
 
-Ảnh hiển thị tự nhiên, không phủ gradient tối lên ảnh. Slider có chú thích và các nút chọn ảnh. Hiện tự chuyển khoảng 3,2 giây, dừng khi hover hoặc focus; chuyển cảnh khoảng 0,75 giây. Khi phát triển thêm, cần xem xét tùy chọn giảm chuyển động, không coi đây là tính năng đã có.
+Hero desktop chia thành vùng chữ bên trái và ảnh tòa án bên phải. Vùng chữ gồm thông điệp chính, mô tả, các nút hành động và ba giá trị “Tận tâm”, “Minh bạch”, “Chuyên nghiệp”. **Khối chữ và nhóm nút căn trái**; không tự chuyển về căn giữa.
 
-Ba mục sau hero: “Tiếp nhận trực tiếp”, “Phạm vi công việc rõ ràng”, “Đồng hành tại địa phương”. Desktop chia ba cột và căn giữa từng mục. **Mobile xếp dọc, căn trái cả số và chữ**; cột số rộng 36px, khoảng cách sang chữ 17px. Ba số phải cùng một lề và ba phần chữ phải cùng một lề. Không thêm lại các đường chia dọc đã bỏ.
+Ảnh hiển thị tự nhiên, không phủ gradient tối lên ảnh. Slider có chú thích và các nút chọn ảnh. `HeroSlider` tự chuyển sau khoảng 4,2 giây khi có nhiều ảnh và dừng khi rê chuột hoặc đưa focus vào vùng ảnh. Khi sửa slider, kiểm tra riêng hiệu ứng CSS và bộ đếm tự chuyển ảnh với tùy chọn giảm chuyển động.
+
+Ba mục sau hero: “Tiếp nhận trực tiếp”, “Phạm vi công việc rõ ràng”, “Đồng hành tại địa phương”. Theo feedback mới, mỗi mục là một thẻ trắng có viền xanh xám, bo góc 12px, biểu tượng nét xanh bên trái: tai nghe, tài liệu có dấu kiểm và vị trí. Biểu tượng có nền xanh nhạt và đường phân cách mảnh với chữ. Desktop chia ba cột; mobile xếp dọc, cách nhau 12px và căn trái nội dung. Giữ liên kết từng thẻ đến đề mục tương ứng trong trang Giới thiệu; không thêm lại số thứ tự.
 
 Các khối tiếp theo gồm giới thiệu, lĩnh vực hoạt động, tuyển dụng – hợp tác, bài viết – hoạt động và liên hệ. Nhãn khối dùng kiểu chữ thống nhất, không thêm lại các nhãn số “01 / ĐẤT ĐAI”, “02 / DÂN SỰ”, “03 / TỐ TỤNG” trong thẻ lĩnh vực.
 
+Khối “Thông tin từ công ty” trên mobile: mỗi mục đóng/mở nằm trong một khung trắng có viền xanh xám, bo góc 12px, cách nhau 12px. Giữ dấu chỉ trạng thái và thao tác đóng/mở bằng `details`/`summary`, vùng bấm tiêu đề cao tối thiểu 44px. Khi mở, nội dung nằm bên trong cùng khung; desktop tiếp tục hiển thị ba thẻ bài viết.
+
+Khối “Tuyển dụng – Hợp tác” trên trang chủ theo mẫu mới: nền trắng, nhóm nhãn và tiêu đề có nét xanh bên trái; mô tả nằm dưới. Ba vị trí xếp dọc thành thẻ xanh nhạt bo góc 12px, có biểu tượng cân công lý, nhóm người và cặp tài liệu bên trái, đường phân cách mảnh, mũi tên bên phải. Desktop giữ bố cục ngang hai cột: tiêu đề, mô tả và nút bên trái; ba thẻ bên phải. Mobile chuyển một cột, co giãn và xuống dòng tự nhiên. Giữ hành động mở biểu mẫu ứng tuyển theo vị trí.
+
 ### Giới thiệu `/gioi-thieu`
+
+Danh sách Tin tức: mỗi tin có khung trắng, tiêu đề xuống dòng đầy đủ. Chỉ chia cột ảnh khi có ảnh tải được; tin không ảnh dùng toàn bộ chiều rộng, kể cả mobile. Không tự thêm ảnh minh họa không liên quan.
 
 Bản nội dung Giới thiệu do người dùng cung cấp hiển thị một H1: “Công ty Luật TNHH MTV Từ Liêm — Kết nối luật sư và cộng tác viên địa phương”; ba đề mục trong bài dùng H2. Đây là tiêu đề nội dung được yêu cầu rõ, không phải khối tiêu đề SEO lặp lại. Vẫn cấm breadcrumb, ngày đăng/chuyên mục và mô tả đầu trang. Tiêu đề SEO và mô tả tìm kiếm lấy đúng bản người dùng gửi; nút cuối bài dẫn đến `/tuyen-dung`. Không tự chèn thêm đoạn giới thiệu CTA, ảnh hoặc nội dung ngoài bản đã duyệt.
 
+Tiêu đề nội dung bài Giới thiệu dùng xanh thương hiệu `#10399a` theo phản hồi mới.
 
-Các bài xếp cũ trước, mới sau bằng `publicationOrder` tăng dần trong `src/data/about.js`. Giữ toàn bộ nội dung bài hiện có, không tạo bài giả. Tiêu đề cột bên phải ghi Tin tức, bỏ chữ mới nhất.
+Đoạn mở đầu “Một người hiểu chuyện, một người hiểu luật, cùng phối hợp có thể giúp khách hàng bớt nhiều bước đường.” dùng chữ thường về độ đậm (400), giữ nguyên nội dung. Ngoại lệ theo phản hồi mới: các đề mục H2 trong bài Giới thiệu chỉ viết hoa chữ cái đầu câu, không viết hoa toàn bộ; mobile ≤ 900px dùng cỡ 18px, line-height 1.45 để giảm độ lớn.
+
+Hai cụm “luật sư chuyên nghiệp và cộng tác viên tại địa phương” và “cộng tác viên hỗ trợ khách hàng hoặc cộng tác viên pháp lý” trong đoạn văn dùng độ đậm thường, theo ảnh phản hồi. Giữ nguyên chữ và cách nhấn mạnh ở những đoạn khác.
+
+
+Giao diện lấy danh sách bài Giới thiệu qua API; `src/data/about.js` chứa nội dung cục bộ dùng để đối chiếu với bản đã duyệt. Giữ toàn bộ nội dung bài hiện có, không tạo bài giả. Tiêu đề cột bên phải ghi Tin tức, bỏ chữ mới nhất.
 
 Nhãn menu chỉ ghi “Giới thiệu”. Đây là mục chung cho giới thiệu công ty, website, mô hình và chương trình hoạt động; các nội dung bổ sung sẽ được tổ chức tại đây khi có nội dung được duyệt.
 
@@ -171,43 +185,51 @@ Bài Giới thiệu bắt đầu trực tiếp bằng nội dung và các đề 
 
 ### Tuyển dụng – Hợp tác `/tuyen-dung`
 
-Thứ tự cố định: yêu cầu chung/nguyên tắc hợp tác → ba nhóm Luật sư cộng tác, Cộng tác viên hỗ trợ, Cộng tác viên pháp lý → biểu mẫu hồ sơ → tin tuyển dụng riêng lẻ ở cuối. Phần tin riêng lấy từ `recruitmentPosts` trong `src/data/recruitment.js`, tách khỏi các nhóm cố định; chưa có tin thì hiển thị trạng thái trống. Khi bổ sung bài, tăng `publicationOrder` theo thứ tự đăng.
+Tiêu đề hiển thị “TUYỂN LUẬT SƯ – CỘNG TÁC VIÊN” màu xanh thương hiệu trên một dòng; ở chiều rộng ≤ 600px, cỡ chữ co giãn theo màn hình để không tràn ngang. Chỉ đổi tiêu đề hiển thị, không đổi dữ liệu hoặc API tuyển dụng.
+
+Theo phản hồi mobile mới, tăng nhẹ tiêu đề lên `clamp(15px, 4.8vw, 24px)`, letter-spacing -0.02em; giảm đoạn giới thiệu còn 14px, line-height 1.55. Giữ kiểu chữ và kích thước desktop hiện tại.
+
+Bốn thẻ trong menu tuyển dụng giữ bố cục và thứ tự hiện có; thêm biểu tượng nền xanh nhạt bên trái và đường phân cách mảnh trước tên mục. Biểu tượng lần lượt theo nội dung: cân công lý cho cộng tác viên pháp lý, nhóm người cho cộng tác viên khách hàng, cặp tài liệu cho luật sư, tài liệu có bút cho hướng dẫn gửi hồ sơ. Mũi tên tròn nằm bên phải; giữ thao tác mở nội dung và biểu mẫu.
+
+Thứ tự nội dung đã thống nhất: yêu cầu chung/nguyên tắc hợp tác → ba nhóm Luật sư cộng tác, Cộng tác viên hỗ trợ, Cộng tác viên pháp lý → biểu mẫu hồ sơ → tin tuyển dụng riêng lẻ ở cuối. Danh sách vị trí và tin tuyển dụng hiện được đọc qua API; giữ tin riêng tách khỏi các nhóm vị trí và kiểm tra trạng thái khi chưa có dữ liệu.
 
 Có phần yêu cầu chung, nguyên tắc phối hợp, các vị trí hợp tác và biểu mẫu hồ sơ. Thẻ vị trí có tên, mô tả và hành động đăng ký; chọn vị trí đưa người dùng đến biểu mẫu và điền vị trí tương ứng. Bố cục responsive, nội dung dài xuống dòng tự nhiên.
 
-Các quy định trách nhiệm chuyên môn và nội dung tuyển dụng phải được giữ nguyên khi chỉ chỉnh giao diện. Biểu mẫu hiện tại là minh họa, chưa gửi hoặc lưu hồ sơ thực tế.
+Giữ các quy định trách nhiệm chuyên môn và nội dung tuyển dụng khi chỉ chỉnh giao diện. Biểu mẫu gọi API gửi hồ sơ và hiển thị trạng thái đang gửi, thành công hoặc lỗi theo phản hồi.
 
 ### Án lệ Án hay `/an-le`
 
-Một mục tin tức đơn giản, một cột. **Không có ô tìm kiếm, bộ lọc lĩnh vực, danh mục phân loại hoặc cột phụ.**
+Trên mobile, ba tab chi tiết Án lệ nằm trong một thanh nền xanh nhạt, cùng chiều cao tối thiểu 48px; tab đang chọn có nền trắng và nét xanh. Nhãn “Nội dung”, “Thuộc tính”, “Văn bản liên quan” giữ rõ ràng; không thay đổi chức năng chuyển tab.
 
-Mỗi trang tối đa 10 tin, xếp bài mới đăng trước, bài cũ sau bằng trường `publicationOrder` giảm dần. Trường này độc lập với năm ban hành án lệ và ngày sửa nội dung. Không hiển thị ngày giờ đăng hoặc dòng Cập nhật. Năm trong số hiệu án lệ vẫn giữ nguyên. Ba tin đầu của trang có tiêu đề, trích yếu và “Đọc tiếp”. Các tin tiếp theo chỉ hiển thị danh sách tiêu đề, không lặp lại đoạn trích yếu.
+Theo mẫu phản hồi mới đã xác nhận: một cột, tiêu đề “Danh sách án lệ – án hay” ở đầu cùng số kết quả; không có banner, breadcrumb, icon trang, icon danh sách hoặc icon từng bài. Thanh tìm kiếm gồm từ khóa/số hiệu, lĩnh vực và nút Tìm kiếm; sắp xếp Mới nhất/Cũ nhất theo publicationOrder. Lọc và tìm kiếm trên dữ liệu API hiện đang tải, lưu q/category/sort trong URL và đặt lại trang khi thay bộ lọc. Không có bộ lọc thời gian ban hành. Cụm tìm kiếm trình bày nhẹ trên nền trắng, không dùng khung nền xanh bao ngoài. Desktop đặt tìm kiếm/lĩnh vực/nút và sắp xếp cùng một hàng, giới hạn phần tìm kiếm tối đa 960px; dưới 1100px sắp xếp chuyển xuống hàng riêng. Mobile ô từ khóa chiếm một hàng, lĩnh vực và nút chung hàng khi đủ chỗ; đường phân cách mảnh ngăn với danh sách.
 
-Bấm tiêu đề hoặc “Đọc tiếp” mở nội dung bằng hộp thoại hiện có. Khi tổng số tin vượt 10, hiện nút “Trước”, thông tin trang hiện tại và nút “Sau”; vô hiệu hóa nút khi đến đầu hoặc cuối. Trang hiện tại được lưu trong query `?page=2`. Hiện dữ liệu có 5 tin nên chưa xuất hiện phân trang.
+Mỗi trang tối đa 10 tin, xếp bài mới đăng trước, bài cũ sau bằng trường `publicationOrder` giảm dần. Trường này độc lập với năm ban hành án lệ và ngày sửa nội dung. Không hiển thị ngày giờ đăng hoặc dòng Cập nhật. Năm trong số hiệu án lệ vẫn giữ nguyên. Ba tin đầu của trang có tiêu đề, trích yếu và “Đọc tiếp”. Các tin tiếp theo không lặp lại đoạn trích yếu. Mọi bài hiển thị thành một hàng có tiêu đề, nhãn lĩnh vực và Đọc tiếp; desktop căn thành cột, mobile xuống dòng để đủ chỗ. Quyền Sửa/Xóa giữ nguyên. Nút Đăng bài chỉ hiện cho giám đốc; desktop đặt cùng hàng với thanh tìm kiếm/sắp xếp, mobile cùng hàng với nút Bộ lọc; tiêu đề chữ hoa luôn đứng đầu.
+
+Bấm tiêu đề hoặc “Đọc tiếp” mở trang chi tiết `/an-le/:id`; thao tác “Tóm tắt” dùng hộp thoại. Khi tổng số tin vượt 10, hiện nút “Trước”, thông tin trang hiện tại và nút “Sau”; vô hiệu hóa nút khi đến đầu hoặc cuối. Trang hiện tại được lưu trong query `?page=2`.
 
 ### Liên hệ `/lien-he`
 
+Tiêu đề phiếu tiếp nhận viết hoa và dùng xanh thương hiệu: “PHIẾU TIẾP NHẬN THÔNG TIN & YÊU CẦU HỖ TRỢ”.
+
+Kiểu chữ tiêu đề phiếu đồng bộ tiêu đề nội dung Giới thiệu: Liberation Sans Web đậm 700, cỡ `clamp(22px, 2.1vw, 28px)`, 32px khi màn hình ≥ 1600px; line-height 1.35, letter-spacing 0.02em, khoảng cách dưới 8px, không có đường kẻ riêng dưới tiêu đề.
+
 Biểu mẫu tiếp nhận thông tin và yêu cầu hỗ trợ, kèm thông tin văn phòng. Font phải đồng bộ với các trang khác. Trường bắt buộc có đánh dấu rõ; radio chọn phương thức tư vấn và danh sách tệp đính kèm phải dễ thao tác trên mobile.
 
-Không tự báo yêu cầu đã gửi thành công khi chưa có hệ thống tiếp nhận. Source hiện chỉ kiểm tra biểu mẫu và thông báo minh họa.
+Trang Liên hệ và khối liên hệ trên trang chủ gửi biểu mẫu qua API. Chỉ hiển thị thông báo đã gửi khi API trả về thành công. Dùng môi trường thử nghiệm hoặc phản hồi giả lập khi kiểm tra thao tác gửi.
 
 ### Diễn đàn `/dien-dan`
 
-Diễn đàn vẫn truy cập trực tiếp tại `/dien-dan`, không nằm trong thanh menu chính. Trang tái sử dụng giao diện trao đổi đã giữ lại, gồm Tin nhanh, Trao đổi vụ việc và Thông báo tài chính. Tiêu đề là “Diễn đàn”, không có lời chào tài khoản giả định, nút xem mẫu hoặc nút đăng xuất. Trang Thành viên vẫn dành cho giao diện đăng nhập.
+Diễn đàn ở `/dien-dan` là không gian trao đổi của thành viên, không nằm trong thanh menu chính. Khi frontend không có phiên đăng nhập, trang chuyển về `/thanh-vien`. Với phiên thực, giao diện lấy hội thoại và tin nhắn qua API; dữ liệu mẫu dùng trong kiểm thử không đại diện cho dữ liệu nội bộ thực tế.
 
-Dữ liệu trong trang Diễn đàn là minh họa. Phản hồi thử chỉ tồn tại tạm thời trong bộ nhớ giao diện, mất khi tải lại hoặc rời trang; chưa có hệ thống lưu trữ hay phân quyền. Các mục minh họa không phải dữ liệu nội bộ thực tế.
-
-Diễn đàn có nút icon kính lúp ở đầu khung hội thoại; mặc định ẩn ô nhập. Bấm icon sẽ mở ô tìm kiếm và tự focus; nhấn Escape đóng, xóa bộ lọc và trả focus về icon. Tìm kiếm trong kênh đang chọn, theo nội dung, người gửi và tên file; hỗ trợ nhập không dấu, hiển thị số kết quả, xóa tìm kiếm và trạng thái không tìm thấy. Khi đổi kênh, từ khóa được xóa. Thanh soạn tin đặt nút Đính kèm file có icon kẹp giấy ở trái và nút Gửi trao đổi có icon gửi ở phải, thông tin giới hạn file hiển thị nhỏ gọn. Nút Đính kèm file cho phép chọn tối đa 5 file, mỗi file tối đa 10 MB; có thể bỏ file trước khi gửi, gửi riêng file hoặc kèm nội dung. Mỗi tin có file hiển thị tên, dung lượng và liên kết tải xuống. Bản nháp được giữ riêng theo kênh trong phiên hiện tại. File chưa được tải lên máy chủ; liên kết tải xuống chỉ hoạt động trong phiên trình duyệt đã đính kèm, mất khi rời hoặc tải lại trang.
+Khi chỉnh giao diện diễn đàn, giữ khả năng tìm kiếm trong hội thoại, thao tác bàn phím, trạng thái gửi và lỗi, xem hoặc bỏ tệp đã chọn. Trình soạn tin hiện kiểm tra tối đa 5 tệp mỗi tin, mỗi tệp tối đa 10 MB. Đối chiếu hành vi từng loại hội thoại với component và API trước khi đổi thông báo. Không dùng việc ẩn nút ở frontend để thay thế kiểm tra quyền ở backend.
 
 ### Thành viên `/thanh-vien`
 
-Mặc định hiển thị ngay hai ô **Tên đăng nhập** và **Mật khẩu**, nút **Đăng nhập**, cùng hai hành động **Đăng ký thành viên** và **Quên mật khẩu?**. Sau khi điền đủ hai ô, bấm Đăng nhập hoặc nhấn Enter sẽ chuyển đến `/dien-dan` để xem thử. Đây chỉ là điều hướng minh họa: không gửi hoặc lưu tên đăng nhập/mật khẩu, không tạo phiên xác thực và không bảo vệ đường dẫn diễn đàn.
+Mặc định hiển thị ngay hai ô **Tên đăng nhập** và **Mật khẩu**, nút **Đăng nhập**, cùng hai hành động **Ứng tuyển thành viên** và **Quên mật khẩu?**. Frontend gọi API khi gửi thông tin đăng nhập, hiển thị lỗi khi thất bại và chuyển đến `/dien-dan` sau khi đăng nhập thành công.
 
 Không hiển thị hai nút “Xem mẫu CTV”, “Xem mẫu giám đốc”. Không tự chuyển sang màn hình “Nguyễn Văn A” sau khi nhập dữ liệu bất kỳ.
 
-Đăng ký mở hộp thoại gồm họ tên, số điện thoại, email và nội dung đề nghị tham gia. Quy trình dự kiến là công ty xét duyệt và cấp tài khoản; không tự kích hoạt sau khi đăng ký. Quên mật khẩu mở hộp thoại nhập email hoặc số điện thoại đã đăng ký.
-
-**Trạng thái hiện tại:** chỉ có giao diện và kiểm tra dữ liệu nhập, chưa có backend xác thực, xét duyệt, lưu đơn đăng ký hoặc khôi phục mật khẩu. Khi bấm gửi phải thông báo rõ chưa gửi/chưa kết nối, không giả lập thành công. Chỉ hiển thị tên thành viên khi sau này có phiên đăng nhập hợp lệ.
+“Ứng tuyển thành viên” dẫn đến trang Tuyển dụng. “Quên mật khẩu?” mở hộp thoại nhập email hoặc số điện thoại đã đăng ký. Hộp thoại khôi phục chưa gọi API và phải tiếp tục thông báo rõ yêu cầu chưa được gửi.
 
 ## 7. Tài nguyên và tổ chức source
 
@@ -221,9 +243,10 @@ Không hiển thị hai nút “Xem mẫu CTV”, “Xem mẫu giám đốc”. 
 | Dữ liệu tin án lệ, tuyển dụng, ảnh | `src/data/` |
 | Logo, ảnh và font đang dùng | `src/assets/site/` |
 | Kiểu nền tảng | `src/styles/base.css` |
-| Kiểu theo trang | `src/styles/home.css`, `about.css`, `cases.css`, `recruitment.css`, `contact.css`, `member.css` |
+| Kiểu theo trang | `src/styles/home.css`, `home-layout.css`, `about.css`, `cases.css`, `case-detail.css`, `recruitment.css`, `contact.css`, `member.css` |
 | Font chung và responsive | `src/styles/responsive.css` |
-| Điều chỉnh cho React | `src/styles/react.css` |
+| Điều chỉnh cho React, đầu trang, chân trang và khung màn hình rộng | `src/styles/react.css`, `site-chrome.css`, `wide-screen.css` |
+| Cấu hình URL API và lời gọi API công khai | `src/api/config.js`, `src/api/public.js` |
 | Điểm nhập CSS và thứ tự layers | `src/index.css` |
 | Bản HTML/CSS lưu đối chiếu | `legacy/` — không phải source giao diện đang chạy |
 
@@ -241,7 +264,7 @@ Ví dụ mô tả thành phần:
 
 - **Hero:** “Chia hai vùng trên máy tính: thông điệp xanh đậm bên trái, ảnh tòa án bên phải; nội dung và hai hành động đều căn trái. Trên điện thoại xếp chữ trước, ảnh sau, giữ ảnh sáng tự nhiên.”
 - **Tin án lệ:** “Một cột tin tức tiết chế. Ba bài đầu có tiêu đề và trích yếu; những bài sau là danh sách tiêu đề với đường phân cách mảnh. Cuối danh sách chỉ hiện phân trang khi có nhiều hơn một trang.”
-- **Thành viên:** “Thẻ đăng nhập trắng đặt giữa nền xanh xám rất nhạt, logo nhỏ, hai nhãn và ô nhập hiện sẵn, nút xanh toàn chiều rộng; dưới nút có đăng ký chờ duyệt và quên mật khẩu. Không có thông tin cá nhân giả định.”
+- **Thành viên:** “Thẻ đăng nhập trắng đặt giữa nền xanh xám rất nhạt, logo nhỏ, hai nhãn và ô nhập hiện sẵn, nút xanh toàn chiều rộng; dưới nút có liên kết ứng tuyển thành viên và nút quên mật khẩu. Không có thông tin cá nhân giả định.”
 
 Chỉnh từng phạm vi cụ thể, giữ lại thứ bậc nội dung và quyết định đã duyệt. Nếu có xung đột, ưu tiên yêu cầu mới nhất của người dùng; cập nhật tài liệu này theo thay đổi đã thống nhất thay vì tự khôi phục bố cục cũ.
 
@@ -251,17 +274,24 @@ Chỉnh từng phạm vi cụ thể, giữ lại thứ bậc nội dung và quy�
 - Tiếng Việt đầy đủ dấu; font thống nhất giữa các trang và biểu mẫu.
 - Không tràn ngang ở mobile; nội dung dài xuống dòng tự nhiên.
 - Khối chữ và nút hero căn trái; 01, 02, 03 căn trái trên mobile.
-- Án lệ giữ một mục tin tức, không thêm lại tìm kiếm hoặc chia lĩnh vực.
+- Án lệ theo mẫu danh sách đã duyệt: tìm kiếm, lọc lĩnh vực, sắp xếp; không banner, icon trang/bài hoặc lọc thời gian ban hành.
 - Hai ô đăng nhập hiển thị ngay; không có nút xem mẫu hoặc danh tính giả.
 - Kiểm tra bàn phím, focus, đóng hộp thoại bằng Escape và nhãn trường nhập.
 - Thông báo đúng trạng thái thực tế, phân biệt giao diện với xử lý backend.
 - Chạy lint/build và kiểm thử phù hợp khi sửa code; kiểm tra đường dẫn trực tiếp sau khi triển khai.
 
+### Đối chiếu giao diện bằng Playwright
+
+1. Ghi rõ trang, trạng thái và ảnh tham chiếu đã duyệt. Với góp ý trong [Google Sheets](https://docs.google.com/spreadsheets/d/1VFqiKUgDQHYkewBo-ATkIX8L8N_gmn6TgA2_rJ25cr4/edit?gid=0#gid=0), ghi số dòng hoặc ảnh tương ứng. Xác nhận phạm vi của khung ảnh đầu trang, nguồn nội dung cũ của Giới thiệu và mức độ bám theo mẫu mobile nếu yêu cầu chưa rõ.
+2. Chụp trước và sau ở **1440 × 1000** và **390 × 844** theo cấu hình Playwright. Khi thay đổi bố cục responsive, kiểm tra thêm 375px và hai phía của breakpoint bị ảnh hưởng; kiểm tra 1920px nếu sửa khung dùng chung trên màn hình rộng. Dùng cùng dữ liệu và trạng thái, chờ font và ảnh tải xong, chọn cùng ảnh slider để so sánh.
+3. Đối chiếu đúng vùng sửa: logo, menu và đầu trang khi cuộn; vị trí chữ, nút, ảnh và dải giá trị trong hero mobile; khoảng cách danh sách và độ đều của thẻ liên quan ở trang Án lệ; chiều cao và trục căn lề của chân trang. Kiểm tra không tràn ngang, chữ có dấu không bị cắt, nút dùng được bằng bàn phím và focus rõ ràng.
+4. Chạy spec liên quan bằng `npm run test:e2e -- tests/<tên-spec>.spec.js` (chọn file thật trong `tests/`). Dùng dữ liệu thử hoặc giả lập API cho luồng có ghi dữ liệu; kiểm tra trạng thái tải, trống và lỗi nếu vùng sửa phụ thuộc API. Lưu ảnh tạm trong `test-results/` và ghi lại trang, kích thước, dữ liệu và giới hạn xác minh. Ảnh được đối chiếu thủ công, trừ khi spec đã có phép so sánh ảnh tự động.
+
 ### Nội dung tuyển dụng đã thống nhất
 
 Trang `/tuyen-dung` hiển thị đúng một H1 nội dung “Tuyển luật sư và cộng tác viên” theo yêu cầu riêng; không thêm khối tiêu đề hoặc metadata lặp lại. Các mục 1–5 và “Cách gửi hồ sơ ứng tuyển” dùng H2. Ba đề mục trong mỗi vị trí dùng H3: “Đối tượng và tiêu chuẩn”, “Công việc”, “Nguyên tắc thu nhập”. Giữ nguyên nội dung do Công ty cung cấp, không tự thêm thu nhập, hạn tuyển hoặc địa chỉ làm việc.
 
-Ba nút gửi hồ sơ chọn sẵn vị trí tương ứng trong biểu mẫu, không yêu cầu tài khoản. Biểu mẫu có họ tên, điện thoại, email, vị trí, phạm vi hoạt động, giới thiệu ngắn và CV PDF. Bản local chỉ kiểm tra dữ liệu phía trình duyệt, chưa gửi hoặc lưu hồ sơ; không thông báo thành công giả. Giữ giới hạn CV hiện có 25 MB.
+Ba nút gửi hồ sơ chọn sẵn vị trí tương ứng trong biểu mẫu, không yêu cầu tài khoản. Biểu mẫu có họ tên, điện thoại, email, vị trí, phạm vi hoạt động, giới thiệu ngắn và CV PDF. Frontend kiểm tra CV trước khi gửi biểu mẫu qua API; giữ giới hạn CV hiện có 25 MB và chỉ báo đã gửi khi API trả về thành công.
 
 Tiêu đề SEO: “Tuyển luật sư và cộng tác viên | Công ty Luật Từ Liêm”. Mô tả tìm kiếm: “Luật Từ Liêm tuyển luật sư cộng tác, cộng tác viên khách hàng và pháp lý trên toàn quốc. Hợp tác theo vụ việc, ưu tiên luật sư Hà Nội. Gửi CV trực tuyến.” Không hiển thị hướng dẫn SEO trong bài, không gắn JobPosting cho trang giới thiệu ba vị trí. Trang công khai không đặt noindex; hồ sơ và dữ liệu nội bộ không được công khai.
 
@@ -270,3 +300,15 @@ Tiêu đề SEO: “Tuyển luật sư và cộng tác viên | Công ty Luật T
 Khung chung dùng `--site-content-width: clamp(1200px, calc(100vw - 160px), 1600px)` và rộng tối đa 90% viewport. Header, menu, footer và các trang nội dung dùng cùng trục ngang. Ở ≤ 900px, giữ lề 16px và bố cục một cột.
 
 Banner desktop nằm trong cùng khung giới hạn thay vì kéo ảnh đến mép màn hình; cột chữ/ảnh giữ tỷ lệ 46%/54%. Khối chữ và nút căn trái. Ở ≥ 1600px, chữ nội dung 17–18px, tiêu đề hero tối đa 64px; dòng văn bản dài giới hạn khoảng 80ch. Không phóng toàn bộ website bằng zoom hoặc transform.
+
+Thanh công cụ Án lệ trên mobile: chữ ô tìm kiếm/lĩnh vực 14px, nút 13px; nhãn sắp xếp 12px và giá trị 13px. Giảm khoảng cách nội bộ, giữ vùng bấm nút tối thiểu 44px.
+
+Trên mobile ≤ 600px, cụm tìm kiếm/lĩnh vực/sắp xếp Án lệ mặc định thu gọn sau nút “Bộ lọc”. Nút có aria-expanded/aria-controls, bấm để mở/đóng, giữ các giá trị đã chọn; hiển thị “Đang áp dụng” khi có tìm kiếm/lĩnh vực/thứ tự cũ nhất. Desktop vẫn hiển thị trực tiếp các điều khiển.
+
+Mobile Án lệ: nút Bộ lọc bên trái và Đăng bài (khi có quyền) bên phải trên cùng một hàng; khi mở, các ô lọc hiện ở hàng bên dưới cả hai nút. Desktop đưa nút Đăng bài lên cùng hàng với cụm tìm kiếm/sắp xếp, ở bên phải.
+
+## Đồng bộ tiêu đề chính theo phản hồi mới nhất
+
+Năm tiêu đề xanh trên Trang chủ, Giới thiệu, Án lệ, Tuyển dụng và Liên hệ dùng chung `page-headings.css`: Be Vietnam Pro, đậm 700, line-height 1.2, letter-spacing -0.015em, màu thương hiệu và chữ hoa. Cỡ chữ lấy theo tiêu đề “Đồng hành cùng quyền lợi của bạn”: desktop clamp(2rem, 3.4vw, 2.9rem); từ 1600px clamp(38px, 2.8vw, 46px); dưới 900px clamp(22px, 6.2vw, 28px); dưới 640px 24px. Tiêu đề dài được xuống dòng tự nhiên, bao gồm Tuyển dụng. Quy định này thay thế các cỡ chữ riêng và yêu cầu ép Tuyển dụng một dòng trước đây. Không áp dụng cho đề mục H2 bên trong bài Giới thiệu, tiêu đề từng bài hoặc nhãn nút.
+
+Điều chỉnh PC mới nhất: chỉ ở ≥ 901px, tiêu đề chính Giới thiệu, Án lệ và Tuyển dụng giảm 4px so với cỡ đồng bộ. Tiêu đề Liên hệ co theo chiều rộng nội dung thẻ (3.3cqi, tối đa cỡ đồng bộ trừ 4px) để vừa một dòng. Trang chủ và toàn bộ cỡ chữ mobile giữ nguyên. Font, độ đậm và màu xanh vẫn đồng bộ.
