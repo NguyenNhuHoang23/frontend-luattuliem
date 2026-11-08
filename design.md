@@ -306,3 +306,9 @@ Thanh công cụ Án lệ trên mobile: chữ ô tìm kiếm/lĩnh vực 14px, n
 Trên mobile ≤ 600px, cụm tìm kiếm/lĩnh vực/sắp xếp Án lệ mặc định thu gọn sau nút “Bộ lọc”. Nút có aria-expanded/aria-controls, bấm để mở/đóng, giữ các giá trị đã chọn; hiển thị “Đang áp dụng” khi có tìm kiếm/lĩnh vực/thứ tự cũ nhất. Desktop vẫn hiển thị trực tiếp các điều khiển.
 
 Mobile Án lệ: nút Bộ lọc bên trái và Đăng bài (khi có quyền) bên phải trên cùng một hàng; khi mở, các ô lọc hiện ở hàng bên dưới cả hai nút. Desktop đưa nút Đăng bài lên cùng hàng với cụm tìm kiếm/sắp xếp, ở bên phải.
+
+## Đồng bộ tiêu đề chính theo phản hồi mới nhất
+
+Năm tiêu đề xanh trên Trang chủ, Giới thiệu, Án lệ, Tuyển dụng và Liên hệ dùng chung `page-headings.css`: Be Vietnam Pro, đậm 700, line-height 1.2, letter-spacing -0.015em, màu thương hiệu và chữ hoa. Cỡ chữ lấy theo tiêu đề “Đồng hành cùng quyền lợi của bạn”: desktop clamp(2rem, 3.4vw, 2.9rem); từ 1600px clamp(38px, 2.8vw, 46px); dưới 900px clamp(22px, 6.2vw, 28px); dưới 640px 24px. Tiêu đề dài được xuống dòng tự nhiên, bao gồm Tuyển dụng. Quy định này thay thế các cỡ chữ riêng và yêu cầu ép Tuyển dụng một dòng trước đây. Không áp dụng cho đề mục H2 bên trong bài Giới thiệu, tiêu đề từng bài hoặc nhãn nút.
+
+Điều chỉnh PC mới nhất: chỉ ở ≥ 901px, tiêu đề chính Giới thiệu, Án lệ và Tuyển dụng giảm 4px so với cỡ đồng bộ. Tiêu đề Liên hệ co theo chiều rộng nội dung thẻ (3.3cqi, tối đa cỡ đồng bộ trừ 4px) để vừa một dòng. Trang chủ và toàn bộ cỡ chữ mobile giữ nguyên. Font, độ đậm và màu xanh vẫn đồng bộ.

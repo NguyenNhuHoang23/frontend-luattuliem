@@ -1,0 +1,63 @@
+@layer react {
+  :root {
+    --public-heading-font: "Be Vietnam Pro", "Liberation Sans Web", Arial, sans-serif;
+    --public-heading-size: clamp(2rem, 3.4vw, 2.9rem);
+  }
+
+  .page-home .page-hero h1,
+  .page-home .hero h1,
+  .page-about .about-post > .article-content-heading,
+  .page-cases .case-directory-heading h1,
+  .page-cases .case-directory-loading-title,
+  .page-recruitment .recruitment-content-heading,
+  .page-contact .form-section-title {
+    font-family: var(--public-heading-font);
+    font-size: var(--public-heading-size);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    color: var(--blue);
+    text-transform: uppercase;
+    overflow-wrap: break-word;
+  }
+
+  .page-about .about-post > .article-content-heading,
+  .page-cases .case-directory-heading h1,
+  .page-cases .case-directory-loading-title,
+  .page-recruitment .recruitment-content-heading,
+  .page-contact .form-section-title {
+    white-space: normal;
+    text-wrap: pretty;
+  }
+
+  @media (min-width: 1600px) {
+    :root {
+      --public-heading-size: clamp(38px, 2.8vw, 46px);
+    }
+  }
+  @media (min-width: 901px) {
+    .page-about .about-post > .article-content-heading,
+    .page-cases .case-directory-heading h1,
+    .page-cases .case-directory-loading-title,
+    .page-recruitment .recruitment-content-heading {
+      font-size: calc(var(--public-heading-size) - 4px);
+    }
+    .page-contact .contact-form-card {
+      container-type: inline-size;
+    }
+    .page-contact .form-section-title {
+      font-size: min(calc(var(--public-heading-size) - 4px), 3.3cqi);
+      text-wrap: normal;
+    }
+  }
+  @media (max-width: 900px) {
+    :root {
+      --public-heading-size: clamp(22px, 6.2vw, 28px);
+    }
+  }
+  @media (max-width: 640px) {
+    :root {
+      --public-heading-size: 24px;
+    }
+  }
+}
