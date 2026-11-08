@@ -87,25 +87,6 @@
     line-height: 1.45;
     color: var(--muted);
   }
-  .page-home #gioi-thieu {
-    padding-top: 40px;
-    padding-bottom: 28px;
-  }
-  .page-home .fields {
-    padding-top: 40px;
-  }
-  .page-home #hop-tac {
-    padding-top: 8px;
-    padding-bottom: 16px;
-  }
-  .page-home .news {
-    padding-top: 40px;
-    padding-bottom: 28px;
-  }
-  .page-home #lien-he {
-    padding-top: 12px;
-    padding-bottom: 24px;
-  }
   .intro {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -378,25 +359,6 @@
       padding: 16px 0;
       border-right: 0;
       border-bottom: 1px solid var(--line);
-    }
-    .page-home #gioi-thieu {
-      padding-top: 8px;
-      padding-bottom: 8px;
-    }
-    .page-home .fields {
-      padding-top: 28px;
-    }
-    .page-home #hop-tac {
-      padding-top: 8px;
-      padding-bottom: 14px;
-    }
-    .page-home .news {
-      padding-top: 28px;
-      padding-bottom: 16px;
-    }
-    .page-home #lien-he {
-      padding-top: 10px;
-      padding-bottom: 18px;
     }
     .intro {
       grid-template-columns: 1fr;

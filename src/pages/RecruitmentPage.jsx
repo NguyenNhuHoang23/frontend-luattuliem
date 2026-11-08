@@ -13,6 +13,7 @@ import {
 } from "../data/recruitment.js";
 import { RecruitmentSkeleton } from "../components/Skeleton.jsx";
 import { RecruitmentCard } from "../features/RecruitmentCard.jsx";
+import { RecruitmentTopicIcon } from "../components/RecruitmentTopicIcon.jsx";
 import { RecruitmentApplicationForm } from "../features/RecruitmentApplicationForm.jsx";
 import { sortByPublicationOrder } from "../utils/publicationOrder.js";
 
@@ -266,7 +267,10 @@ export default function RecruitmentPage() {
         <div className="wrap recruitment-selection-layout">
           <article className="content-column recruitment-article">
             <h1 className="recruitment-content-heading">
-              {page?.title || recruitmentArticle.title}
+              {(page?.title || recruitmentArticle.title).replace(
+                /^Tuyển luật sư và cộng tác viên$/i,
+                "Tuyển luật sư – Cộng tác viên",
+              )}
             </h1>
             {loading ? <RecruitmentSkeleton /> : null}
             {error ? <p className="recruitment-intro">{error}</p> : null}
@@ -291,6 +295,7 @@ export default function RecruitmentPage() {
                     aria-controls={role.id}
                     onClick={() => toggleTopic(role.id)}
                   >
+                    <RecruitmentTopicIcon name={role.name} />
                     <span className="recruitment-topic-name">{role.name}</span>
                     <span className="recruitment-topic-arrow" aria-hidden="true">
                       <svg
@@ -339,7 +344,8 @@ export default function RecruitmentPage() {
                   aria-controls="applySection"
                   onClick={() => toggleTopic("applySection")}
                 >
-                  <span>Cách gửi hồ sơ &amp; biểu mẫu</span>
+                  <RecruitmentTopicIcon document />
+                  <span className="recruitment-topic-name">Cách gửi hồ sơ &amp; biểu mẫu</span>
                   <span className="recruitment-topic-arrow" aria-hidden="true">
                     <svg
                       width="18"

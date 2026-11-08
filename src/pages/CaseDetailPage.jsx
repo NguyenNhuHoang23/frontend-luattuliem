@@ -134,7 +134,7 @@ export default function CaseDetailPage() {
                 className={`case-tab-btn ${activeTab === "content" ? "active" : ""}`}
                 onClick={() => setActiveTab("content")}
               >
-                NỘI DUNG
+                Nội dung
               </button>
               <button
                 role="tab"

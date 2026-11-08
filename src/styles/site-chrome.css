@@ -69,43 +69,71 @@
 
   .site-header {
     background: #fff;
-    position: sticky;
-    top: 0;
+    position: relative;
     z-index: 1000;
-    box-shadow: 0 2px 14px rgba(10, 25, 45, 0.05);
+    box-shadow: 0 2px 14px rgba(10, 25, 45, 0.06);
+    border-bottom: 2px solid #e2eaf4;
   }
 
   .masthead {
-    padding: 2px 0;
+    padding: 8px 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 20px;
-    transition: padding 0.2s ease, max-height 0.22s ease, opacity 0.18s ease;
   }
 
   .site-header .brand {
     display: flex;
     align-items: center;
     text-decoration: none;
-    gap: 0;
+    gap: 22px;
     padding: 0;
     margin: 0;
-    line-height: 0;
   }
 
   .site-header .brand .brand-logo-img,
   .site-header .brand img.brand-logo-img {
-    height: 80px;
-    width: auto;
-    max-width: 340px;
+    height: 136px;
+    width: 136px;
+    min-width: 136px;
     object-fit: contain;
     display: block;
-    border-radius: 0;
+    border-radius: 50%;
     padding: 0;
     margin: 0;
-    vertical-align: top;
-    transition: height 0.2s ease, max-width 0.2s ease;
+    flex-shrink: 0;
+    transition: height 0.2s ease, width 0.2s ease;
+  }
+
+  .site-header .brand .brand-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    line-height: 1.2;
+    min-width: 0;
+  }
+
+  .site-header .brand .brand-text small {
+    display: block;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--chrome-navy, #11284b);
+    line-height: 1.25;
+    margin: 0 0 2px 0;
+  }
+
+  .site-header .brand .brand-text strong {
+    display: block;
+    font-size: 45px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--chrome-blue, #10399a);
+    line-height: 1.15;
+    margin: 0;
   }
 
   .header-actions {
@@ -207,28 +235,6 @@
     position: relative;
   }
 
-  /* Desktop: khi cuộn chỉ giữ thanh điều hướng */
-  @media (min-width: 901px) {
-    .site-header.is-scrolled .masthead {
-      padding: 0;
-      max-height: 0;
-      opacity: 0;
-      overflow: hidden;
-      pointer-events: none;
-      border: 0;
-    }
-    .site-header.is-scrolled .nav-line {
-      border-top: 0;
-    }
-    .site-header.is-scrolled .nav-wrap {
-      min-height: 44px;
-    }
-    .site-header.is-scrolled .primary-nav a {
-      padding-top: 11px;
-      padding-bottom: 11px;
-    }
-  }
-
   .primary-nav {
     display: flex;
     align-items: center;
@@ -240,8 +246,8 @@
     position: relative;
     display: inline-flex;
     align-items: center;
-    padding: 11px 16px;
-    font-size: 0.86rem;
+    padding: 12px 18px;
+    font-size: 0.98rem;
     font-weight: 700;
     color: var(--chrome-navy);
     white-space: nowrap;
@@ -315,21 +321,6 @@
 
   .mobile-menu-btn {
     display: none;
-    flex-direction: column;
-    justify-content: space-around;
-    width: 32px;
-    height: 30px;
-    background: transparent;
-    padding: 4px;
-    border: 0;
-    color: var(--chrome-blue);
-  }
-
-  .mobile-menu-btn span {
-    display: block;
-    width: 24px;
-    height: 2px;
-    background: var(--chrome-blue);
   }
 
   .masthead-menu-btn {
@@ -345,15 +336,35 @@
       display: none;
     }
 
+    .header-cta-btn {
+      display: none;
+    }
+
     .masthead {
-      padding: 2px 0;
+      padding: 6px 0;
+      gap: 10px;
+    }
+
+    .site-header .brand {
+      min-width: 0;
       gap: 10px;
     }
 
     .site-header .brand .brand-logo-img,
     .site-header .brand img.brand-logo-img {
-      height: 76px;
-      max-width: 280px;
+      height: 86px;
+      width: 86px;
+      min-width: 86px;
+    }
+
+    .site-header .brand .brand-text small {
+      font-size: 9.5px;
+      letter-spacing: 1px;
+    }
+
+    .site-header .brand .brand-text strong {
+      font-size: 24px;
+      letter-spacing: 0.3px;
     }
 
     .header-actions {
@@ -363,18 +374,28 @@
 
     .masthead-menu-btn,
     .mobile-menu-btn.masthead-menu-btn {
-      display: flex;
-      width: 42px;
-      height: 42px;
-      min-width: 42px;
-      padding: 0;
-      border: 1px solid var(--chrome-line);
-      border-radius: 8px;
-      background: #fff;
-      flex-direction: column;
+      display: inline-flex;
+      flex-direction: row;
       align-items: center;
       justify-content: center;
-      gap: 5px;
+      gap: 8px;
+      min-width: 44px;
+      min-height: 44px;
+      padding: 10px 12px;
+      border: 1px solid var(--chrome-line);
+      border-radius: 4px;
+      background: #fff;
+      color: var(--chrome-blue);
+      font: 600 13px/1.2 "Liberation Sans Web", Arial, sans-serif;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    .masthead-menu-btn svg,
+    .mobile-menu-btn.masthead-menu-btn svg {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
     }
 
     .nav-line {
@@ -384,9 +405,23 @@
       padding: 0;
     }
 
+    .site-header:not(.menu-open) .nav-line {
+      display: none;
+    }
+
+    .site-header.menu-open .nav-line {
+      display: block;
+      border-top: 1px solid var(--chrome-line);
+      border-bottom: 1px solid var(--chrome-line);
+      background: #fff;
+    }
+
     .nav-line .nav-wrap {
-      padding: 0;
+      padding: 6px 0 12px;
       min-height: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
     }
 
     .nav-aside {
@@ -395,39 +430,49 @@
 
     .primary-nav {
       display: none;
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
+      position: static;
       background: #fff;
       flex-direction: column;
       align-items: stretch;
-      padding: 8px 12px 12px;
-      gap: 2px;
-      border-top: 1px solid var(--chrome-line);
-      box-shadow: 0 16px 36px rgba(17, 40, 75, 0.12);
-      z-index: 1000;
+      padding: 0;
+      gap: 0;
+      width: 100%;
+      border-top: 0;
+      box-shadow: none;
     }
 
-    .primary-nav.open {
+    .primary-nav.open,
+    .site-header.menu-open .primary-nav {
       display: flex;
     }
 
     .primary-nav a {
-      padding: 10px 12px;
-      min-height: 42px;
+      display: flex;
+      align-items: center;
+      min-height: 48px;
+      padding: 12px;
+      font-size: 15px;
+      font-weight: 400;
+      color: rgb(36, 54, 77);
       white-space: normal;
-      font-size: 14px;
+      background: transparent;
+      border-bottom: 1.66px solid transparent;
+    }
+
+    .primary-nav a.memberlink {
+      color: var(--chrome-blue);
+      font-weight: 700;
+    }
+
+    .primary-nav a.active {
+      background: #f0f5fc;
+      color: var(--chrome-blue);
+      font-weight: 700;
+      border-bottom: 1.66px solid var(--chrome-blue);
     }
 
     .primary-nav a.active::after {
-      left: 0;
-      right: auto;
-      top: 0;
-      bottom: 0;
-      width: 4px;
-      height: 100%;
-      border-radius: 4px 0 0 4px;
+      display: none;
     }
 
     header.navigation-ready nav,
@@ -440,32 +485,37 @@
     }
 
     header.navigation-ready .primary-nav.open,
-    header.navigation-ready.menu-open .primary-nav.open {
+    header.navigation-ready.menu-open .primary-nav.open,
+    header.navigation-ready.menu-open .primary-nav {
       display: flex;
     }
   }
 
   @media (max-width: 640px) {
     .masthead {
-      padding: 0;
+      padding: 6px 0;
+    }
+
+    .site-header .brand {
+      gap: 10px;
     }
 
     .site-header .brand .brand-logo-img,
     .site-header .brand img.brand-logo-img {
-      height: 64px;
-      max-width: 240px;
+      height: 80px;
+      width: 80px;
+      min-width: 80px;
     }
 
-    .header-cta-btn {
-      font-size: 0.72rem;
-      padding: 8px 10px;
+    .site-header .brand .brand-text small {
+      font-size: 9px;
+      letter-spacing: 0.5px;
+      margin-bottom: 2px;
     }
 
-    .header-cta-btn span {
-      max-width: 9.5em;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+    .site-header .brand .brand-text strong {
+      font-size: 23px;
+      letter-spacing: 0.25px;
     }
 
     .header-actions {
@@ -474,9 +524,10 @@
 
     .masthead-menu-btn,
     .mobile-menu-btn.masthead-menu-btn {
-      width: 40px;
-      height: 40px;
-      min-width: 40px;
+      width: auto;
+      min-width: 44px;
+      height: 44px;
+      padding: 10px;
     }
   }
 }

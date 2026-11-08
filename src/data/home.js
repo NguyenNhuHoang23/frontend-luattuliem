@@ -25,11 +25,11 @@ export const defaultHomePage = {
     },
   ],
   intro: {
-    eyebrow: "Câu chuyện của chúng tôi",
-    title: "Để mỗi người đóng góp đúng sở trường",
-    body: "Tại Công ty Luật TNHH MTV Từ Liêm, luật sư chuyên nghiệp và cộng tác viên địa phương cùng phối hợp theo từng vụ việc. Mỗi người phát huy đúng sở trường của mình, công việc được phân công rõ ràng và khách hàng được đồng hành sát hơn.",
+    eyebrow: "Về chúng tôi",
+    title: "Gần hơn với khách hàng.\nRõ hơn trong từng việc.",
+    body: "Công ty Luật TNHH MTV Từ Liêm hướng đến việc kết nối luật sư và cộng tác viên tại địa phương, giúp khách hàng thuận tiện hơn trong quá trình trao đổi và giải quyết công việc.",
     quote:
-      "Công ty kết nối nguồn lực để khách hàng tiếp cận dịch vụ pháp lý thuận tiện hơn, tiết kiệm chi phí và nhận được sự hỗ trợ phù hợp với hoàn cảnh thực tế tại địa phương.",
+      "Tối ưu nguồn nhân lực địa phương, hướng đến lợi ích của khách hàng.",
     imageCaption: "Hình ảnh minh họa · Văn phòng luật",
     imagePath: null,
     image: "",
@@ -39,8 +39,7 @@ export const defaultHomePage = {
   fields: {
     eyebrow: "Lĩnh vực hoạt động",
     title: "Bắt đầu từ vấn đề của bạn",
-    description:
-      "Các nhóm lĩnh vực dưới đây là nội dung minh họa để duyệt bố cục, có thể điều chỉnh khi hoàn thiện website.",
+    description: "",
     items: [
       {
         title: "Đất đai & nhà ở",
@@ -69,9 +68,8 @@ export const defaultHomePage = {
     eyebrow: "Tuyển dụng – Hợp tác",
     title: "Cùng chuyên môn.\nChung trách nhiệm.",
     body: "Phát triển đội ngũ cộng tác viên tại địa phương, phối hợp theo từng vụ việc và phạm vi công việc được thống nhất.",
-    notice:
-      "CTV không phải luật sư không tự tư vấn pháp luật, thu tiền hoặc cam kết kết quả với khách hàng. Mọi việc được tiếp nhận và thống nhất qua công ty.",
-    hint: "Chọn vị trí để mở mẫu gửi hồ sơ hợp tác.",
+    notice: "",
+    hint: "",
     roles: [
       {
         name: "Luật sư cộng tác",

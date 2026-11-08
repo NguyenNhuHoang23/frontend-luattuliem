@@ -42,7 +42,7 @@
 
   /* Main Layout */
   .page-cases .main-container {
-    padding: 36px 0 72px;
+    padding: 12px 0 40px;
     background: #fff;
   }
   .page-cases .editorial-grid {
@@ -531,17 +531,30 @@
   }
   .page-cases .case-news-summary {
     position: relative;
-    padding: 12px 0 10px;
+    padding: 10px 0 11px;
     border-bottom: 1px solid #e6ebf2;
     background: none;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0;
+  }
+  .page-cases .case-news-summary:first-child {
+    padding-top: 0;
   }
   .page-cases .case-news-summary:has(.case-news-manage) {
     padding-right: 88px;
   }
+  .page-cases .case-news-content {
+    flex: 0 0 68%;
+    max-width: 68%;
+    min-width: 0;
+    padding-right: 20px;
+  }
   .page-cases .case-news-summary h2 {
-    margin: 0 0 4px;
-    font-size: 21px;
-    line-height: 1.25;
+    margin: 0;
+    font-size: inherit;
+    line-height: inherit;
   }
   .page-cases .case-news-title {
     display: block;
@@ -550,8 +563,12 @@
     border: 0;
     background: none;
     color: var(--navy);
-    font: inherit;
-    font-weight: 800;
+    font:
+      700 18.5px/1.35 "Liberation Sans Web",
+      Arial,
+      Helvetica,
+      sans-serif;
+    letter-spacing: -0.01em;
     text-align: left;
     overflow-wrap: anywhere;
     cursor: pointer;
@@ -560,67 +577,55 @@
     color: var(--blue);
   }
   .page-cases .case-news-excerpt {
-    margin: 0;
+    margin: 4px 0 0;
     color: var(--muted);
     font-size: 14.5px;
-    line-height: 1.35;
+    line-height: 1.45;
   }
   .page-cases .case-news-more {
+    flex-shrink: 0;
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    padding: 0;
+    padding: 6px 0;
     border: 0;
     background: none;
     color: var(--blue);
     font: inherit;
     text-decoration: none;
     font-weight: 700;
-    font-size: inherit;
-    line-height: inherit;
+    font-size: 14px;
+    line-height: 1.2;
     white-space: nowrap;
     cursor: pointer;
-    vertical-align: baseline;
   }
   .page-cases .case-news-more:hover {
     text-decoration: underline;
   }
-  .page-cases .case-news-summary-link {
-    display: inline;
-    margin-left: 10px;
-    padding: 0;
-    border: 0;
-    background: none;
-    color: #64748b;
-    font: inherit;
-    font-size: 0.95em;
-    font-weight: 600;
-    text-decoration: underline;
-    text-underline-offset: 2px;
-    cursor: pointer;
-  }
-  .page-cases .case-news-summary-link:hover {
-    color: var(--blue);
-  }
-  .page-cases .case-news-list .case-news-summary-link {
-    display: inline-block;
-    margin: 4px 0 0;
-  }
   .page-cases .case-news-list {
     list-style: none;
+    margin: 0;
+    padding: 0;
   }
   .page-cases .case-news-list li {
     position: relative;
-    padding: 8px 0;
+    padding: 10px 0 11px;
+    margin-top: 0 !important;
     border-bottom: 1px solid #e6ebf2;
+    line-height: 1.35;
+  }
+  .page-cases .case-news-list .case-news-title {
+    display: block;
+    width: 100%;
+    font:
+      700 18.5px/1.35 "Liberation Sans Web",
+      Arial,
+      Helvetica,
+      sans-serif;
+    letter-spacing: -0.01em;
   }
   .page-cases .case-news-list li:has(.case-news-manage) {
     padding-right: 88px;
-  }
-  .page-cases .case-news-list .case-news-title {
-    font-size: 16px;
-    font-weight: 800;
-    line-height: 1.25;
   }
   .page-cases .case-news-list .case-news-manage {
     top: 8px;
@@ -661,8 +666,29 @@
     cursor: default;
   }
   @media (max-width: 700px) {
+    .page-cases .case-news-title,
+    .page-cases .case-news-list .case-news-title {
+      font-size: 16.5px;
+    }
+    .page-cases .case-news-excerpt {
+      font-size: 13.5px;
+    }
+    .page-cases .case-news-more {
+      font-size: 13px;
+    }
     .page-cases .case-news-summary {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
       padding: 10px 0 8px;
+    }
+    .page-cases .case-news-content {
+      flex: 1 1 auto;
+      max-width: 100%;
+      padding-right: 0;
+    }
+    .page-cases .case-news-summary .case-news-more {
+      align-self: flex-end;
     }
     .page-cases .case-news-summary h2 {
       font-size: 18px;
@@ -680,6 +706,400 @@
     }
     .page-cases .case-pagination {
       gap: 10px;
+    }
+  }
+}
+
+@layer react {
+  .page-cases .case-directory-heading {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    margin-bottom: 20px;
+  }
+  .page-cases .case-directory-heading h1,
+  .page-cases .case-directory-loading-title {
+    margin: 0;
+    text-transform: uppercase;
+    overflow-wrap: anywhere;
+    color: var(--blue);
+    font: 700 clamp(22px, 2.1vw, 28px)/1.35 "Liberation Sans Web", Arial, sans-serif;
+  }
+  .page-cases .case-directory-heading > span {
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .page-cases .case-directory-search {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(170px, 210px) auto;
+    align-items: stretch;
+    gap: 12px;
+    padding: 0;
+    background: transparent;
+    border-radius: 0;
+  }
+  .page-cases .case-directory-search label {
+    min-width: 0;
+    margin: 0;
+  }
+  .page-cases .case-directory-search input,
+  .page-cases .case-directory-search select,
+  .page-cases .case-directory-sort select {
+    width: 100%;
+    height: 44px;
+    margin: 0;
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: white;
+    color: var(--ink);
+    font: inherit;
+    font-size: 14px;
+  }
+  .page-cases .case-directory-search input::placeholder {
+    color: #65758b;
+    opacity: 1;
+  }
+  .page-cases .case-directory-sort {
+    display: flex;
+    justify-content: flex-end;
+    margin: 0;
+  }
+  .page-cases .case-directory-sort label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 400;
+  }
+  .page-cases .case-directory-sort select {
+    width: auto;
+  }
+  .page-cases .case-directory-list {
+    display: grid;
+    gap: 8px;
+  }
+  .page-cases .case-directory-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 185px auto;
+    align-items: center;
+    gap: 20px;
+    padding: 14px 16px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: #fff;
+  }
+  .page-cases .case-directory-row:has(.case-news-manage) {
+    grid-template-columns: minmax(0, 1fr) 185px auto auto;
+  }
+  .page-cases .case-directory-row .case-news-manage {
+    position: static;
+  }
+  .page-cases .case-directory-content {
+    min-width: 0;
+  }
+  .page-cases .case-directory-content h2 {
+    margin: 0;
+    font: 700 17px/1.4 "Liberation Sans Web", Arial, sans-serif;
+    color: var(--navy);
+  }
+  .page-cases .case-directory-title:hover {
+    color: var(--blue);
+    text-decoration: underline;
+  }
+  .page-cases .case-directory-content p {
+    margin: 5px 0 0;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .page-cases .case-directory-category {
+    justify-self: start;
+    padding: 4px 8px;
+    background: #edf3fb;
+    border-radius: 4px;
+    color: var(--blue);
+    font-size: 12px;
+    line-height: 1.4;
+  }
+  .page-cases .case-directory-read {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: 44px;
+    padding: 8px 12px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    color: var(--blue);
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .page-cases .case-directory-read:hover {
+    background: #edf3fb;
+    border-color: var(--blue);
+  }
+  @media (max-width: 900px) {
+    .page-cases .case-directory-row,
+    .page-cases .case-directory-row:has(.case-news-manage) {
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+    }
+    .page-cases .case-directory-content {
+      grid-column: 1 / -1;
+    }
+    .page-cases .case-directory-row .case-news-manage {
+      grid-column: 1 / -1;
+      justify-content: flex-end;
+    }
+  }
+  @media (max-width: 600px) {
+    .page-cases .case-directory-heading {
+      display: grid;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+    .page-cases .case-directory-heading h1,
+    .page-cases .case-directory-loading-title {
+      font-size: clamp(20px, 5.3vw, 22px);
+      line-height: 1.4;
+    }
+    .page-cases .case-directory-search {
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 8px;
+    }
+    .page-cases .case-directory-query {
+      grid-column: 1 / -1;
+    }
+    .page-cases .case-directory-search .btn {
+      padding-inline: 14px;
+    }
+    .page-cases .case-directory-row {
+      padding: 14px;
+    }
+    .page-cases .case-directory-content h2 {
+      font-size: 16px;
+    }
+    .page-cases .case-directory-search input,
+    .page-cases .case-directory-search select,
+    .page-cases .case-directory-sort select {
+      font-size: 16px;
+    }
+    .page-cases .case-directory-category {
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+  }
+  @media (max-width: 360px) {
+    .page-cases .case-directory-search {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .page-cases .case-directory-search .btn {
+      min-height: 44px;
+    }
+    .page-cases .case-directory-row {
+      gap: 10px;
+      padding: 12px;
+    }
+  }
+}
+
+@layer react {
+  .page-cases .case-directory-controls {
+    display: grid;
+    grid-template-columns: minmax(0, 960px) auto;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px 28px;
+    padding-bottom: 18px;
+    margin-bottom: 18px;
+    border-bottom: 1px solid var(--line);
+  }
+  .page-cases .case-directory-search {
+    gap: 10px;
+  }
+  .page-cases .case-directory-search .btn {
+    min-height: 44px;
+    padding: 10px 18px;
+    border-radius: 6px;
+  }
+  .page-cases .case-directory-sort select {
+    min-width: 112px;
+    border-color: transparent;
+    background: #f5f7fa;
+  }
+  .page-cases .case-directory-sort label {
+    white-space: nowrap;
+    gap: 8px;
+  }
+  .page-cases .case-directory-search input:hover,
+  .page-cases .case-directory-search select:hover {
+    border-color: #a8b9ce;
+  }
+  @media (max-width: 1100px) {
+    .page-cases .case-directory-controls {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 12px;
+    }
+  }
+  @media (max-width: 600px) {
+    .page-cases .case-directory-controls {
+      gap: 12px;
+      padding-bottom: 14px;
+      margin-bottom: 14px;
+    }
+    .page-cases .case-directory-search {
+      gap: 8px;
+    }
+    .page-cases .case-directory-sort select {
+      height: 40px;
+      padding-block: 8px;
+      font-size: 14px;
+    }
+  }
+}
+
+@layer react {
+  @media (max-width: 600px) {
+    .page-cases .case-directory-controls {
+      gap: 8px;
+      padding-bottom: 10px;
+      margin-bottom: 10px;
+    }
+    .page-cases .case-directory-search input,
+    .page-cases .case-directory-search select {
+      font-size: 14px;
+      padding: 8px 10px;
+    }
+    .page-cases .case-directory-search .btn,
+    .page-cases .case-news-toolbar .btn {
+      min-height: 44px;
+      padding: 8px 12px;
+      font-size: 13px;
+    }
+    .page-cases .case-directory-sort label {
+      font-size: 12px;
+      gap: 6px;
+    }
+    .page-cases .case-directory-sort select {
+      min-width: 100px;
+      font-size: 13px;
+      padding: 6px 8px;
+    }
+    .page-cases .case-news-toolbar {
+      margin-bottom: 10px;
+    }
+  }
+}
+
+@layer react {
+  .page-cases .case-directory-filter-toggle {
+    display: none;
+  }
+  @media (max-width: 600px) {
+    .page-cases .case-directory-filter-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 44px;
+      margin: 0 0 12px;
+      padding: 9px 12px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fff;
+      color: var(--blue);
+      font: 700 14px/1.4 "Liberation Sans Web", Arial, sans-serif;
+      cursor: pointer;
+    }
+    .page-cases .case-directory-filter-toggle[aria-expanded="true"] {
+      background: #edf3fb;
+      border-color: #a8b9ce;
+    }
+    .page-cases .case-directory-filter-toggle[aria-expanded="true"] .case-directory-filter-chevron {
+      transform: rotate(180deg);
+    }
+    .page-cases .case-directory-controls {
+      display: none;
+    }
+    .page-cases .case-directory-controls.is-open {
+      display: grid;
+    }
+  }
+}
+
+@layer react {
+  .page-cases .case-directory-tools {
+    display: contents;
+  }
+  @media (max-width: 600px) {
+    .page-cases .case-directory-tools {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .page-cases .case-directory-tools .case-directory-filter-toggle {
+      grid-column: 1;
+      grid-row: 1;
+      justify-self: start;
+      min-width: 0;
+      max-width: 100%;
+      margin: 0;
+    }
+    .page-cases .case-directory-filter-toggle span {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .page-cases .case-directory-filter-toggle svg {
+      flex-shrink: 0;
+    }
+    .page-cases .case-directory-tools .case-news-toolbar {
+      grid-column: 2;
+      grid-row: 1;
+      margin: 0;
+    }
+    .page-cases .case-directory-tools .case-directory-controls {
+      grid-column: 1 / -1;
+      grid-row: 2;
+      margin-bottom: 0;
+    }
+  }
+}
+
+@layer react {
+  @media (min-width: 601px) {
+    .page-cases .case-directory-tools {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 18px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--line);
+    }
+    .page-cases .case-directory-tools .case-directory-controls {
+      flex: 1;
+      min-width: 0;
+      margin: 0;
+      padding: 0;
+      border: 0;
+    }
+    .page-cases .case-directory-tools .case-news-toolbar {
+      flex-shrink: 0;
+      margin: 0;
+    }
+    .page-cases .case-directory-tools .case-news-toolbar .btn {
+      min-height: 44px;
+      padding: 10px 16px;
+      border-radius: 6px;
+      white-space: nowrap;
     }
   }
 }

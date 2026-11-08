@@ -6,12 +6,22 @@ import { CasesListSkeleton } from "../components/Skeleton.jsx";
 import { IconArrowRight } from "../components/IconArrow.jsx";
 import { Modal } from "../components/Modal.jsx";
 import { useToast } from "../components/toast-context.js";
-import { CaseSummaryModal } from "../features/CaseCard.jsx";
 import { CaseComposeModal } from "../features/CaseComposeModal.jsx";
 import { useMemberAuth } from "../features/memberAuth.jsx";
 import { sortByPublicationOrder } from "../utils/publicationOrder.js";
 
 const PAGE_SIZE = 10;
+const categoryLabels = {
+  "dat-dai": "Đất đai & Nhà ở",
+  "hop-dong": "Hợp đồng & Dân sự",
+  "thua-ke": "Thừa kế & Gia đình",
+  "to-tung": "Tham gia tố tụng",
+  "lao-dong": "Lao động & Việc làm",
+};
+
+function searchableText(value) {
+  return String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").replace(/Đ/g, "D").toLocaleLowerCase("vi");
+}
 
 function CaseManageActions({ onEdit, onDelete }) {
   return (
@@ -30,20 +40,39 @@ function CaseManageActions({ onEdit, onDelete }) {
   );
 }
 
-export function CasesNews({ entries, canManage, onEdit, onDelete }) {
+export function CasesNews({ entries, canManage, onCreate, onEdit, onDelete }) {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [selectedCase, setSelectedCase] = useState(null);
-  const pageCount = Math.max(1, Math.ceil(entries.length / PAGE_SIZE));
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const query = searchParams.get("q") || "";
+  const category = searchParams.get("category") || "";
+  const sort = searchParams.get("sort") === "oldest" ? "oldest" : "newest";
+  const categories = [...new Set(entries.map((entry) => entry.category).filter(Boolean))];
+  const filteredEntries = entries.filter((entry) =>
+    (!category || entry.category === category) &&
+    searchableText(`${entry.title} ${entry.description || ""} ${entry.caseNumber || ""} ${entry.code || ""}`).includes(searchableText(query.trim())),
+  );
+  const pageCount = Math.max(1, Math.ceil(filteredEntries.length / PAGE_SIZE));
   const requestedPage = Number(searchParams.get("page") || 1);
   const page = Number.isSafeInteger(requestedPage)
     ? Math.min(pageCount, Math.max(1, requestedPage))
     : 1;
-  const visibleEntries = sortByPublicationOrder(entries).slice(
+  const visibleEntries = sortByPublicationOrder(filteredEntries, sort).slice(
     (page - 1) * PAGE_SIZE,
     page * PAGE_SIZE,
   );
-  const summaries = visibleEntries.slice(0, 3);
-  const remaining = visibleEntries.slice(3);
+
+  function search(event) {
+    event.preventDefault();
+    const form = new FormData(event.currentTarget);
+    const params = new URLSearchParams(searchParams);
+    for (const key of ["q", "category"]) {
+      const value = String(form.get(key) || "").trim();
+      if (value) params.set(key, value);
+      else params.delete(key);
+    }
+    params.delete("page");
+    setSearchParams(params);
+  }
 
   function changePage(nextPage) {
     const params = new URLSearchParams(searchParams);
@@ -57,64 +86,80 @@ export function CasesNews({ entries, canManage, onEdit, onDelete }) {
 
   return (
     <>
-      <div className="case-news-summaries">
-        {summaries.map((entry) => (
-          <article className="case-news-summary" key={entry.id}>
-            {canManage ? (
-              <CaseManageActions
-                onEdit={() => onEdit(entry)}
-                onDelete={() => onDelete(entry)}
-              />
-            ) : null}
-            <h2>
-              <Link className="case-news-title" to={`/an-le/${entry.id}`}>
-                {entry.title}
-              </Link>
-            </h2>
-            <p className="case-news-excerpt">
-              {entry.description ? <span>{entry.description} </span> : null}
-              <Link className="case-news-more" to={`/an-le/${entry.id}`}>
-                Đọc tiếp
-                <IconArrowRight size={13} />
-              </Link>
-              <button
-                className="case-news-summary-link"
-                type="button"
-                onClick={() => setSelectedCase(entry)}
-              >
-                Tóm tắt
-              </button>
-            </p>
+      <header className="case-directory-heading">
+        <h1>Danh sách án lệ – án hay</h1>
+        <span aria-live="polite">{filteredEntries.length} kết quả</span>
+      </header>
+      <div className="case-directory-tools">
+      <button
+        className="case-directory-filter-toggle"
+        type="button"
+        aria-expanded={filtersOpen}
+        aria-controls="case-directory-filters"
+        onClick={() => setFiltersOpen((open) => !open)}
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
+          <path d="M4 7h16M4 17h16M8 4v6M16 14v6" />
+        </svg>
+        <span>Bộ lọc{query || category || sort === "oldest" ? " • Đang áp dụng" : ""}</span>
+        <svg className="case-directory-filter-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+          <path d="m6 9 6 6 6-6" />
+        </svg>
+      </button>
+      <div id="case-directory-filters" className={`case-directory-controls${filtersOpen ? " is-open" : ""}`}>
+      <form className="case-directory-search" onSubmit={search} role="search" aria-label="Tìm kiếm án lệ">
+        <label className="case-directory-query">
+          <span className="page-heading-sr-only">Số hiệu hoặc từ khóa</span>
+          <input key={query} name="q" type="search" defaultValue={query} placeholder="Nhập số hiệu hoặc từ khóa…" />
+        </label>
+        <label>
+          <span className="page-heading-sr-only">Lĩnh vực</span>
+          <select key={category} name="category" defaultValue={category}>
+            <option value="">Tất cả lĩnh vực</option>
+            {categories.map((id) => <option value={id} key={id}>{categoryLabels[id] || id}</option>)}
+          </select>
+        </label>
+        <button className="btn" type="submit">Tìm kiếm</button>
+      </form>
+      <div className="case-directory-sort">
+        <label>Sắp xếp:
+          <select value={sort} onChange={(event) => {
+            const params = new URLSearchParams(searchParams);
+            if (event.target.value === "oldest") params.set("sort", "oldest");
+            else params.delete("sort");
+            params.delete("page");
+            setSearchParams(params);
+          }}>
+            <option value="newest">Mới nhất</option>
+            <option value="oldest">Cũ nhất</option>
+          </select>
+        </label>
+      </div>
+      </div>
+      {canManage ? (
+        <div className="case-news-toolbar">
+          <button className="btn" type="button" onClick={onCreate}>Đăng bài</button>
+        </div>
+      ) : null}
+      </div>
+      <div className="case-directory-list">
+        {visibleEntries.map((entry, index) => (
+          <article className="case-directory-row" key={entry.id}>
+            <div className="case-directory-content">
+              <h2><Link className="case-directory-title" to={`/an-le/${entry.id}`}>{entry.title}</Link></h2>
+              {index < 3 && entry.description ? <p>{entry.description}</p> : null}
+            </div>
+            {entry.category ? <span className="case-directory-category">{categoryLabels[entry.category] || entry.category}</span> : <span />}
+            <Link className="case-directory-read" to={`/an-le/${entry.id}`} aria-label={`Đọc tiếp: ${entry.title}`}>
+              Đọc tiếp <IconArrowRight size={14} />
+            </Link>
+            {canManage ? <CaseManageActions onEdit={() => onEdit(entry)} onDelete={() => onDelete(entry)} /> : null}
           </article>
         ))}
       </div>
-      {remaining.length > 0 ? (
-        <ul className="case-news-list" aria-label="Các tin tiếp theo">
-          {remaining.map((entry) => (
-            <li key={entry.id}>
-              {canManage ? (
-                <CaseManageActions
-                  onEdit={() => onEdit(entry)}
-                  onDelete={() => onDelete(entry)}
-                />
-              ) : null}
-              <Link className="case-news-title" to={`/an-le/${entry.id}`}>
-                {entry.title}
-              </Link>
-              <button
-                className="case-news-summary-link"
-                type="button"
-                onClick={() => setSelectedCase(entry)}
-              >
-                Tóm tắt
-              </button>
-            </li>
-          ))}
-        </ul>
-      ) : null}
-      {entries.length === 0 ? (
-        <div className="case-news-empty">
-          <p>Chưa có án lệ / án hay.</p>
+      {filteredEntries.length === 0 ? (
+        <div className="case-news-empty" role="status">
+          <p>{entries.length ? "Không tìm thấy bài viết phù hợp. Hãy thử từ khóa hoặc lĩnh vực khác." : "Chưa có án lệ / án hay."}</p>
         </div>
       ) : null}
       {pageCount > 1 ? (
@@ -133,10 +178,6 @@ export function CasesNews({ entries, canManage, onEdit, onDelete }) {
           </button>
         </nav>
       ) : null}
-      <CaseSummaryModal
-        entry={selectedCase}
-        onClose={() => setSelectedCase(null)}
-      />
     </>
   );
 }
@@ -211,27 +252,17 @@ export default function CasesPage() {
     <div className="page-cases">
       <main className="main-container">
         <div className="wrap case-news">
-          <h1 className="page-heading-sr-only">Án lệ Án hay</h1>
-          {isDirector ? (
-            <div className="case-news-toolbar">
-              <button
-                className="btn"
-                type="button"
-                onClick={() => {
-                  setEditing(null);
-                  setComposeOpen(true);
-                }}
-              >
-                Đăng bài
-              </button>
-            </div>
-          ) : null}
+          {loading || error ? <h1 className="case-directory-loading-title">Danh sách án lệ – án hay</h1> : null}
           {loading ? <CasesListSkeleton /> : null}
           {error ? <p className="case-news-empty">{error}</p> : null}
           {!loading && !error ? (
             <CasesNews
               entries={entries}
               canManage={isDirector}
+              onCreate={() => {
+                setEditing(null);
+                setComposeOpen(true);
+              }}
               onEdit={(entry) => {
                 setEditing(entry);
                 setComposeOpen(true);

@@ -9,7 +9,6 @@ export const aboutArticles = [
     blocks: [
       {
         type: "paragraph",
-        strong: true,
         text: "Một người hiểu chuyện, một người hiểu luật, cùng phối hợp có thể giúp khách hàng bớt nhiều bước đường.",
       },
       {
@@ -29,7 +28,6 @@ export const aboutArticles = [
           },
           {
             text: "luật sư chuyên nghiệp và cộng tác viên tại địa phương",
-            strong: true,
           },
           {
             text: ", với công việc được tổ chức thống nhất, phân công phù hợp và xác định rõ trách nhiệm.",
@@ -54,7 +52,6 @@ export const aboutArticles = [
           { text: "Thông qua vai trò " },
           {
             text: "cộng tác viên hỗ trợ khách hàng hoặc cộng tác viên pháp lý",
-            strong: true,
           },
           {
             text: ", người phù hợp có thể kết nối nhu cầu dịch vụ, nhận phần việc theo năng lực và tạo thêm thu nhập theo thỏa thuận. Sự hợp tác có thể bắt đầu từ một cơ hội giới thiệu, một công việc cụ thể, rồi phát triển bằng kết quả và sự tin cậy giữa các bên.",
@@ -77,6 +74,8 @@ export const aboutArticles = [
       },
       {
         type: "cta",
+        title: "Cơ hội hợp tác cùng Công ty Luật TNHH MTV Từ Liêm",
+        description: "Tham gia mạng lưới cộng tác viên tại địa phương để cùng phát huy sở trường và phát triển bền vững.",
         text: "Tìm hiểu cơ hội hợp tác cùng Luật Từ Liêm",
         link: "/tuyen-dung",
       },
