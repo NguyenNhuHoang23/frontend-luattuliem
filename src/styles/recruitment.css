@@ -36,19 +36,19 @@
     cursor: pointer;
   }
   .page-recruitment .wrap {
-    width: min(1200px, 92%);
+    width: min(1200px, 94%);
     margin: auto;
   }
   /* Header/nav dùng style chung từ base.css */
 
   /* Layout */
   .page-recruitment .main-container {
-    padding: 12px 0 48px;
+    padding: 10px 0 24px;
   }
   .page-recruitment .editorial-grid {
     display: grid;
-    grid-template-columns: 1fr 350px;
-    gap: 45px;
+    grid-template-columns: 1fr 300px;
+    gap: 18px;
     align-items: start;
   }
 
@@ -93,8 +93,8 @@
     border: 1px solid #c9d8eb;
     border-left: 4px solid var(--blue);
     border-radius: 6px;
-    padding: 22px 26px;
-    margin-bottom: 32px;
+    padding: 16px 18px;
+    margin-bottom: 18px;
     box-shadow: 0 4px 16px rgba(17, 40, 75, 0.04);
   }
   .page-recruitment .policy-highlight h2 {
@@ -137,8 +137,8 @@
   .page-recruitment .role-cards {
     display: flex;
     flex-direction: column;
-    gap: 22px;
-    margin-bottom: 40px;
+    gap: 14px;
+    margin-bottom: 20px;
   }
   .page-recruitment .role-card {
     background: #fff;
@@ -243,7 +243,7 @@
     background: #fff;
     border: 1px solid var(--line);
     border-radius: 6px;
-    padding: 32px 36px;
+    padding: 16px 18px;
     box-shadow: 0 4px 20px rgba(17, 40, 75, 0.04);
   }
   .page-recruitment .form-title {
@@ -878,8 +878,64 @@
   .page-recruitment .recruitment-intro {
     margin: 0 0 14px;
     color: var(--muted);
-    max-width: 76ch;
-    line-height: 1.4;
+    width: 100%;
+    max-width: none;
+    line-height: 1.55;
+  }
+  .page-recruitment .recruitment-intro > :first-child {
+    margin-top: 0;
+  }
+  .page-recruitment .recruitment-intro > :last-child {
+    margin-bottom: 0;
+  }
+  .page-recruitment .recruitment-intro p {
+    margin: 0 0 12px;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+  .page-recruitment .recruitment-intro .md-heading,
+  .page-recruitment .recruitment-intro h2,
+  .page-recruitment .recruitment-intro h3,
+  .page-recruitment .recruitment-intro h4 {
+    margin: 16px 0 8px;
+    color: var(--navy);
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.35;
+  }
+  .page-recruitment .recruitment-intro ul,
+  .page-recruitment .recruitment-intro ol {
+    margin: 0 0 12px;
+    padding-left: 1.35em;
+    color: var(--muted);
+  }
+  .page-recruitment .recruitment-intro li {
+    margin: 0 0 6px;
+    line-height: 1.5;
+  }
+  .page-recruitment .recruitment-intro li + li {
+    margin-top: 4px;
+  }
+  .page-recruitment .recruitment-intro strong {
+    color: var(--navy);
+    font-weight: 700;
+  }
+  .page-recruitment .recruitment-intro em {
+    font-style: italic;
+  }
+  .page-recruitment .recruitment-intro u {
+    text-decoration: underline;
+  }
+  .page-recruitment .recruitment-intro a {
+    color: var(--blue);
+    font-weight: 600;
+  }
+  .page-recruitment .recruitment-intro blockquote {
+    margin: 0 0 12px;
+    padding: 8px 14px;
+    border-left: 3px solid var(--blue);
+    background: #f5f8fc;
+    color: var(--muted);
   }
   .page-recruitment .role-card p,
   .page-recruitment .role-card li {

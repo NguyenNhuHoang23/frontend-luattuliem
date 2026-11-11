@@ -24,6 +24,18 @@ function inlineMarkdown(escaped) {
     );
 }
 
+function renderListItems(lines, marker) {
+  return lines
+    .map((line) => {
+      const text =
+        marker === "ul"
+          ? line.replace(/^[-*]\s+/, "")
+          : line.replace(/^\d+\.\s+/, "");
+      return `<li>${inlineMarkdown(escapeHtml(text))}</li>`;
+    })
+    .join("");
+}
+
 function renderBlock(block) {
   const trimmed = block.trim();
   const imageOnly = trimmed.match(new RegExp(`^!\\[([^\\]]*)\\]\\(${MEDIA_URL}\\)$`));
@@ -34,18 +46,20 @@ function renderBlock(block) {
       alt ? `<figcaption>${alt}</figcaption>` : ""
     }</figure>`;
   }
-  const lines = block.split("\n");
+  const heading = trimmed.match(/^(#{1,3})\s+(.+)$/);
+  if (heading && !trimmed.includes("\n")) {
+    const level = heading[1].length;
+    const tag = level <= 2 ? 2 : 3;
+    return `<h${tag} class="md-heading">${inlineMarkdown(
+      escapeHtml(heading[2].trim()),
+    )}</h${tag}>`;
+  }
+  const lines = block.split("\n").filter((line) => line.trim() !== "");
   if (lines.length && lines.every((line) => /^[-*]\s+/.test(line))) {
-    const items = lines
-      .map((line) => `<li>${inlineMarkdown(escapeHtml(line.replace(/^[-*]\s+/, "")))}</li>`)
-      .join("");
-    return `<ul>${items}</ul>`;
+    return `<ul>${renderListItems(lines, "ul")}</ul>`;
   }
   if (lines.length && lines.every((line) => /^\d+\.\s+/.test(line))) {
-    const items = lines
-      .map((line) => `<li>${inlineMarkdown(escapeHtml(line.replace(/^\d+\.\s+/, "")))}</li>`)
-      .join("");
-    return `<ol>${items}</ol>`;
+    return `<ol>${renderListItems(lines, "ol")}</ol>`;
   }
   return `<p>${inlineMarkdown(escapeHtml(block)).replace(/\n/g, "<br />")}</p>`;
 }

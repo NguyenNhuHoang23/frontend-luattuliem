@@ -3,7 +3,7 @@
     scrollbar-gutter: stable;
   }
   .main-container > .wrap {
-    width: min(1200px, 90%);
+    width: min(1200px, 94%);
     max-width: none;
     margin-inline: auto;
   }
@@ -22,7 +22,7 @@
   }
   @media (max-width: 900px) {
     .main-container > .wrap {
-      width: calc(100% - 32px);
+      width: calc(100% - 16px);
     }
   }
   /* Giữ tên trang cho trình đọc màn hình, không chiếm chỗ trong bố cục. */

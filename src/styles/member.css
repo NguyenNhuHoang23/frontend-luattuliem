@@ -2,7 +2,7 @@
   .portal {
     background: var(--paper);
     min-height: 80vh;
-    padding: 36px 0 65px;
+    padding: 12px 0 24px;
   }
   .portal .switch {
     display: flex;

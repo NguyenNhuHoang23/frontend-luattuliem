@@ -45,7 +45,7 @@
      ========================================================================== */
   .page-home .page-hero.hero-layout-split {
     background: #ffffff;
-    padding: 28px 0 32px;
+    padding: 18px 0 22px;
     color: var(--navy);
     border-bottom: 1px solid var(--line);
     overflow: hidden;
@@ -54,7 +54,7 @@
   .page-home .hero-split-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 36px;
+    gap: 28px;
     align-items: center;
     min-height: 0;
   }
@@ -300,13 +300,13 @@
      2. SECTION HEADINGS & COMMON SECTION STYLES
      ========================================================================== */
   .page-home .home-section {
-    padding: 42px 0;
+    padding: 20px 0;
   }
 
   .page-home .section-heading {
     text-align: center;
     max-width: 720px;
-    margin: 0 auto 20px;
+    margin: 0 auto 14px;
   }
 
   .page-home .overline {
@@ -345,12 +345,12 @@
      3. PRINCIPLES SECTION (BA NGUYÊN TẮC LÀM VIỆC)
      ========================================================================== */
   .page-home .home-section.home-principles {
-    padding: 34px 0 38px;
+    padding: 18px 0 20px;
     background: #ffffff;
   }
 
   .page-home .trust-card {
-    padding: 22px 24px;
+    padding: 16px 18px;
     display: flex;
     align-items: center;
     gap: 16px;
@@ -418,7 +418,7 @@
     --gold-hover: #8d642b;
     --gold-border: #ebd9bd;
     --gold-pale: #fbf5eb;
-    padding: 32px 0;
+    padding: 18px 0;
     background: var(--bg-tint);
     border-top: 0;
   }
@@ -426,7 +426,7 @@
   .page-home .intro-row {
     display: grid;
     grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr);
-    gap: 44px;
+    gap: 28px;
     align-items: center;
   }
 
@@ -546,14 +546,14 @@
      5. FIELDS SECTION (LĨNH VỰC HOẠT ĐỘNG) - NỀN NHẸ TÁCH LỚP
      ========================================================================== */
   .page-home .home-section.fields {
-    padding: 42px 0 46px;
+    padding: 18px 0 22px;
     background: var(--bg-tint);
     border-top: 1px solid var(--line);
     border-bottom: 1px solid var(--line);
   }
 
   .page-home .case-preview-card {
-    padding: 22px 20px 18px;
+    padding: 16px 16px 14px;
     background: #ffffff;
     border: 1px solid var(--line);
     border-top: 3px solid var(--blue);
@@ -614,7 +614,7 @@
      6. ARTICLES SECTION (BÀI VIẾT & HOẠT ĐỘNG)
      ========================================================================== */
   .page-home .home-section.articles {
-    padding: 42px 0 46px;
+    padding: 18px 0 22px;
     background: #ffffff;
   }
 
@@ -634,7 +634,7 @@
      7. COOPERATE SECTION (TUYỂN DỤNG – HỢP TÁC) - SPLIT MINIMALIST ROW LIST
      ========================================================================== */
   .page-home .home-section.home-cooperate {
-    padding: 46px 0 50px;
+    padding: 20px 0 24px;
     background: #ffffff;
     border-top: 1px solid var(--line);
     border-bottom: 1px solid var(--line);
@@ -643,7 +643,7 @@
   .page-home .cooperate-split {
     display: grid;
     grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-    gap: 48px;
+    gap: 20px;
     align-items: start;
   }
 
@@ -804,14 +804,14 @@
      8. CONTACT SECTION (LIÊN HỆ & TƯ VẤN) - 2 CỘT THOÁNG ĐÃNG
      ========================================================================== */
   .page-home .home-section#lien-he {
-    padding: 44px 0 48px;
+    padding: 20px 0 24px;
     background: #ffffff;
   }
 
   .page-home .contact-cta {
     display: grid;
     grid-template-columns: 0.9fr 1.1fr;
-    gap: 36px;
+    gap: 18px;
     align-items: start;
     background: transparent;
     border-radius: 0;
@@ -1011,7 +1011,7 @@
     .page-home .home-section.articles,
     .page-home .home-section.home-cooperate,
     .page-home .home-section#lien-he {
-      padding: 22px 0;
+      padding: 16px 0;
     }
 
     /* Hero section */
@@ -1305,7 +1305,13 @@
     }
 
     .page-home .role-item-name {
-      font-size: 18px;
+      font-size: 14.5px;
+      line-height: 1.25;
+      white-space: nowrap;
+    }
+
+    .page-home .role-item-desc {
+      font-size: 13px;
     }
 
     /* Contact form section */
@@ -1342,7 +1348,7 @@
     .page-home .home-section.articles,
     .page-home .home-section.home-cooperate,
     .page-home .home-section#lien-he {
-      padding: 24px 0;
+      padding: 16px 0;
     }
 
     .page-home .page-hero h1,
@@ -1359,7 +1365,18 @@
     }
 
     .page-home .role-item-name {
-      font-size: 17px;
+      font-size: 13.5px;
+      white-space: nowrap;
+    }
+
+    .page-home .role-item-arrow {
+      width: 16px;
+      height: 16px;
+    }
+
+    .page-home .role-item-arrow svg {
+      width: 14px;
+      height: 14px;
     }
   }
 }

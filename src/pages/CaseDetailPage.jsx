@@ -7,7 +7,7 @@ import {
   IconArrowLeft,
 } from "../components/IconArrow.jsx";
 import { CaseDetailSkeleton } from "../components/Skeleton.jsx";
-import { MarkdownText } from "../components/MarkdownText.jsx";
+import { RichContent } from "../components/RichContent.jsx";
 import { Modal } from "../components/Modal.jsx";
 import { useToast } from "../components/toast-context.js";
 import { images } from "../data/images.js";
@@ -218,7 +218,7 @@ export default function CaseDetailPage() {
                     Khái quát nội dung của án lệ:
                   </h2>
                   <div className="court-highlight-box">
-                    <MarkdownText text={caseItem.overview} />
+                    <RichContent text={caseItem.overview} />
                   </div>
                 </section>
               )}
@@ -283,7 +283,7 @@ export default function CaseDetailPage() {
                     <article className="court-body-section" key={idx}>
                       <h3 className="court-body-title">{block.heading}</h3>
                       <div className="court-body-text">
-                        <MarkdownText text={block.content} />
+                        <RichContent text={block.content} />
                       </div>
                     </article>
                   ))}
@@ -294,8 +294,10 @@ export default function CaseDetailPage() {
                     TÓM TẮT DIỄN BIẾN &amp; PHÁN QUYẾT
                   </h3>
                   <div className="court-body-text">
-                    <MarkdownText text={caseItem.description} />
-                    {caseItem.summary ? <MarkdownText text={caseItem.summary} /> : null}
+                    <RichContent text={caseItem.description} />
+                    {caseItem.summary ? (
+                      <RichContent text={caseItem.summary} />
+                    ) : null}
                   </div>
                 </div>
               )}

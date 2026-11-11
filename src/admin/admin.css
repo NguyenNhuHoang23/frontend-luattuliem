@@ -762,6 +762,18 @@
   color: var(--admin-ink);
 }
 
+.admin-tiptap.is-compact .ProseMirror {
+  min-height: 120px;
+}
+
+.admin-tiptap .ProseMirror img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 8px 0;
+  border-radius: 4px;
+}
+
 .admin-tiptap .ProseMirror p {
   margin: 0 0 10px;
 }

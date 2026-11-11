@@ -9,8 +9,13 @@ lerna-debug.log*
 
 node_modules
 dist
+dist.zip
 dist-ssr
 *.local
+
+# Windows reserved device name trap (e.g. redirect > NUL.css)
+NUL.css
+nul.css
 
 # Editor directories and files
 .vscode/*

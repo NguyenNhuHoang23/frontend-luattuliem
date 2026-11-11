@@ -66,7 +66,7 @@
     cursor: pointer;
   }
   .wrap {
-    width: min(1200px, 90%);
+    width: min(1200px, 94%);
     margin: auto;
   }
   .top,
@@ -299,7 +299,7 @@
     color: var(--blue);
   }
   :where(.page-home, .portal, .application-dialog) section {
-    padding: 48px 0;
+    padding: 22px 0;
     scroll-margin-top: 20px;
   }
   :where(.page-home, .portal, .application-dialog) h2 {
@@ -332,7 +332,7 @@
   }
   :where(.page-home, .portal, .application-dialog) details {
     border-bottom: 1px solid var(--line);
-    padding: 20px 0;
+    padding: 14px 0;
   }
   :where(.page-home, .portal, .application-dialog) summary {
     cursor: pointer;
@@ -581,7 +581,7 @@
       font-size: 12px;
     }
     :where(.page-home, .portal, .application-dialog) section {
-      padding: 50px 0;
+      padding: 20px 0;
     }
     :where(.page-home, .portal, .application-dialog) h2 {
       font-size: 32px;

@@ -11,6 +11,7 @@ import {
   recruitmentArticle,
   recruitmentDocuments,
 } from "../data/recruitment.js";
+import { RichContent } from "../components/RichContent.jsx";
 import { RecruitmentSkeleton } from "../components/Skeleton.jsx";
 import { RecruitmentCard } from "../features/RecruitmentCard.jsx";
 import { RecruitmentTopicIcon } from "../components/RecruitmentTopicIcon.jsx";
@@ -275,9 +276,10 @@ export default function RecruitmentPage() {
             {loading ? <RecruitmentSkeleton /> : null}
             {error ? <p className="recruitment-intro">{error}</p> : null}
             {!loading && !error ? (
-              <p className="recruitment-intro">
-                {page?.intro || recruitmentArticle.intro}
-              </p>
+              <RichContent
+                className="recruitment-intro"
+                text={page?.intro || recruitmentArticle.intro}
+              />
             ) : null}
             <nav
               className="recruitment-topic-menu"

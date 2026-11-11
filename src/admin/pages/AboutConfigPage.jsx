@@ -16,31 +16,46 @@ import {
   StatusBadge,
   changeHandler,
 } from "../components.jsx";
+import NewsContentEditor from "../NewsContentEditor.jsx";
+import {
+  htmlToAboutBlocks,
+  isEmptyRichContent,
+  isHtmlContent,
+  toEditorHtml,
+} from "../../utils/richContent.js";
 
-function blocksToText(blocks = []) {
+function blocksToHtml(blocks = []) {
   return blocks
     .map((block) => {
-      if (block.type === "heading") return `## ${block.text}`;
-      if (block.type === "cta") return `>> ${block.text} | ${block.link || "/tuyen-dung"}`;
-      if (block.parts) return block.parts.map((part) => part.text).join("");
-      return block.text || "";
+      if (block.type === "heading") {
+        return `<h2>${block.text || ""}</h2>`;
+      }
+      if (block.type === "cta") {
+        const label = block.text || "Tìm hiểu cơ hội hợp tác";
+        const link = block.link || "/tuyen-dung";
+        return `<p><a href="${link}">${label}</a></p>`;
+      }
+      if (block.type === "quote") {
+        return `<blockquote>${block.text || ""}</blockquote>`;
+      }
+      if (block.parts) {
+        const inner = block.parts
+          .map((part) =>
+            part.strong ? `<strong>${part.text || ""}</strong>` : part.text || "",
+          )
+          .join("");
+        return `<p>${inner}</p>`;
+      }
+      if (block.strong) return `<p><strong>${block.text || ""}</strong></p>`;
+      return `<p>${block.text || ""}</p>`;
     })
-    .join("\n\n");
+    .join("");
 }
 
-function textToBlocks(text) {
-  return String(text)
-    .split(/\n\n+/)
-    .map((chunk) => chunk.trim())
-    .filter(Boolean)
-    .map((chunk) => {
-      if (chunk.startsWith("## ")) return { type: "heading", text: chunk.slice(3).trim() };
-      if (chunk.startsWith(">> ")) {
-        const [label, link] = chunk.slice(3).split("|").map((part) => part.trim());
-        return { type: "cta", text: label, link: link || "/tuyen-dung" };
-      }
-      return { type: "paragraph", text: chunk };
-    });
+function articleContentToHtml(article) {
+  if (isHtmlContent(article?.content)) return toEditorHtml(article.content);
+  if (article?.blocks?.length) return blocksToHtml(article.blocks);
+  return toEditorHtml(article?.content || "");
 }
 
 const emptyForm = {
@@ -88,7 +103,7 @@ export default function AboutConfigPage() {
       title: article.title,
       showTitle: article.showTitle !== false,
       status: Boolean(article.status),
-      content: article.content || blocksToText(article.blocks),
+      content: articleContentToHtml(article),
     });
     setError("");
   }
@@ -96,12 +111,20 @@ export default function AboutConfigPage() {
   async function save(event) {
     event.preventDefault();
     setError("");
+    if (!form.title.trim()) {
+      setError("Vui lòng nhập tiêu đề.");
+      return;
+    }
+    if (isEmptyRichContent(form.content)) {
+      setError("Vui lòng nhập nội dung bài giới thiệu.");
+      return;
+    }
     const body = {
       title: form.title.trim(),
       show_title: form.showTitle,
       status: Boolean(form.status),
       content: form.content,
-      blocks: textToBlocks(form.content),
+      blocks: htmlToAboutBlocks(form.content),
     };
     setSaving(true);
     try {
@@ -159,7 +182,7 @@ export default function AboutConfigPage() {
         }
       />
       <div className="admin-config-note">
-        Mỗi đoạn cách nhau bằng một dòng trống. Ví dụ: <code>## Để mỗi người đóng góp đúng sở trường</code>
+        Soạn nội dung bằng thanh công cụ kiểu Word: tiêu đề H2/H3, đậm, nghiêng, danh sách, liên kết.
       </div>
       {listError ? <p className="admin-login-error">{listError}</p> : null}
       {loading ? <p className="admin-muted">Đang tải danh sách bài giới thiệu…</p> : null}
@@ -227,16 +250,18 @@ export default function AboutConfigPage() {
             checked={form.status}
             onChange={changeHandler(setForm)}
           />
-          <Field
-            label="Nội dung"
-            name="content"
-            type="textarea"
-            rows={16}
-            value={form.content}
-            onChange={changeHandler(setForm)}
-            required
-            hint="Đoạn văn cách nhau bằng dòng trống. ## Tiêu đề mục. >> Chữ nút | /tuyen-dung"
-          />
+          <div className="admin-field">
+            <label htmlFor="admin-field-about-content">
+              Nội dung
+              <em> *</em>
+            </label>
+            <NewsContentEditor
+              value={form.content}
+              onChange={(content) => setForm((current) => ({ ...current, content }))}
+              placeholder="Nhập nội dung bài giới thiệu…"
+            />
+            <small>Dùng H2 cho tiêu đề mục; liên kết bằng nút Link trên thanh công cụ.</small>
+          </div>
         </form>
       </Drawer>
       <ConfirmDialog

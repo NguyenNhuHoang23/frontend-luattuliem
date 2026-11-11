@@ -148,14 +148,14 @@
   .service {
     background: white;
     border-top: 2px solid var(--blue);
-    padding: 30px;
-    min-height: 225px;
+    padding: 18px;
+    min-height: 180px;
   }
   .service .no {
     font-size: 12px;
     letter-spacing: 2px;
     color: var(--blue);
-    margin-bottom: 24px;
+    margin-bottom: 14px;
   }
   .service p {
     font-size: 14px;
