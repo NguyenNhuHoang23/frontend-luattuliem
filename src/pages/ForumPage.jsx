@@ -26,6 +26,7 @@ import {
 } from "../api/memberChat.js";
 import { listTeamMembers } from "../api/member.js";
 import { initialWorkspace, people } from "../data/memberWorkspace.js";
+import { registeredProvinces, workProvinces } from "../data/workProvinces.js";
 import "../styles/member-workspace.css";
 
 const EMPTY_DRAFT = { text: "", files: [] };
@@ -100,7 +101,7 @@ const tabs = [
   { id: "messages", name: "Tin nhắn" },
   { id: "global", name: "Nhóm công ty", shortName: "Công ty" },
   { id: "cases", name: "Vụ việc" },
-  { id: "income", name: "Thu nhập" },
+  { id: "income", name: "Tài chính" },
 ];
 const groups = [
   { id: "ctv", name: "CTV" },
@@ -109,11 +110,10 @@ const groups = [
   { id: "legal", name: "CTV pháp lý" },
 ];
 
-const memberRoleFilters = [
-  { id: "all", name: "Tất cả" },
+const caseRoleGroups = [
   { id: "lawyer", name: "Luật sư" },
-  { id: "support", name: "Hỗ trợ" },
-  { id: "legal", name: "Pháp lý" },
+  { id: "support", name: "Cộng tác viên hỗ trợ" },
+  { id: "legal", name: "Cộng tác viên pháp lý" },
 ];
 
 function personGroup(person) {
@@ -141,7 +141,7 @@ function chatInitials(name) {
 function threadDisplayName(thread, admin) {
   if (thread.type === "global") return thread.name || "Nhóm công ty";
   if (thread.type === "cases") return thread.name;
-  if (thread.type === "income") return admin ? thread.name : "Thông báo lương";
+  if (thread.type === "income") return admin ? thread.name : "Thông báo tài chính";
   if (thread.live || admin) return thread.name;
   return "Giám đốc";
 }
@@ -171,35 +171,101 @@ function sortInboxThreads(threads) {
   });
 }
 
-function PersonPicker({ staffList, selected, onChange, enableRoleFilter = false }) {
-  const [roleFilter, setRoleFilter] = useState("all");
-  const visibleGroups =
-    enableRoleFilter && roleFilter !== "all"
-      ? groups.filter((group) => group.id === roleFilter)
-      : groups;
+function CasePersonPicker({ staffList, selected, selectedName, onChange }) {
+  const [province, setProvince] = useState("");
+  const available = province ? staffList.filter((person) =>
+    registeredProvinces(person.area).has(province) &&
+    !selected.some((id) => samePersonId(id, person.id)),
+  ) : [];
 
   return (
-    <div className="member-person-picker">
-      {enableRoleFilter ? (
-        <div className="member-role-filters" role="group" aria-label="Lọc theo vai trò">
-          {memberRoleFilters.map((filter) => (
-            <button
-              key={filter.id}
-              type="button"
-              className={
-                roleFilter === filter.id
-                  ? "member-role-filter active"
-                  : "member-role-filter"
-              }
-              aria-pressed={roleFilter === filter.id}
-              onClick={() => setRoleFilter(filter.id)}
+    <div className="case-person-picker">
+      <label>
+        Tỉnh/thành phố xảy ra vụ việc
+        <select aria-label="Tỉnh/thành phố xảy ra vụ việc" value={province} onChange={(event) => setProvince(event.target.value)}>
+          <option value="">Chọn tỉnh/thành phố</option>
+          {workProvinces.map((name) => <option key={name}>{name}</option>)}
+        </select>
+      </label>
+      {caseRoleGroups.map((group) => {
+        const candidates = available.filter((person) => personRoles(person).includes(group.id));
+        return (
+          <label key={group.id}>
+            {group.name}
+            <select aria-label={group.name} value="" disabled={!candidates.length} onChange={(event) => {
+              const person = candidates.find((item) => samePersonId(item.id, event.target.value));
+              if (person) onChange([...selected, person.id]);
+            }}>
+              <option value="">{!province ? "Chọn tỉnh/thành phố trước" : candidates.length ? "Chọn người phụ trách" : "Không còn người phù hợp"}</option>
+              {candidates.map((person) => <option key={person.id} value={person.id}>{person.name}</option>)}
+            </select>
+          </label>
+        );
+      })}
+      <div className="case-selected-people">
+        <p>Đã chọn ({selected.length})</p>
+        {selected.length ? <ul>
+          {selected.map((id) => {
+            const name = selectedName(id);
+            return <li key={id}><button type="button" aria-label={`Gỡ ${name}`}
+              onClick={() => onChange(selected.filter((item) => !samePersonId(item, id)))}
+            >{name} <span aria-hidden="true">×</span></button></li>;
+          })}
+        </ul> : <p>Có thể lưu vụ việc và phân công sau.</p>}
+      </div>
+    </div>
+  );
+}
+
+function FinanceRecipientPicker({ staffList, selected, onChange }) {
+  return (
+    <div className="case-person-picker finance-recipient-picker">
+      {caseRoleGroups.map((group) => {
+        const candidates = staffList.filter((person) =>
+          personRoles(person).includes(group.id) &&
+          !selected.some((id) => samePersonId(id, person.id)),
+        );
+        return (
+          <label key={group.id}>
+            {group.name}
+            <select
+              aria-label={group.name}
+              value=""
+              disabled={!candidates.length}
+              onChange={(event) => {
+                const person = candidates.find((item) => samePersonId(item.id, event.target.value));
+                if (person) onChange([...selected, person.id]);
+              }}
             >
-              {filter.name}
-            </button>
-          ))}
-        </div>
-      ) : null}
-      {visibleGroups.map((group) => {
+              <option value="">{candidates.length ? "Chọn người nhận" : "Không còn người để chọn"}</option>
+              {candidates.map((person) => <option key={person.id} value={person.id}>{person.name}</option>)}
+            </select>
+          </label>
+        );
+      })}
+      <div className="case-selected-people">
+        <p aria-live="polite">Đã chọn ({selected.length})</p>
+        {selected.length > 0 && (
+          <ul>{selected.map((id) => {
+            const name = staffList.find((person) => samePersonId(person.id, id))?.name || id;
+            return (
+              <li key={id}>
+                <button type="button" aria-label={`Gỡ ${name}`}
+                  onClick={() => onChange(selected.filter((item) => !samePersonId(item, id)))}
+                >{name} <span aria-hidden="true">×</span></button>
+              </li>
+            );
+          })}</ul>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function PersonPicker({ staffList, selected, onChange }) {
+  return (
+    <div className="member-person-picker">
+      {groups.map((group) => {
         const peopleInGroup = staffList.filter((person) =>
           personRoles(person).includes(group.id),
         );
@@ -549,7 +615,7 @@ export default function ForumPage() {
   const submitDialog = async (event) => {
     event.preventDefault();
     if (!admin) return;
-    if (!recipients.length)
+    if ((dialog === "quick" || dialog === "income") && !recipients.length)
       return setDialogError("Vui lòng chọn ít nhất một người.");
     if (dialog === "quick" || dialog === "income") {
       if (!quickText.trim()) return;
@@ -582,7 +648,7 @@ export default function ForumPage() {
             openChatPane();
           }
           setDialog(null);
-          showToast("Đã gửi thông báo lương.");
+          showToast("Đã gửi thông báo tài chính.");
         } catch (err) {
           setDialogError(err.message);
         }
@@ -616,10 +682,6 @@ export default function ForumPage() {
           address: caseAddress.trim(),
           memberIds: recipients.filter((id) => isApiMemberId(id)),
         };
-        if (!payload.memberIds.length) {
-          setDialogError("Vui lòng chọn ít nhất một thành viên.");
-          return;
-        }
         if (dialog === "edit") {
           const updated = await updateCase(active.uuid, payload);
           const thread = conversationToThread(updated, session.id);
@@ -651,14 +713,6 @@ export default function ForumPage() {
       }
       return;
     }
-    if (
-      !recipients.some(
-        (id) =>
-          membersList.find((person) => samePersonId(person.id, id))?.group ===
-          "lawyer",
-      )
-    )
-      return setDialogError("Vui lòng chọn ít nhất một luật sư phụ trách.");
     if (dialog === "edit") {
       setThreads((previous) =>
         previous.map((thread) =>
@@ -813,7 +867,7 @@ export default function ForumPage() {
     messages: "Tin nhắn",
     global: "Toàn thể",
     cases: "Vụ việc",
-    income: "Lương",
+    income: "Tài chính",
     members: "Thành viên",
     settings: "Cài đặt",
   };
@@ -992,7 +1046,7 @@ export default function ForumPage() {
                     {tab === "cases"
                       ? "+ Tạo vụ việc"
                       : tab === "income"
-                        ? "+ Thông báo lương"
+                        ? "+ Thông báo tài chính"
                         : "+ Gửi nhanh"}
                   </button>
                 )}
@@ -1171,6 +1225,7 @@ export default function ForumPage() {
                     closeChatPane();
                   }}
                   canReply={active.type !== "income" || admin}
+                  assigneeGroups={assigneeGroups}
                   onEditMembers={
                     admin && tab === "cases" ? () => openDialog("edit") : null
                   }
@@ -1205,7 +1260,7 @@ export default function ForumPage() {
             dialog === "quick"
               ? "Gửi tin nhắn nhanh"
               : dialog === "income"
-                ? "Thông báo lương / chuyển tiền"
+                ? "Thông báo tài chính"
                 : dialog === "edit"
                   ? "Thành viên vụ việc"
                   : "Tạo vụ việc"
@@ -1253,18 +1308,32 @@ export default function ForumPage() {
                 {dialog === "quick"
                   ? "Gửi riêng cho những người được chọn"
                   : dialog === "income"
-                    ? "Gửi thông báo lương cho những người được chọn"
+                    ? "Gửi thông báo tài chính cho những người được chọn"
                     : "Chọn hoặc thay đổi người phụ trách"}
               </p>
-              <PersonPicker
-                staffList={staff}
-                selected={recipients}
-                onChange={setRecipients}
-                enableRoleFilter={dialog !== "quick" && dialog !== "income"}
-              />
+              {dialog === "quick" ? (
+                <PersonPicker staffList={staff} selected={recipients} onChange={setRecipients} />
+              ) : dialog === "income" ? (
+                <FinanceRecipientPicker
+                  staffList={liveChat ? staff.filter((person) => isApiMemberId(person.id)) : staff}
+                  selected={recipients}
+                  onChange={setRecipients}
+                />
+              ) : (
+                <CasePersonPicker
+                  staffList={liveChat ? staff.filter((person) => isApiMemberId(person.id)) : staff}
+                  selected={recipients}
+                  selectedName={(id) =>
+                    membersList.find((person) => samePersonId(person.id, id))?.name ||
+                    active?.memberNames?.[active.members.indexOf(id)] ||
+                    `Thành viên #${id}`
+                  }
+                  onChange={setRecipients}
+                />
+              )}
               {(dialog === "quick" || dialog === "income") && (
                 <>
-                  <details className="member-broadcast">
+                  {dialog === "quick" && <details className="member-broadcast">
                     <summary>Gửi cho toàn thể</summary>
                     <label>
                       <input
@@ -1280,12 +1349,8 @@ export default function ForumPage() {
                       />
                       Chọn toàn bộ luật sư và cộng tác viên
                     </label>
-                    <p>
-                      {dialog === "income"
-                        ? "Mỗi người nhận một thông báo lương riêng, không lẫn với tin nhắn."
-                        : "Tin được gửi vào cuộc trao đổi riêng của từng người."}
-                    </p>
-                  </details>
+                    <p>Tin được gửi vào cuộc trao đổi riêng của từng người.</p>
+                  </details>}
                   <label>
                     {dialog === "income" ? "Nội dung thông báo" : "Nội dung tin nhắn"}
                     <textarea

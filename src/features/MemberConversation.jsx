@@ -209,7 +209,7 @@ export default function MemberConversation({
 
   return (
     <section className="member-conversation" aria-label="Nội dung trao đổi">
-      <div className="member-thread-header">
+      <div className={`member-thread-header${assigneeGroups ? " has-assignee-overview" : ""}`}>
         <button
           type="button"
           className="member-back"
@@ -251,7 +251,7 @@ export default function MemberConversation({
             </button>
           ) : null}
           {onEditMembers && (
-            <button type="button" onClick={onEditMembers}>
+            <button type="button" className="member-edit-assignees" onClick={onEditMembers}>
               Thành viên
             </button>
           )}
@@ -270,6 +270,24 @@ export default function MemberConversation({
             Tìm
           </button>
         </div>
+        {assigneeGroups && (
+          <div className="case-assignee-overview" role="group" aria-label="Người phụ trách theo vai trò">
+            {assigneeGroups.map((group) => (
+              <details
+                key={group.id}
+                name="case-assignee-role"
+                className={group.people.length ? "has-people" : undefined}
+              >
+                <summary>{group.name} <span>({group.people.length})</span></summary>
+                <div className="case-assignee-overview-list">
+                  {group.people.length ? (
+                    <ul>{group.people.map((person) => <li key={person.id}>{person.name}</li>)}</ul>
+                  ) : <p>Chưa phân công</p>}
+                </div>
+              </details>
+            ))}
+          </div>
+        )}
       </div>
       {searchOpen && (
         <div className="member-search">
@@ -314,7 +332,7 @@ export default function MemberConversation({
                 {query
                   ? "Không tìm thấy tin nhắn phù hợp."
                   : thread.type === "income"
-                    ? "Chưa có thông báo lương."
+                    ? "Chưa có thông báo tài chính."
                     : "Chưa có trao đổi. Gửi tin nhắn đầu tiên bên dưới."}
               </p>
             )}
@@ -451,7 +469,7 @@ export default function MemberConversation({
             onChange={(event) => onDraft({ text: event.target.value })}
             placeholder={
               thread.type === "income"
-                ? "Nhập thông báo chuyển lương / thanh toán…"
+                ? "Nhập thông báo tài chính…"
                 : "Nhập tin nhắn…"
             }
             rows={1}
