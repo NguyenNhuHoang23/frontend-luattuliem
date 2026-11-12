@@ -297,7 +297,7 @@ export default function RecruitmentAdminPage() {
               placeholder="Nhập đoạn giới thiệu tuyển dụng…"
             />
             <small>
-              Thanh công cụ kiểu Word: đậm, nghiêng, gạch chân, tiêu đề, danh sách, liên kết.
+              Dùng tiêu đề “Yêu cầu chung” hoặc “Điều kiện chung” cho phần sẽ hiển thị ở mọi vị trí. Nhập các ý bên dưới bằng công cụ danh sách.
             </small>
           </div>
           <button className="admin-btn" type="submit" disabled={saving}>
@@ -411,11 +411,12 @@ export default function RecruitmentAdminPage() {
           <Field label="Tên vị trí" name="name" value={roleForm.name} onChange={changeHandler(setRoleForm)} required />
           <Field label="Tiêu đề mục" name="title" value={roleForm.title} onChange={changeHandler(setRoleForm)} />
           <Field label="Nhãn nút gửi hồ sơ" name="applyLabel" value={roleForm.applyLabel} onChange={changeHandler(setRoleForm)} />
-          <Field label="Đối tượng và tiêu chuẩn (mỗi dòng một ý)" name="audience" type="textarea" rows={5} value={roleForm.audience} onChange={changeHandler(setRoleForm)} />
-          <Field label="Ghi chú đối tượng" name="audienceNote" type="textarea" rows={3} value={roleForm.audienceNote} onChange={changeHandler(setRoleForm)} />
-          <Field label="Công việc (mỗi dòng một ý)" name="work" type="textarea" rows={5} value={roleForm.work} onChange={changeHandler(setRoleForm)} />
-          <Field label="Ghi chú công việc" name="workNote" type="textarea" rows={3} value={roleForm.workNote} onChange={changeHandler(setRoleForm)} />
-          <Field label="Nguyên tắc thu nhập" name="income" type="textarea" rows={4} value={roleForm.income} onChange={changeHandler(setRoleForm)} />
+          <p className="admin-muted">Yêu cầu chung được lấy từ mục “Mở đầu trang”.</p>
+          <Field label="Yêu cầu riêng (mỗi dòng một ý)" name="audience" type="textarea" rows={5} value={roleForm.audience} onChange={changeHandler(setRoleForm)} />
+          <Field label="Mô tả công việc (mỗi dòng một ý)" name="work" type="textarea" rows={5} value={roleForm.work} onChange={changeHandler(setRoleForm)} />
+          <Field label="Thu nhập" name="income" type="textarea" rows={4} value={roleForm.income} onChange={changeHandler(setRoleForm)} />
+          <Field label="Ghi chú về yêu cầu riêng" name="audienceNote" type="textarea" rows={3} value={roleForm.audienceNote} onChange={changeHandler(setRoleForm)} />
+          <Field label="Ghi chú về công việc" name="workNote" type="textarea" rows={3} value={roleForm.workNote} onChange={changeHandler(setRoleForm)} />
         </form>
       </Drawer>
 

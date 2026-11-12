@@ -178,7 +178,7 @@ export default function CompanyInfoPage() {
 
         <h3 className="admin-section-title">Liên hệ trên header</h3>
         <p className="admin-muted">
-          Khối cạnh nút “Liên hệ tư vấn”. Có thể đổi sang Zalo, điện thoại hoặc link khác.
+          Khối liên hệ ở góc phải header trên màn hình máy tính. Có thể đổi sang Zalo, điện thoại hoặc link khác.
         </p>
         <Field
           label="Loại liên hệ"

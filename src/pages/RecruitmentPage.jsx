@@ -11,12 +11,78 @@ import {
   recruitmentArticle,
   recruitmentDocuments,
 } from "../data/recruitment.js";
+import { isHtmlContent } from "../utils/richContent.js";
 import { RichContent } from "../components/RichContent.jsx";
 import { RecruitmentSkeleton } from "../components/Skeleton.jsx";
 import { RecruitmentCard } from "../features/RecruitmentCard.jsx";
 import { RecruitmentTopicIcon } from "../components/RecruitmentTopicIcon.jsx";
 import { RecruitmentApplicationForm } from "../features/RecruitmentApplicationForm.jsx";
 import { sortByPublicationOrder } from "../utils/publicationOrder.js";
+
+const commonHeading = /^(?:\d+[.)]\s+)?(?:Điều kiện chung|Yêu cầu chung)\s*:?$/iu;
+
+function getCommonRequirements(intro) {
+  if (isHtmlContent(intro)) {
+    const { content } = Object.assign(document.createElement("template"), { innerHTML: intro });
+    const items = [];
+    const paragraphs = [];
+    let collecting = false;
+    for (const block of content.children) {
+      const text = block.textContent.trim();
+      if (commonHeading.test(text)) {
+        collecting = true;
+        continue;
+      }
+      if (!collecting) continue;
+      if (/^H[1-6]$/u.test(block.tagName) || /^\d+[.)]\s+/u.test(text)) break;
+      if (block.matches("ul, ol")) {
+        items.push(...Array.from(block.children, (item) => item.textContent.trim()).filter(Boolean));
+      } else if (text) {
+        paragraphs.push(text);
+      }
+    }
+    if (items.length || paragraphs.length) return { items, paragraphs };
+  }
+  const lines = (intro || "").split(/\r?\n/).map((line) => line.trim());
+  const start = lines.findIndex((line) => commonHeading.test(line));
+  const common = start < 0 ? [] : lines.slice(start + 1);
+  const end = common.findIndex((line) => /^\d+[.)]\s+/u.test(line));
+  const content = (end < 0 ? common : common.slice(0, end)).filter(Boolean);
+  return content.length ? {
+    items: content.filter((line) => /^[•*-]\s+/u.test(line)).map((line) => line.replace(/^[•*-]\s+/u, "")),
+    paragraphs: content.filter((line) => !/^[•*-]\s+/u.test(line)),
+  } : { items: recruitmentArticle.requirements, paragraphs: [recruitmentArticle.policy] };
+}
+
+function RecruitmentIntro({ text }) {
+  if (isHtmlContent(text)) {
+    return <RichContent className="recruitment-intro" text={text} />;
+  }
+  const blocks = [];
+  for (const line of text.split(/\r?\n/).map((value) => value.trim()).filter(Boolean)) {
+    const bullet = line.match(/^[•*-]\s+(.+)$/u);
+    const last = blocks.at(-1);
+    if (bullet) {
+      if (last?.type === "list") last.items.push(bullet[1]);
+      else blocks.push({ type: "list", items: [bullet[1]] });
+    } else {
+      const heading = commonHeading.test(line) || /^\d+[.)]\s+Định hướng phát triển đội ngũ\s*:?$/iu.test(line);
+      blocks.push({ type: heading ? "heading" : "paragraph", text: heading ? line.replace(/^\d+[.)]\s+/u, "") : line });
+    }
+  }
+
+  return (
+    <div className="recruitment-intro recruitment-intro-content">
+      {blocks.map((block, index) => {
+        if (block.type === "heading") return <h2 key={index}>{block.text}</h2>;
+        if (block.type === "list") {
+          return <ul key={index}>{block.items.map((item, i) => <li key={i}>{item}</li>)}</ul>;
+        }
+        return <p key={index}>{block.text}</p>;
+      })}
+    </div>
+  );
+}
 
 export default function RecruitmentPage() {
   const [selectedRole, setSelectedRole] = useState("");
@@ -276,10 +342,7 @@ export default function RecruitmentPage() {
             {loading ? <RecruitmentSkeleton /> : null}
             {error ? <p className="recruitment-intro">{error}</p> : null}
             {!loading && !error ? (
-              <RichContent
-                className="recruitment-intro"
-                text={page?.intro || recruitmentArticle.intro}
-              />
+              <RecruitmentIntro text={page?.intro || recruitmentArticle.intro} />
             ) : null}
             <nav
               className="recruitment-topic-menu"
@@ -318,20 +381,11 @@ export default function RecruitmentPage() {
                   {activeTopic === role.id && activeRole && (
                     <div className="recruitment-topic-content">
                       <div className="recruitment-topic">
-                        <RecruitmentCard role={activeRole} onApply={selectRole}>
-                          <section
-                            className="recruitment-role-section recruitment-common-requirements"
-                            id="recruitment-requirements"
-                          >
-                            <h3>Điều kiện chung &amp; nguyên tắc hợp tác</h3>
-                            <ul>
-                              {recruitmentArticle.requirements.map((text) => (
-                                <li key={text}>{text}</li>
-                              ))}
-                            </ul>
-                            <p>{recruitmentArticle.policy}</p>
-                          </section>
-                        </RecruitmentCard>
+                        <RecruitmentCard
+                          role={activeRole}
+                          common={getCommonRequirements(page?.intro)}
+                          onApply={selectRole}
+                        />
                       </div>
                     </div>
                   )}
