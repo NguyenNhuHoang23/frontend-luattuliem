@@ -426,25 +426,50 @@
   grid-template-columns: 1fr;
   gap: 14px;
 }
-.member-role-filters {
+.case-person-picker {
+  display: grid;
+  gap: 10px;
+}
+.case-person-picker label {
+  display: grid;
+  gap: 4px;
+  font-size: 14px;
+}
+.case-person-picker select {
+  width: 100%;
+  min-width: 0;
+  min-height: 40px;
+  padding: 6px 9px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  color: var(--navy);
+  background: #fff;
+  font: inherit;
+}
+.case-person-picker select:disabled {
+  color: var(--muted);
+  background: #f3f6fa;
+}
+.case-selected-people p {
+  margin: 0 0 4px;
+  font-size: 14px;
+}
+.case-selected-people ul {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
-.member-role-filter {
-  border: 1px solid #d5dde8;
-  background: #fff;
+.case-selected-people button {
+  padding: 5px 8px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
   color: var(--navy);
-  border-radius: 999px;
-  padding: 6px 12px;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-}
-.member-role-filter.active {
   background: #eef3fb;
-  border-color: var(--blue);
-  color: var(--blue);
+  cursor: pointer;
+  overflow-wrap: anywhere;
 }
 .member-person-picker fieldset {
   border: 0;
@@ -649,13 +674,7 @@
     gap: 8px;
     margin-top: 14px;
   }
-  .member-role-filters {
-    gap: 6px;
-  }
-  .member-role-filter {
-    padding: 6px 10px;
-    font-size: 12px;
-  }
+
 }
 
 .member-dialog-error {
@@ -3212,8 +3231,235 @@
   .member-zalo-list .chat-thread-preview {
     font-size: 12.5px;
   }
-  .member-zalo-chat .member-thread-actions button:not(:last-child) {
+  .member-zalo-chat .member-thread-actions button:not(:last-child):not(.member-edit-assignees) {
     display: none;
   }
 }
 
+
+.case-assignee-overview {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  padding: 3px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--paper);
+}
+.member-thread-header.has-assignee-overview .member-thread-actions {
+  order: 1;
+  flex-shrink: 0;
+}
+.case-assignee-overview details {
+  position: relative;
+  min-width: 0;
+}
+.case-assignee-overview details[open] {
+  z-index: 10;
+}
+.case-assignee-overview summary {
+  list-style: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 30px;
+  padding: 4px 10px 4px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--navy);
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.3;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background 0.16s ease,
+    border-color 0.16s ease,
+    color 0.16s ease;
+}
+.case-assignee-overview summary::-webkit-details-marker {
+  display: none;
+}
+.case-assignee-overview summary > span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 19px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  transition: background 0.16s ease, color 0.16s ease;
+}
+.case-assignee-overview details.has-people summary {
+  border-color: #7496c7;
+  color: var(--navy);
+}
+.case-assignee-overview details.has-people summary > span {
+  background: #edf3fb;
+  color: var(--blue);
+}
+.case-assignee-overview summary::after {
+  content: "";
+  flex-shrink: 0;
+  width: 12px;
+  height: 12px;
+  background-color: var(--muted);
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none'%3E%3Cpath d='M2.5 4.5L6 8L9.5 4.5' stroke='black' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none'%3E%3Cpath d='M2.5 4.5L6 8L9.5 4.5' stroke='black' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+  transition: transform 0.18s ease, background-color 0.16s ease;
+}
+.case-assignee-overview summary:hover {
+  border-color: #7496c7;
+  background: #f6f9fd;
+  color: var(--blue);
+}
+.case-assignee-overview summary:hover::after {
+  background-color: var(--blue);
+}
+.case-assignee-overview details[open] summary {
+  background: #f0f5fc;
+  border-color: var(--blue);
+  color: var(--blue);
+}
+.case-assignee-overview details[open] summary > span {
+  background: var(--blue);
+  color: #ffffff;
+}
+.case-assignee-overview details[open] summary::after {
+  background-color: var(--blue);
+  transform: rotate(180deg);
+}
+.case-assignee-overview-list {
+  position: absolute;
+  z-index: 6;
+  inset-inline-end: 0;
+  top: calc(100% + 8px);
+  min-width: max(100%, 180px);
+  width: max-content;
+  max-width: 240px;
+  max-height: 220px;
+  overflow: auto;
+  overflow-wrap: anywhere;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #ffffff;
+  color: var(--navy);
+  font-size: 13px;
+}
+.case-assignee-overview-list p,
+.case-assignee-overview-list ul {
+  margin: 0;
+}
+.case-assignee-overview-list p {
+  padding: 6px 8px;
+  color: var(--muted);
+  font-size: 12.5px;
+  text-align: center;
+}
+.case-assignee-overview-list ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.case-assignee-overview-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: #f6f9fd;
+  color: var(--ink);
+  font-weight: 500;
+  line-height: 1.35;
+}
+.case-assignee-overview-list li::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--blue);
+  flex-shrink: 0;
+}
+.case-assignee-overview details:first-child .case-assignee-overview-list {
+  inset-inline: 0 auto;
+}
+@media (max-width: 1200px) {
+  .member-zalo-chat .member-thread-header.has-assignee-overview {
+    flex-wrap: wrap;
+  }
+  .case-assignee-overview {
+    order: 2;
+    flex: 0 0 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: stretch;
+    border-radius: 14px;
+    padding: 4px;
+  }
+  .case-assignee-overview details {
+    display: flex;
+  }
+  .case-assignee-overview summary {
+    width: 100%;
+    height: 100%;
+    white-space: normal;
+    text-align: left;
+    justify-content: space-between;
+    border-radius: 10px;
+  }
+  .case-assignee-overview summary > span {
+    margin-left: auto;
+  }
+  .case-assignee-overview-list {
+    min-width: 100%;
+    max-width: min(230px, 43vw);
+  }
+}
+@media (max-width: 640px) {
+  .case-assignee-overview {
+    grid-template-columns: auto repeat(2, minmax(0, 1fr));
+    gap: 3px;
+    padding: 3px;
+    border-radius: 12px;
+  }
+  .case-assignee-overview summary {
+    min-height: 32px;
+    padding: 4px 6px 4px 8px;
+    border-radius: 9px;
+    font-size: 11px;
+    gap: 4px;
+    line-height: 1.2;
+  }
+  .case-assignee-overview summary > span {
+    min-width: 19px;
+    height: 17px;
+    padding: 0 4px;
+    font-size: 10px;
+  }
+  .case-assignee-overview summary::after {
+    width: 10px;
+    height: 10px;
+  }
+  .case-assignee-overview details:not(:first-child) .case-assignee-overview-list {
+    inset-inline: auto 0;
+  }
+  .case-assignee-overview details .case-assignee-overview-list {
+    min-width: 150px;
+    max-width: min(220px, 75vw);
+  }
+}

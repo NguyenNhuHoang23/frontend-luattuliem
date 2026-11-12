@@ -3,7 +3,7 @@ import { test, expect } from "@playwright/test";
 const choose = async (page, name) => {
   if (!(await page.locator(".member-list").isVisible())) {
     await page
-      .getByRole("button", { name: "← Danh sách", exact: true })
+      .getByRole("button", { name: "Quay lại danh sách", exact: true })
       .click();
   }
   await page
@@ -47,7 +47,10 @@ const memberSession = {
 
 test.beforeEach(async ({ page }) => {
   await page.addInitScript((session) => {
-    localStorage.setItem("luattuliem-member-session", JSON.stringify(session));
+    const key = "luattuliem-member-session";
+    if (!localStorage.getItem(key)) {
+      localStorage.setItem(key, JSON.stringify(session));
+    }
   }, memberSession);
   await page.goto("/dien-dan");
 });
@@ -79,8 +82,8 @@ test("Thành viên chỉ thấy tin nhắn, vụ việc và thu nhập của mì
   await expect(
     page.getByRole("button", { name: "Thành viên", exact: true }),
   ).toHaveCount(0);
-  await tab(page, "Thu nhập");
-  await choose(page, "Thông báo lương");
+  await tab(page, "Tài chính");
+  await choose(page, "Thông báo tài chính");
   await expect(page.locator(".member-message-list")).toContainText(
     "10.000.000đ",
   );
@@ -164,39 +167,57 @@ test("Giám đốc tạo vụ việc và đổi thành viên theo nhóm", async 
     .click();
   let dialog = page.getByRole("dialog");
   await dialog.getByLabel("Tên vụ việc").fill("Vụ kiểm tra mới");
-  await dialog
-    .getByRole("checkbox", { name: "Luật sư A", exact: true })
-    .check();
-  await dialog
-    .getByRole("checkbox", { name: "Nguyễn Văn A", exact: true })
-    .check();
+  const province = dialog.getByLabel("Tỉnh/thành phố xảy ra vụ việc");
+  const lawyers = dialog.getByLabel("Luật sư", { exact: true });
+  const support = dialog.getByLabel("Cộng tác viên hỗ trợ");
+  await expect(lawyers).toBeDisabled();
+  await province.selectOption("Hà Nội");
+  await expect(support).toBeDisabled();
+  await expect(dialog.getByText("Đã chọn (0)", { exact: true })).toBeVisible();
+  await lawyers.selectOption({ label: "Luật sư A" });
+  await province.selectOption("Bắc Ninh");
+  await expect(lawyers).toBeDisabled();
+  await support.selectOption({ label: "Nguyễn Văn A" });
+  await expect(dialog.getByText("Đã chọn (2)", { exact: true })).toBeVisible();
   await dialog
     .getByRole("button", { name: "Tạo vụ việc", exact: true })
     .click();
   await expect(page.locator(".member-thread-heading h2")).toHaveText(
     "Vụ kiểm tra mới",
   );
-  await send(page, "Đã phân công hồ sơ.");
-  await choose(page, "Vụ kiểm tra mới");
+  const overview = page.getByRole("group", { name: "Người phụ trách theo vai trò" });
+  await overview.getByText("Luật sư (1)", { exact: true }).click();
+  await expect(overview.getByText("Luật sư A", { exact: true })).toBeVisible();
+  await overview.getByText("Cộng tác viên hỗ trợ (1)", { exact: true }).click();
+  await expect(overview.getByText("Nguyễn Văn A", { exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Thành viên", exact: true }).click();
   dialog = page.getByRole("dialog");
-  await dialog
-    .getByRole("checkbox", { name: "Nguyễn Văn A", exact: true })
-    .uncheck();
-  await dialog
-    .getByRole("checkbox", { name: "Đỗ Thu Trang", exact: true })
-    .check();
+  await dialog.getByRole("button", { name: "Gỡ Nguyễn Văn A", exact: true }).click();
+  await province.selectOption("Hải Phòng");
+  await support.selectOption({ label: "Đỗ Thu Trang" });
+  await expect(dialog.getByRole("button", { name: "Gỡ Luật sư A", exact: true })).toBeVisible();
   await dialog
     .getByRole("button", { name: "Lưu thành viên", exact: true })
     .click();
   await expect(page.locator(".member-thread-heading h2")).toHaveText(
     "Vụ kiểm tra mới",
   );
+  await expect(overview.getByText("Đỗ Thu Trang", { exact: true })).toBeVisible();
 });
 
 test("Thu nhập riêng không lẫn giữa các thành viên", async ({ page }) => {
   await loginAs(page, directorSession);
-  await tab(page, "Thu nhập");
+  await tab(page, "Tài chính");
+  await page.getByRole("button", { name: "+ Thông báo tài chính", exact: true }).click();
+  const dialog = page.getByRole("dialog");
+  await expect(dialog.getByRole("combobox")).toHaveCount(3);
+  await expect(dialog.getByText("Gửi cho toàn thể", { exact: true })).toHaveCount(0);
+  await dialog.getByRole("combobox", { name: "Cộng tác viên hỗ trợ" })
+    .selectOption({ label: "Nguyễn Văn A" });
+  await expect(dialog.getByRole("button", { name: "Gỡ Nguyễn Văn A" })).toBeVisible();
+  await dialog.getByRole("button", { name: "Gỡ Nguyễn Văn A" }).click();
+  await expect(dialog.getByText("Đã chọn (0)", { exact: true })).toBeVisible();
+  await dialog.getByRole("button", { name: "Đóng", exact: true }).click();
   await choose(page, "Nguyễn Văn A");
   await send(page, "Đã tạm ứng 2.000.000đ cho công việc tháng này.");
   await choose(page, "Luật sư B");
@@ -238,7 +259,7 @@ test("Tìm kiếm, tệp quá giới hạn và điều hướng về danh sách"
   }
 });
 
-test("Báo lỗi trong hộp thoại khi chưa chọn người phụ trách", async ({
+test("Lưu vụ việc khi chưa chọn người phụ trách", async ({
   page,
 }) => {
   await loginAs(page, directorSession);
@@ -251,20 +272,8 @@ test("Báo lỗi trong hộp thoại khi chưa chọn người phụ trách", as
   await dialog
     .getByRole("button", { name: "Tạo vụ việc", exact: true })
     .click();
-  await expect(dialog.getByRole("alert")).toHaveText(
-    "Vui lòng chọn ít nhất một người.",
-  );
-  await dialog
-    .getByRole("checkbox", { name: "Nguyễn Văn A", exact: true })
-    .check();
-  await dialog
-    .getByRole("button", { name: "Tạo vụ việc", exact: true })
-    .click();
-  await expect(dialog.getByRole("alert")).toHaveText(
-    "Vui lòng chọn ít nhất một luật sư phụ trách.",
-  );
-  await dialog.getByRole("button", { name: "Đóng", exact: true }).click();
   await expect(dialog).not.toBeVisible();
+  await expect(page.locator(".member-thread-heading h2")).toHaveText("Hồ sơ chưa phân công");
 });
 
 test("Quản lý thành viên: phong cách Master-Detail 2 cột đồng bộ workspace", async ({

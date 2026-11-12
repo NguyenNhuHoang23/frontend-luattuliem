@@ -113,11 +113,11 @@ Các breakpoint được kế thừa qua CSS layers; cần kiểm tra quy tắc 
 
 ### Header và điều hướng
 
-Thanh thông tin nhanh hiển thị giờ làm việc và thông điệp đồng hành. Hàng thương hiệu có logo và tên công ty bên trái; desktop có thông tin liên hệ theo cấu hình công ty và nút tư vấn bên phải. Header dùng chung trên các trang công khai; khi chỉnh kích thước logo hoặc chữ, kiểm tra `site-chrome.css` ở desktop, mobile và trạng thái sau khi cuộn.
+Thanh thông tin nhanh hiển thị giờ làm việc và thông điệp đồng hành. Trên màn hình máy tính (`> 900px`), logo tròn giữ ở lề trái, cụm tên công ty (“CÔNG TY LUẬT TNHH MTV” / “TỪ LIÊM”, chữ “TỪ LIÊM” tăng lên 56px và căn giữa) được đưa ra chính giữa thanh header, còn góc phải chỉ hiển thị khối thông tin liên hệ tiếp nhận (đẩy sát lề phải, bỏ nút “Liên hệ tư vấn” để tránh lặp với mục “Liên hệ” trên thanh menu). Trên mobile (`≤ 900px`), giữ logo và tên công ty cạnh nhau bên trái cùng nút Menu bên phải. Header dùng chung trên các trang công khai; khi chỉnh kích thước logo hoặc chữ, kiểm tra `site-chrome.css` ở desktop, mobile và trạng thái sau khi cuộn.
 
 Thứ tự điều hướng: **Trang chủ → Giới thiệu → Án lệ – Án hay → Tuyển dụng – Hợp tác → Thành viên → Liên hệ**. Giữ chữ có dấu và thứ tự đã thống nhất.
 
-Trang đang mở được đánh dấu bằng chữ xanh đậm, gạch dưới và `aria-current="page"`. Ở ≤ 900px, hiển thị nút Menu; các liên kết xếp dọc khi mở. Menu đóng khi đổi trang hoặc nhấn Escape; Escape trả focus về nút mở menu.
+Trên màn hình máy tính (`> 900px`), thanh điều hướng (`.nav-line`) dùng nền xanh hải quân trầm `#11284b` kèm đường chỉ vàng kim `2px` (`#d3a04a`) ở mép dưới, chữ sáng `#f0f5fc`/`#ffffff` cỡ `16px` (`17px` từ `1600px`); trang đang mở được đánh dấu bằng nền sáng nhẹ, vạch gạch chân vàng kim `3px` và `aria-current="page"`. Ở `≤ 900px`, hiển thị nút Menu; khi mở, các liên kết xếp dọc trên nền sáng `#ffffff` (mục đang chọn nền `#f0f5fc`, chữ xanh thương hiệu). Menu đóng khi đổi trang hoặc nhấn Escape; Escape trả focus về nút mở menu.
 
 ### Nút và liên kết
 

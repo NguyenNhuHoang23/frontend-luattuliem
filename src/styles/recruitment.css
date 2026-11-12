@@ -880,6 +880,32 @@
     color: var(--muted);
     max-width: 76ch;
     line-height: 1.4;
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+  }
+  .page-recruitment .recruitment-intro-content {
+    max-width: none;
+    margin-bottom: 16px;
+  }
+  .page-recruitment .recruitment-intro-content h2 {
+    margin: 0.7em 0 0.25em;
+    color: var(--blue);
+    font-size: 1.12em;
+    line-height: 1.35;
+  }
+  .page-recruitment .recruitment-intro-content ul {
+    margin: 0 0 0.4em;
+    padding-inline-start: 1.35em;
+    list-style: disc;
+  }
+  .page-recruitment .recruitment-intro-content li + li {
+    margin-top: 0.18em;
+  }
+  .page-recruitment .recruitment-intro-content > p {
+    margin-bottom: 0.35em;
+  }
+  .page-recruitment .recruitment-intro-content > :last-child {
+    margin-bottom: 0;
   }
   .page-recruitment .role-card p,
   .page-recruitment .role-card li {
@@ -899,6 +925,7 @@
   }
   .page-recruitment .recruitment-role-section h3 {
     margin: 0 0 4px;
+    text-transform: uppercase;
   }
   .page-recruitment .recruitment-topic-menu {
     display: flex;
