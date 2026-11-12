@@ -123,3 +123,11 @@ export async function deleteMemberCaseArticle(id) {
   });
   return payload;
 }
+
+export async function changeMemberPassword(body) {
+  const payload = await memberRequest("/thanh-vien/doi-mat-khau", {
+    method: "POST",
+    body,
+  });
+  return payload.message || "Đã đổi mật khẩu thành công.";
+}

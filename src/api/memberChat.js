@@ -95,6 +95,14 @@ export async function openConversation(memberId) {
   return payload.data ?? null;
 }
 
+export async function getGlobalGroup() {
+  const response = await fetch(`${API_URL}/thanh-vien/nhom-toan-the`, {
+    headers: authHeaders(),
+  });
+  const payload = await parsePayload(response);
+  return payload.data ?? null;
+}
+
 export async function getConversation(uuid) {
   const response = await fetch(`${API_URL}/thanh-vien/tin-nhan/${uuid}`, {
     headers: authHeaders(),

@@ -6,6 +6,7 @@ import { Modal } from "../components/Modal.jsx";
 import { MemberThreadListSkeleton } from "../components/Skeleton.jsx";
 import MemberConversation from "../features/MemberConversation.jsx";
 import MemberManagement from "../features/MemberManagement.jsx";
+import MemberSettings from "../features/MemberSettings.jsx";
 import { useMemberAuth } from "../features/memberAuth.jsx";
 import {
   createCase,
@@ -14,6 +15,7 @@ import {
   listCases,
   listChatMessages,
   listConversations,
+  getGlobalGroup,
   listIncomeNotices,
   markConversationRead,
   openConversation,
@@ -51,22 +53,40 @@ function mapChatMessage(message) {
 function conversationToThread(convo, currentId) {
   const isCase = convo.type === "case";
   const isIncome = convo.type === "income";
+  const isGlobal = convo.type === "global";
   const members = Array.isArray(convo.members) ? convo.members : [];
   const memberIds = members.map((person) => person.id);
+  const memberDetails = members
+    .map((person) => ({
+      id: person.id,
+      name: person.name || "",
+      username: person.username || "",
+      role: person.role || person.group || "ctv",
+    }))
+    .sort((left, right) => {
+      if (left.role === "director" && right.role !== "director") return -1;
+      if (right.role === "director" && left.role !== "director") return 1;
+      return String(left.name).localeCompare(String(right.name), "vi", {
+        sensitivity: "base",
+      });
+    });
   return {
     id: convo.uuid,
     conversationId: convo.id,
     uuid: convo.uuid,
-    type: isCase ? "cases" : isIncome ? "income" : "messages",
+    type: isCase ? "cases" : isIncome ? "income" : isGlobal ? "global" : "messages",
     live: true,
-    name: isCase
-      ? convo.name || "Vụ việc"
-      : convo.peer?.name || (isIncome ? "Thông báo lương" : "Thành viên"),
-    ownerId: isCase ? null : convo.peer?.id,
+    name: isGlobal
+      ? convo.name || "Nhóm công ty"
+      : isCase
+        ? convo.name || "Vụ việc"
+        : convo.peer?.name || (isIncome ? "Thông báo lương" : "Thành viên"),
+    ownerId: isCase || isGlobal ? null : convo.peer?.id,
     members: memberIds.length
       ? memberIds
       : [currentId, convo.peer?.id].filter((id) => id != null),
     memberNames: members.map((person) => person.name).filter(Boolean),
+    memberDetails,
     messages: (convo.messages || []).map(mapChatMessage),
     description: convo.description || "",
     address: convo.address || "",
@@ -78,6 +98,7 @@ function conversationToThread(convo, currentId) {
 }
 const tabs = [
   { id: "messages", name: "Tin nhắn" },
+  { id: "global", name: "Nhóm công ty", shortName: "Công ty" },
   { id: "cases", name: "Vụ việc" },
   { id: "income", name: "Thu nhập" },
 ];
@@ -118,6 +139,7 @@ function chatInitials(name) {
 }
 
 function threadDisplayName(thread, admin) {
+  if (thread.type === "global") return thread.name || "Nhóm công ty";
   if (thread.type === "cases") return thread.name;
   if (thread.type === "income") return admin ? thread.name : "Thông báo lương";
   if (thread.live || admin) return thread.name;
@@ -130,7 +152,9 @@ function threadPreview(thread) {
     thread.messages.at(-1)?.content ||
     (thread.type === "income"
       ? "Chưa có thông báo lương"
-      : "Chưa có trao đổi")
+      : thread.type === "global"
+        ? "Chưa có tin nhắn trong nhóm công ty"
+        : "Chưa có trao đổi")
   );
 }
 
@@ -222,6 +246,7 @@ export default function ForumPage() {
   const [tab, setTab] = useState("messages");
   const [selections, setSelections] = useState({});
   const [conversationOpen, setConversationOpen] = useState(false);
+  const [rosterOpen, setRosterOpen] = useState(false);
   const [drafts, setDrafts] = useState({});
   const [dialog, setDialog] = useState(null);
   const [recipients, setRecipients] = useState([]);
@@ -267,9 +292,21 @@ export default function ForumPage() {
             thread.type === tab && (admin || thread.members.includes(actorId)),
         ),
   );
-  const active = available.find(
-    (thread) => thread.id === selections[selectionKey],
-  );
+  const globalThread =
+    chatThreads.find((thread) => thread.type === "global") || null;
+  const globalRoster = (globalThread?.memberDetails || []).filter((person) => {
+    // Bỏ mục placeholder "Giám đốc" / "Giám đốc Công ty", vẫn giữ thành viên role giám đốc có tên thật.
+    if (String(person.id) === "director") return false;
+    const name = String(person.name || "")
+      .trim()
+      .replace(/\s+/g, " ");
+    return !/^giám đốc(\s+công ty)?$/i.test(name);
+  });
+  const active =
+    tab === "global"
+      ? globalThread
+      : available.find((thread) => thread.id === selections[selectionKey]);
+  const showChatPane = tab === "global" || conversationOpen;
   const draftKey = `${actorId}-${active?.id}`;
   const draft = drafts[draftKey] || EMPTY_DRAFT;
   useEffect(() => {
@@ -313,13 +350,17 @@ export default function ForumPage() {
       listConversations().catch(() => []),
       listCases().catch(() => []),
       listIncomeNotices().catch(() => []),
+      getGlobalGroup().catch(() => null),
     ])
-      .then(([direct, cases, income]) => {
+      .then(([direct, cases, income, globalGroup]) => {
         if (!cancelled) {
           setChatThreads([
             ...direct.map((item) => conversationToThread(item, session.id)),
             ...cases.map((item) => conversationToThread(item, session.id)),
             ...income.map((item) => conversationToThread(item, session.id)),
+            ...(globalGroup
+              ? [conversationToThread(globalGroup, session.id)]
+              : []),
           ]);
         }
       })
@@ -654,8 +695,36 @@ export default function ForumPage() {
   };
   const switchTab = (id) => {
     setTab(id);
-    setConversationOpen(false);
+    setConversationOpen(id === "global");
+    setRosterOpen(false);
   };
+
+  useEffect(() => {
+    if (!liveChat || tab !== "global") return undefined;
+    let cancelled = false;
+    setOpeningId("global");
+    getGlobalGroup()
+      .then((convo) => {
+        if (cancelled || !convo) return;
+        const thread = conversationToThread(convo, session.id);
+        setChatThreads((previous) => [
+          thread,
+          ...previous.filter((item) => item.type !== "global"),
+        ]);
+        setSelections((previous) => ({
+          ...previous,
+          [`${actorId}-global`]: thread.id,
+        }));
+        setConversationOpen(true);
+      })
+      .catch((err) => showToast(err.message))
+      .finally(() => {
+        if (!cancelled) setOpeningId(null);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [liveChat, tab, session?.id, actorId]);
 
   const handleUpdateMember = (updatedPerson) => {
     setMembersList((previous) =>
@@ -738,12 +807,15 @@ export default function ForumPage() {
           },
         ]
       : []),
+    { id: "settings", name: "Cài đặt", shortName: "Cài đặt" },
   ];
   const railShortNames = {
     messages: "Tin nhắn",
+    global: "Toàn thể",
     cases: "Vụ việc",
     income: "Lương",
     members: "Thành viên",
+    settings: "Cài đặt",
   };
 
   const title =
@@ -751,15 +823,19 @@ export default function ForumPage() {
       ? admin
         ? "Người trao đổi"
         : "Tin nhắn của tôi"
-      : tab === "cases"
-        ? admin
-          ? "Các vụ việc"
-          : "Vụ việc tôi tham gia"
-        : tab === "income"
+      : tab === "global"
+        ? "Nhóm công ty"
+        : tab === "cases"
           ? admin
-            ? "Thông báo lương"
-            : "Thông báo lương của tôi"
-          : "Quản lý thành viên";
+            ? "Các vụ việc"
+            : "Vụ việc tôi tham gia"
+          : tab === "income"
+            ? admin
+              ? "Thông báo lương"
+              : "Thông báo lương của tôi"
+            : tab === "settings"
+              ? "Cài đặt tài khoản"
+              : "Quản lý thành viên";
 
   if (!session) {
     return <Navigate to="/thanh-vien" replace />;
@@ -792,13 +868,27 @@ export default function ForumPage() {
         <path d="M14 14.2c1.8-.2 3.4.6 4.2 2.8" />
       </svg>
     ),
+    settings: (
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+        <circle cx="12" cy="12" r="3" />
+        <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9c.3.6.9 1 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z" />
+      </svg>
+    ),
+    global: (
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+        <circle cx="12" cy="12" r="8" />
+        <path d="M4 12h16" />
+        <path d="M12 4a14 14 0 0 1 0 16" />
+        <path d="M12 4a14 14 0 0 0 0 16" />
+      </svg>
+    ),
   };
 
   return (
     <main className="member-page member-page-zalo">
       <h1 className="page-heading-sr-only">Không gian thành viên</h1>
       <div
-        className={`member-zalo-shell ${conversationOpen ? "is-chat-open" : ""} ${tab === "members" ? "is-members" : ""}`}
+        className={`member-zalo-shell ${showChatPane ? "is-chat-open" : ""} ${tab === "global" ? "is-global-group" : ""} ${tab === "members" || tab === "settings" ? "is-members" : ""}`}
         ref={chatShellRef}
       >
         <aside className="member-rail" aria-label="Điều hướng thành viên">
@@ -852,7 +942,11 @@ export default function ForumPage() {
           </button>
         </aside>
 
-        {admin && tab === "members" ? (
+        {tab === "settings" ? (
+          <section className="member-zalo-panel" aria-label="Cài đặt tài khoản">
+            <MemberSettings session={session} />
+          </section>
+        ) : admin && tab === "members" ? (
           <section className="member-zalo-panel" aria-label="Quản lý thành viên">
             <MemberManagement
               members={membersList}
@@ -866,14 +960,22 @@ export default function ForumPage() {
           </section>
         ) : (
           <div
-            className={`member-zalo-main chat-workspace ${conversationOpen ? "conversation-open is-chat-open" : ""}`}
+            className={`member-zalo-main chat-workspace ${showChatPane ? "conversation-open is-chat-open" : ""} ${tab === "global" ? "is-global-chat" : ""}`}
           >
             <aside className="member-zalo-list member-list" aria-label={title}>
               <div className="member-list-heading">
                 <h2 ref={listHeading} tabIndex={-1}>
                   {title}
                 </h2>
-                {admin && !(liveChat && tab === "messages") && (
+                {tab === "global" ? (
+                  <span className="member-text-action member-roster-count">
+                    {globalRoster.length} thành viên
+                  </span>
+                ) : null}
+                {admin &&
+                  tab !== "global" &&
+                  tab !== "settings" &&
+                  !(liveChat && tab === "messages") && (
                   <button
                     type="button"
                     className="member-text-action"
@@ -895,100 +997,141 @@ export default function ForumPage() {
                   </button>
                 )}
               </div>
-              <div className="member-thread-list">
-                {listLoading ? <MemberThreadListSkeleton /> : null}
-                {!listLoading &&
-                  available.map((thread) => {
-                    const name = threadDisplayName(thread, admin);
+              {tab === "global" ? (
+                <div className="member-thread-list global-roster-list">
+                  {(listLoading || openingId === "global") && !globalRoster.length ? (
+                    <MemberThreadListSkeleton />
+                  ) : null}
+                  {globalRoster.map((person) => {
+                    const isSelf = samePersonId(person.id, session?.id);
                     return (
-                      <button
-                        key={thread.id}
-                        type="button"
-                        className={`member-thread-choice chat-thread-item ${active?.id === thread.id ? "selected" : ""} ${thread.unread ? "has-unread" : ""}`}
-                        aria-pressed={active?.id === thread.id}
-                        onClick={async (event) => {
-                          event.currentTarget.blur();
-                          setSelections((previous) => ({
-                            ...previous,
-                            [selectionKey]: thread.id,
-                          }));
-                          openChatPane();
-                          if (thread.live) {
-                            setOpeningId(thread.id);
-                            setChatThreads((previous) =>
-                              previous.map((item) =>
-                                item.uuid === thread.uuid
-                                  ? { ...item, unread: false }
-                                  : item,
-                              ),
-                            );
-                            try {
-                              const full = await getConversation(thread.uuid);
-                              setChatThreads((previous) =>
-                                previous.map((item) =>
-                                  item.uuid === thread.uuid
-                                    ? {
-                                        ...conversationToThread(
-                                          full,
-                                          session.id,
-                                        ),
-                                        unread: false,
-                                      }
-                                    : item,
-                                ),
-                              );
-                            } catch (err) {
-                              showToast(err.message);
-                            } finally {
-                              setOpeningId(null);
-                            }
-                          }
-                        }}
+                      <div
+                        key={person.id}
+                        className={`member-thread-choice chat-thread-item global-roster-item${isSelf ? " is-self" : ""}`}
                       >
                         <span className="chat-avatar" aria-hidden="true">
-                          {chatInitials(name)}
+                          {chatInitials(person.name)}
                         </span>
                         <span className="chat-thread-main">
                           <span className="chat-thread-top">
-                            <strong>{name}</strong>
-                            {threadTime(thread) ? (
-                              <time>{threadTime(thread)}</time>
-                            ) : null}
+                            <strong>
+                              {person.name}
+                              {isSelf ? " (Bạn)" : ""}
+                            </strong>
                           </span>
-                          <span className="chat-thread-preview">
-                            {threadPreview(thread)}
+                          <span className="chat-thread-preview global-roster-role">
+                            {memberGroups[person.role] || person.role || "Thành viên"}
                           </span>
-                          {thread.type === "cases" && (
-                            <small>
-                              {thread.members.length} người tham gia
-                            </small>
-                          )}
                         </span>
-                        {thread.unread ? (
-                          <i
-                            className="member-unread-dot"
-                            aria-label="Chưa đọc"
-                          />
-                        ) : null}
-                      </button>
+                      </div>
                     );
                   })}
-              </div>
-              {!listLoading && available.length === 0 && (
-                <p className="member-empty">
-                  {tab === "messages"
-                    ? "Chưa có cuộc trao đổi. Giám đốc mở Nhắn tin riêng từ tab Quản lý thành viên."
-                    : tab === "income"
-                      ? admin
-                        ? "Chưa có thông báo lương. Gửi thông báo chuyển tiền cho thành viên."
-                        : "Chưa nhận thông báo lương từ Giám đốc."
-                      : "Chưa có vụ việc được phân công."}
-                </p>
+                  {!listLoading &&
+                    openingId !== "global" &&
+                    globalRoster.length === 0 && (
+                      <p className="member-empty">
+                        Chưa có thành viên trong nhóm công ty.
+                      </p>
+                    )}
+                </div>
+              ) : (
+                <>
+                  <div className="member-thread-list">
+                    {listLoading ? <MemberThreadListSkeleton /> : null}
+                    {!listLoading &&
+                      available.map((thread) => {
+                        const name = threadDisplayName(thread, admin);
+                        return (
+                          <button
+                            key={thread.id}
+                            type="button"
+                            className={`member-thread-choice chat-thread-item ${active?.id === thread.id ? "selected" : ""} ${thread.unread ? "has-unread" : ""}`}
+                            aria-pressed={active?.id === thread.id}
+                            onClick={async (event) => {
+                              event.currentTarget.blur();
+                              setSelections((previous) => ({
+                                ...previous,
+                                [selectionKey]: thread.id,
+                              }));
+                              openChatPane();
+                              if (thread.live) {
+                                setOpeningId(thread.id);
+                                setChatThreads((previous) =>
+                                  previous.map((item) =>
+                                    item.uuid === thread.uuid
+                                      ? { ...item, unread: false }
+                                      : item,
+                                  ),
+                                );
+                                try {
+                                  const full = await getConversation(thread.uuid);
+                                  setChatThreads((previous) =>
+                                    previous.map((item) =>
+                                      item.uuid === thread.uuid
+                                        ? {
+                                            ...conversationToThread(
+                                              full,
+                                              session.id,
+                                            ),
+                                            unread: false,
+                                          }
+                                        : item,
+                                    ),
+                                  );
+                                } catch (err) {
+                                  showToast(err.message);
+                                } finally {
+                                  setOpeningId(null);
+                                }
+                              }
+                            }}
+                          >
+                            <span className="chat-avatar" aria-hidden="true">
+                              {chatInitials(name)}
+                            </span>
+                            <span className="chat-thread-main">
+                              <span className="chat-thread-top">
+                                <strong>{name}</strong>
+                                {threadTime(thread) ? (
+                                  <time>{threadTime(thread)}</time>
+                                ) : null}
+                              </span>
+                              <span className="chat-thread-preview">
+                                {threadPreview(thread)}
+                              </span>
+                              {thread.type === "cases" && (
+                                <small>
+                                  {thread.members.length} người tham gia
+                                </small>
+                              )}
+                            </span>
+                            {thread.unread ? (
+                              <i
+                                className="member-unread-dot"
+                                aria-label="Chưa đọc"
+                              />
+                            ) : null}
+                          </button>
+                        );
+                      })}
+                  </div>
+                  {!listLoading && available.length === 0 && (
+                    <p className="member-empty">
+                      {tab === "messages"
+                        ? "Chưa có cuộc trao đổi. Giám đốc mở Nhắn tin riêng từ tab Quản lý thành viên."
+                        : tab === "income"
+                          ? admin
+                            ? "Chưa có thông báo lương. Gửi thông báo chuyển tiền cho thành viên."
+                            : "Chưa nhận thông báo lương từ Giám đốc."
+                          : "Chưa có vụ việc được phân công."}
+                    </p>
+                  )}
+                </>
               )}
             </aside>
 
             <section
-              className={`member-zalo-chat member-conversation-pane ${conversationOpen ? "is-open" : ""}`}
+              className={`member-zalo-chat member-conversation-pane ${showChatPane ? "is-open" : ""}`}
               aria-label="Khung chat"
             >
               {active ? (
@@ -998,7 +1141,10 @@ export default function ForumPage() {
                   actorId={active.live ? session.id : actorId}
                   draft={draft}
                   sending={sending}
-                  loading={openingId === active.id}
+                  loading={
+                    openingId === active.id ||
+                    (tab === "global" && openingId === "global")
+                  }
                   loadingOlder={loadingOlder}
                   onDraft={updateDraft}
                   onSend={send}
@@ -1013,6 +1159,10 @@ export default function ForumPage() {
                       : undefined
                   }
                   onBack={() => {
+                    if (tab === "global") {
+                      switchTab("messages");
+                      return;
+                    }
                     setSelections((previous) => {
                       const next = { ...previous };
                       delete next[selectionKey];
@@ -1024,17 +1174,22 @@ export default function ForumPage() {
                   onEditMembers={
                     admin && tab === "cases" ? () => openDialog("edit") : null
                   }
+                  onOpenRoster={
+                    tab === "global" ? () => setRosterOpen(true) : undefined
+                  }
                 />
               ) : (
                 <div className="member-no-selection chat-empty-pane">
                   <p>
-                    {tab === "messages"
-                      ? "Chọn một cuộc trao đổi bên trái để xem tin nhắn."
-                      : tab === "income"
-                        ? "Chọn một thông báo lương bên trái để xem."
-                        : admin
-                          ? "Tạo vụ việc và chọn người phụ trách để bắt đầu."
-                          : "Chọn một vụ việc bên trái để xem trao đổi."}
+                    {tab === "global"
+                      ? "Đang mở nhóm công ty…"
+                      : tab === "messages"
+                        ? "Chọn một cuộc trao đổi bên trái để xem tin nhắn."
+                        : tab === "income"
+                          ? "Chọn một thông báo lương bên trái để xem."
+                          : admin
+                            ? "Tạo vụ việc và chọn người phụ trách để bắt đầu."
+                            : "Chọn một vụ việc bên trái để xem trao đổi."}
                   </p>
                 </div>
               )}
@@ -1165,6 +1320,49 @@ export default function ForumPage() {
             </form>
           )}
         </Modal>
+
+      <Modal
+        open={rosterOpen}
+        onClose={() => setRosterOpen(false)}
+        title="Thành viên nhóm"
+        className="member-workspace-dialog global-roster-dialog"
+      >
+        <p className="global-roster-dialog-count">
+          {globalRoster.length} thành viên
+        </p>
+        <div className="global-roster-dialog-list" role="list">
+          {globalRoster.map((person) => {
+            const isSelf = samePersonId(person.id, session?.id);
+            return (
+              <div
+                key={person.id}
+                className={`global-roster-dialog-item${isSelf ? " is-self" : ""}`}
+                role="listitem"
+              >
+                <span className="chat-avatar" aria-hidden="true">
+                  {chatInitials(person.name)}
+                </span>
+                <span className="global-roster-dialog-main">
+                  <strong>
+                    {person.name}
+                    {isSelf ? " (Bạn)" : ""}
+                  </strong>
+                  <span className="global-roster-role">
+                    {memberGroups[person.role] || person.role || "Thành viên"}
+                  </span>
+                </span>
+              </div>
+            );
+          })}
+          {!listLoading &&
+            openingId !== "global" &&
+            globalRoster.length === 0 && (
+              <p className="member-empty">
+                Chưa có thành viên trong nhóm công ty.
+              </p>
+            )}
+        </div>
+      </Modal>
     </main>
   );
 }

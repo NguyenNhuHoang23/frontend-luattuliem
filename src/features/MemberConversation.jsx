@@ -74,6 +74,7 @@ export default function MemberConversation({
   onLoadOlder,
   onBack,
   onEditMembers,
+  onOpenRoster,
   onNotice,
   onDownloadAttachment,
   canReply = true,
@@ -113,15 +114,17 @@ export default function MemberConversation({
     ).includes(normalize(query)),
   );
   const title =
-    thread.type === "cases"
-      ? thread.name
-      : thread.type === "income"
-        ? canReply
-          ? thread.name
-          : "Thông báo lương"
-        : thread.live || actorId === "director"
-          ? thread.name
-          : "Giám đốc";
+    thread.type === "global"
+      ? thread.name || "Nhóm công ty"
+      : thread.type === "cases"
+        ? thread.name
+        : thread.type === "income"
+          ? canReply
+            ? thread.name
+            : "Thông báo lương"
+          : thread.live || actorId === "director"
+            ? thread.name
+            : "Giám đốc";
   const send = (event) => {
     event.preventDefault();
     if (sending) return;
@@ -195,11 +198,14 @@ export default function MemberConversation({
     .filter(Boolean)
     .join(" · ");
   const subtitle =
-    thread.type === "cases"
-      ? thread.description || thread.subtitle || casePeople
-      : thread.type === "income"
-        ? "Thông báo chuyển lương / thanh toán từ Giám đốc"
-        : "Trao đổi riêng";
+    thread.type === "global"
+      ? thread.description ||
+        `Nhóm chat chung · ${thread.memberDetails?.length || thread.members?.length || 0} thành viên`
+      : thread.type === "cases"
+        ? thread.description || thread.subtitle || casePeople
+        : thread.type === "income"
+          ? "Thông báo chuyển lương / thanh toán từ Giám đốc"
+          : "Trao đổi riêng";
 
   return (
     <section className="member-conversation" aria-label="Nội dung trao đổi">
@@ -223,6 +229,27 @@ export default function MemberConversation({
           <p>{subtitle}</p>
         </div>
         <div className="member-thread-actions">
+          {onOpenRoster ? (
+            <button
+              type="button"
+              className="global-roster-menu-btn"
+              aria-label="Danh sách thành viên"
+              onClick={onOpenRoster}
+            >
+              <svg
+                viewBox="0 0 24 24"
+                width="22"
+                height="22"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                aria-hidden="true"
+              >
+                <path d="M4 7h16M4 12h16M4 17h16" />
+              </svg>
+            </button>
+          ) : null}
           {onEditMembers && (
             <button type="button" onClick={onEditMembers}>
               Thành viên
