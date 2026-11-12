@@ -372,6 +372,22 @@ export default function ForumPage() {
     tab === "global"
       ? globalThread
       : available.find((thread) => thread.id === selections[selectionKey]);
+  const assigneeGroups =
+    admin && active?.type === "cases"
+      ? caseRoleGroups.map((group) => ({
+          ...group,
+          people: active.members.flatMap((id) => {
+            const member =
+              membersList.find((person) => samePersonId(person.id, id)) ||
+              active.memberProfiles?.find((person) =>
+                samePersonId(person.id, id),
+              );
+            return member?.name && personRoles(member).includes(group.id)
+              ? [member]
+              : [];
+          }),
+        }))
+      : null;
   const showChatPane = tab === "global" || conversationOpen;
   const draftKey = `${actorId}-${active?.id}`;
   const draft = drafts[draftKey] || EMPTY_DRAFT;

@@ -75,6 +75,7 @@ export default function MemberConversation({
   onBack,
   onEditMembers,
   onOpenRoster,
+  assigneeGroups,
   onNotice,
   onDownloadAttachment,
   canReply = true,
