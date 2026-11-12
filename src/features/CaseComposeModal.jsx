@@ -4,8 +4,15 @@ import {
   updateMemberCaseArticle,
   uploadMemberCaseImage,
 } from "../api/member.js";
+import NewsContentEditor from "../admin/NewsContentEditor.jsx";
 import { Modal } from "../components/Modal.jsx";
 import { caseCategories } from "../data/cases.js";
+import {
+  caseBodyToHtml,
+  htmlToCaseBody,
+  isEmptyRichContent,
+  toEditorHtml,
+} from "../utils/richContent.js";
 
 const categoryOptions = caseCategories.filter((item) => item.id !== "all");
 
@@ -22,12 +29,6 @@ function lines(value) {
     .filter(Boolean);
 }
 
-function bodyToText(caseBody = []) {
-  return caseBody
-    .map((block) => `## ${block.heading}\n${block.content || ""}`)
-    .join("\n\n");
-}
-
 function docsToText(docs = []) {
   return docs
     .map((doc) =>
@@ -42,21 +43,6 @@ function textToDocs(text) {
       .split("|")
       .map((part) => part.trim());
     return { title, type, issuingAgency: agency };
-  });
-}
-
-function textToBody(text) {
-  const chunks = String(text)
-    .split(/\n(?=## )/)
-    .map((chunk) => chunk.trim())
-    .filter(Boolean);
-  if (!chunks.length) return [];
-  return chunks.map((chunk) => {
-    const [first, ...rest] = chunk.split("\n");
-    return {
-      heading: first.replace(/^##\s*/, "").trim() || "NỘI DUNG",
-      content: rest.join("\n").trim(),
-    };
   });
 }
 
@@ -89,8 +75,8 @@ function articleToForm(article) {
     code: article.code || "",
     category: article.category || "dat-dai",
     tag: article.tag || "",
-    description: article.description || "",
-    overview: article.overview || "",
+    description: toEditorHtml(article.description || ""),
+    overview: toEditorHtml(article.overview || ""),
     sourceCourt: article.sourceCourt || "",
     updatedAt: article.updatedAt || todayDate(),
     field: article.attributes?.field || article.field || "",
@@ -98,7 +84,7 @@ function articleToForm(article) {
     keywords: (article.keywords || []).join("\n"),
     legalProvisions: (article.legalProvisions || []).join("\n"),
     relatedDocs: docsToText(article.relatedDocs),
-    body: bodyToText(article.caseBody),
+    body: caseBodyToHtml(article.caseBody),
     pdfTitle: article.pdfTitle || "",
     imageCaption: article.imageCaption || "",
   };
@@ -115,12 +101,12 @@ function toFormData(form, { pdfFile, removePdf, imageFile, removeImage }) {
     updatedAt: form.updatedAt.trim(),
     field: form.field.trim(),
     status: form.status.trim(),
-    description: form.description.trim(),
-    overview: form.overview.trim(),
+    description: form.description,
+    overview: form.overview,
     keywords: lines(form.keywords),
     legalProvisions: lines(form.legalProvisions),
     relatedDocs: textToDocs(form.relatedDocs),
-    caseBody: textToBody(form.body),
+    caseBody: htmlToCaseBody(form.body),
   };
   const body = new FormData();
   Object.entries(payload).forEach(([key, value]) => {
@@ -140,7 +126,7 @@ function toFormData(form, { pdfFile, removePdf, imageFile, removeImage }) {
 }
 
 export function CaseComposeModal({ open, article, onClose, onSaved }) {
-  const bodyRef = useRef(null);
+  const bodyEditorRef = useRef(null);
   const insertImageRef = useRef(null);
   const [form, setForm] = useState(emptyForm);
   const [pdfFile, setPdfFile] = useState(null);
@@ -198,23 +184,6 @@ export function CaseComposeModal({ open, article, onClose, onSaved }) {
     if (file) setRemoveImage(false);
   }
 
-  function insertAtCursor(snippet) {
-    const el = bodyRef.current;
-    if (!el) {
-      setForm((current) => ({ ...current, body: `${current.body}${snippet}` }));
-      return;
-    }
-    const start = el.selectionStart ?? el.value.length;
-    const end = el.selectionEnd ?? start;
-    const next = `${el.value.slice(0, start)}${snippet}${el.value.slice(end)}`;
-    setForm((current) => ({ ...current, body: next }));
-    requestAnimationFrame(() => {
-      el.focus();
-      const pos = start + snippet.length;
-      el.setSelectionRange(pos, pos);
-    });
-  }
-
   async function insertBodyImage(event) {
     const file = event.target.files?.[0];
     event.target.value = "";
@@ -224,7 +193,15 @@ export function CaseComposeModal({ open, article, onClose, onSaved }) {
     try {
       const uploaded = await uploadMemberCaseImage(file);
       const alt = file.name.replace(/\.[^.]+$/, "") || "Ảnh";
-      insertAtCursor(`\n\n![${alt}](${uploaded.url})\n\n`);
+      const editor = bodyEditorRef.current;
+      if (editor) {
+        editor.chain().focus().setImage({ src: uploaded.url, alt }).run();
+      } else {
+        setForm((current) => ({
+          ...current,
+          body: `${current.body}<p><img src="${uploaded.url}" alt="${alt}"></p>`,
+        }));
+      }
     } catch (err) {
       setError(err.message);
     } finally {
@@ -235,6 +212,10 @@ export function CaseComposeModal({ open, article, onClose, onSaved }) {
   async function handleSubmit(event) {
     event.preventDefault();
     setError("");
+    if (isEmptyRichContent(form.description)) {
+      setError("Vui lòng nhập mô tả ngắn.");
+      return;
+    }
     setSaving(true);
     try {
       const payload = toFormData(form, { pdfFile, removePdf, imageFile, removeImage });
@@ -333,20 +314,23 @@ export function CaseComposeModal({ open, article, onClose, onSaved }) {
         </div>
         <label>
           Mô tả ngắn *
-          <textarea
-            name="description"
+          <NewsContentEditor
+            compact
             value={form.description}
-            onChange={change}
-            required
-            rows={3}
+            onChange={(description) =>
+              setForm((current) => ({ ...current, description }))
+            }
+            placeholder="Nhập mô tả ngắn…"
           />
         </label>
         <label>
           Nội dung khái quát
-          <textarea name="overview" value={form.overview} onChange={change} rows={4} />
-          <span className="field-hint">
-            Dùng markdown: **in đậm**, *in nghiêng*, danh sách `- mục`.
-          </span>
+          <NewsContentEditor
+            compact
+            value={form.overview}
+            onChange={(overview) => setForm((current) => ({ ...current, overview }))}
+            placeholder="Nhập nội dung khái quát…"
+          />
         </label>
         <label>
           Từ khóa (mỗi dòng một từ khóa)
@@ -373,17 +357,16 @@ export function CaseComposeModal({ open, article, onClose, onSaved }) {
         </label>
         <label>
           Nội dung vụ việc
-          <textarea
-            ref={bodyRef}
-            name="body"
+          <NewsContentEditor
+            enableImage
+            editorRef={bodyEditorRef}
             value={form.body}
-            onChange={change}
-            rows={8}
-            placeholder={"## NỘI DUNG VỤ ÁN\nPhần này dùng **in đậm** hoặc *in nghiêng*.\n\n## NHẬN ĐỊNH\n- Ý thứ nhất\n- Ý thứ hai"}
+            onChange={(body) => setForm((current) => ({ ...current, body }))}
+            placeholder="Dùng H2 cho từng mục (NỘI DUNG VỤ ÁN, NHẬN ĐỊNH…)."
           />
           <span className="field-hint">
-            Mỗi mục bắt đầu bằng ## TIÊU ĐỀ. Trong nội dung dùng **in đậm**, *in
-            nghiêng*, danh sách `- mục`. Chèn ảnh bằng nút bên dưới.
+            Dùng H2/H3 để tách mục. Định dạng bằng thanh công cụ; chèn ảnh bằng nút
+            bên dưới.
           </span>
         </label>
         <div className="compose-inline-actions">

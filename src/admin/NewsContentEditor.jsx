@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { EditorContent, useEditor } from "@tiptap/react";
+import Image from "@tiptap/extension-image";
 import StarterKit from "@tiptap/starter-kit";
 import { Placeholder } from "@tiptap/extensions";
 
@@ -17,7 +18,14 @@ function ToolbarButton({ active, disabled, onClick, title, children }) {
   );
 }
 
-export default function NewsContentEditor({ value, onChange }) {
+export default function NewsContentEditor({
+  value,
+  onChange,
+  placeholder = "Nhập nội dung…",
+  enableImage = false,
+  compact = false,
+  editorRef,
+}) {
   const editor = useEditor({
     immediatelyRender: false,
     shouldRerenderOnTransaction: true,
@@ -30,8 +38,16 @@ export default function NewsContentEditor({ value, onChange }) {
         },
       }),
       Placeholder.configure({
-        placeholder: "Nhập nội dung tin tức…",
+        placeholder,
       }),
+      ...(enableImage
+        ? [
+            Image.configure({
+              inline: false,
+              allowBase64: false,
+            }),
+          ]
+        : []),
     ],
     content: value || "",
     editorProps: {
@@ -52,6 +68,14 @@ export default function NewsContentEditor({ value, onChange }) {
     }
   }, [editor, value]);
 
+  useEffect(() => {
+    if (!editorRef) return undefined;
+    editorRef.current = editor;
+    return () => {
+      editorRef.current = null;
+    };
+  }, [editor, editorRef]);
+
   function setLink() {
     if (!editor) return;
     const previous = editor.getAttributes("link").href || "https://";
@@ -65,7 +89,7 @@ export default function NewsContentEditor({ value, onChange }) {
   }
 
   return (
-    <div className="admin-tiptap">
+    <div className={`admin-tiptap${compact ? " is-compact" : ""}`}>
       <div className="admin-tiptap-toolbar" role="toolbar" aria-label="Định dạng nội dung">
         <ToolbarButton
           title="Đậm"

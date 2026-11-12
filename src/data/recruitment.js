@@ -1,7 +1,6 @@
 export const recruitmentArticle = {
   title: "Tuyển luật sư và cộng tác viên",
-  intro:
-    "Công ty Luật TNHH MTV Từ Liêm tuyển luật sư cộng tác, cộng tác viên khách hàng và cộng tác viên pháp lý làm việc theo vụ việc tại các địa phương trên toàn quốc. Chúng tôi tìm kiếm người có trình độ, kinh nghiệm và thời gian phù hợp; ưu tiên luật sư thuộc Đoàn Luật sư thành phố Hà Nội.",
+  intro: `<p>Công ty Luật TNHH MTV Từ Liêm tìm kiếm các cộng tác viên, cộng tác viên khách hàng và cộng tác viên pháp lý có trình độ, kinh nghiệm và thời gian, đảm nhận công việc theo vụ việc, tại các địa phương trên toàn quốc.</p><h2>1. Định hướng phát triển đội ngũ</h2><p>Công ty kết hợp chuyên môn của luật sư với nguồn nhân lực chất lượng cao tại địa phương xảy ra sự việc nhằm cung cấp dịch vụ tốt nhất với thời gian và chi phí hợp lý nhất, mang lại lợi ích thiết thực cho khách hàng.</p><h2>2. Định hướng phát triển bản thân cộng tác viên</h2><ul><li>Được lựa chọn công việc phù hợp với năng lực, địa bàn và thời gian của mình để phát huy thế mạnh bản thân</li><li>Được hưởng thu nhập theo công việc thực tế</li></ul>`,
   orientation: [
     "Công ty kết hợp chuyên môn của luật sư với nguồn nhân lực chất lượng cao tại địa phương có vụ việc, nhằm cung cấp dịch vụ pháp lý với thời gian và chi phí hợp lý, mang lại lợi ích thiết thực cho khách hàng.",
     "Cộng tác viên được lựa chọn công việc phù hợp với năng lực, địa bàn và thời gian của mình để phát huy thế mạnh bản thân; được hưởng thu nhập theo công việc thực tế.",

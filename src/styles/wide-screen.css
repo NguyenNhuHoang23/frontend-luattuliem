@@ -6,7 +6,7 @@
 
   .wrap,
   .main-container > .wrap {
-    width: min(var(--site-content-width), 90%);
+    width: min(var(--site-content-width), 94%);
     max-width: none;
     margin-inline: auto;
   }
@@ -17,13 +17,13 @@
 
   @media (min-width: 901px) {
     .page-home .principles .wrap {
-      width: min(1040px, 90%);
+      width: min(1040px, 94%);
       max-width: 1040px;
       column-gap: 28px;
     }
     .page-home #gioi-thieu .intro {
       grid-template-columns: 1fr 1fr;
-      column-gap: 48px;
+      column-gap: 28px;
     }
     .page-home .intro-body > p {
       font-size: 16.5px;
@@ -43,7 +43,7 @@
       min-height: 0;
     }
     .page-home .hero-inner {
-      width: min(var(--site-content-width), 90%);
+      width: min(var(--site-content-width), 94%);
       margin-inline: auto;
       grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
       gap: clamp(28px, 3vw, 48px);
@@ -85,8 +85,6 @@
     }
     /* Giữ dòng bài viết vừa đọc dù khung trang rộng hơn. */
     .page-about .article-body > p,
-    .page-recruitment .recruitment-article p,
-    .page-recruitment .recruitment-article li,
     .page-cases .case-news-excerpt {
       max-width: 80ch;
     }
@@ -156,7 +154,7 @@
   @media (max-width: 900px) {
     .wrap,
     .main-container > .wrap {
-      width: calc(100% - 32px);
+      width: calc(100% - 16px);
     }
   }
 }

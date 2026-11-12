@@ -36,19 +36,19 @@
     cursor: pointer;
   }
   .page-about .wrap {
-    width: min(1200px, 92%);
+    width: min(1200px, 94%);
     margin: auto;
   }
   /* Header/nav dùng style chung từ base.css */
 
   /* Two-column Editorial Layout matching user screenshot */
   .page-about .main-container {
-    padding: 24px 0 44px;
+    padding: 10px 0 24px;
   }
   .page-about .editorial-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 320px;
-    gap: 32px;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 18px;
     align-items: start;
   }
 
@@ -98,7 +98,7 @@
     border-radius: 6px;
     overflow: hidden;
     box-shadow: 0 6px 24px rgba(17, 40, 75, 0.06);
-    margin-bottom: 32px;
+    margin-bottom: 20px;
   }
   .page-about .poster-inner {
     display: grid;
@@ -106,7 +106,7 @@
     background: #fbfcfe;
   }
   .page-about .poster-left {
-    padding: 32px 28px 24px;
+    padding: 16px 16px 14px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -254,8 +254,8 @@
     margin: 0 0 11px;
   }
   .page-about .article-cta-box {
-    margin-top: 20px;
-    padding: 22px 26px;
+    margin-top: 14px;
+    padding: 16px 18px;
     background: linear-gradient(135deg, #f0f5fc 0%, #ffffff 100%);
     border: 1px solid #d0deee;
     border-left: 4px solid var(--blue);

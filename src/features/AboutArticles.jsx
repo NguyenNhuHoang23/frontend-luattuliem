@@ -6,6 +6,8 @@ import { AboutArticleSkeleton } from "../components/Skeleton.jsx";
 import { aboutArticles as defaultAboutArticles } from "../data/about.js";
 import { images } from "../data/images.js";
 import { sortByPublicationOrder } from "../utils/publicationOrder.js";
+import { isHtmlContent } from "../utils/richContent.js";
+import { RichContent } from "../components/RichContent.jsx";
 
 const regularWeightPhrases = new Set([
   "Một người hiểu chuyện, một người hiểu luật, cùng phối hợp có thể giúp khách hàng bớt nhiều bước đường.",
@@ -182,8 +184,11 @@ export function AboutArticles({ entries }) {
     (sum, a) => sum + (a.blocks?.length || 0),
     0,
   );
+  const hasRichHtml = (articles || []).some((a) => isHtmlContent(a.content));
   const displayArticles =
-    !articles?.length || totalBlocks <= 4 ? defaultAboutArticles : articles;
+    !articles?.length || (totalBlocks <= 4 && !hasRichHtml)
+      ? defaultAboutArticles
+      : articles;
 
   let headingIndex = 0;
 
@@ -191,6 +196,7 @@ export function AboutArticles({ entries }) {
     <>
       {sortByPublicationOrder(displayArticles, "oldest").map((entry, index) => {
         const Heading = index === 0 ? "h1" : "h2";
+        const useHtml = isHtmlContent(entry.content);
         const visibleBlocks = (entry.blocks || []).filter(
           (b) => !isExcludedAboutBlock(b),
         );
@@ -205,11 +211,15 @@ export function AboutArticles({ entries }) {
             </Heading>
 
             <div className="article-body">
-              {visibleBlocks.map((block, i) => {
-                const headingId =
-                  block.type === "heading" ? `muc-${++headingIndex}` : undefined;
-                return <ArticleBlock key={i} block={block} headingId={headingId} />;
-              })}
+              {useHtml ? (
+                <RichContent text={entry.content} />
+              ) : (
+                visibleBlocks.map((block, i) => {
+                  const headingId =
+                    block.type === "heading" ? `muc-${++headingIndex}` : undefined;
+                  return <ArticleBlock key={i} block={block} headingId={headingId} />;
+                })
+              )}
             </div>
           </article>
         );

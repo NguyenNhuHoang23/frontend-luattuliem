@@ -24,6 +24,8 @@ import {
   changeHandler,
   pageSlice,
 } from "../components.jsx";
+import NewsContentEditor from "../NewsContentEditor.jsx";
+import { isEmptyRichContent, toEditorHtml } from "../../utils/richContent.js";
 
 function joinItems(items = []) {
   return items.join("\n");
@@ -126,7 +128,7 @@ export default function RecruitmentAdminPage() {
       ]);
       setArticle({
         title: pageData?.title || "",
-        intro: pageData?.intro || "",
+        intro: toEditorHtml(pageData?.intro || ""),
       });
       setRoles(roleItems);
       setPosts(postItems);
@@ -144,15 +146,23 @@ export default function RecruitmentAdminPage() {
   async function saveArticle(event) {
     event.preventDefault();
     setFormError("");
+    if (!article.title.trim()) {
+      setFormError("Vui lòng nhập tiêu đề trang.");
+      return;
+    }
+    if (isEmptyRichContent(article.intro)) {
+      setFormError("Vui lòng nhập đoạn giới thiệu.");
+      return;
+    }
     setSaving(true);
     try {
       const saved = await updateRecruitmentPage({
         title: article.title.trim(),
-        intro: article.intro.trim(),
+        intro: article.intro,
       });
       setArticle({
         title: saved.title || "",
-        intro: saved.intro || "",
+        intro: toEditorHtml(saved.intro || ""),
       });
     } catch (err) {
       setFormError(err.message);
@@ -276,20 +286,20 @@ export default function RecruitmentAdminPage() {
         <form className="admin-card" onSubmit={saveArticle}>
           {formError ? <p className="admin-login-error">{formError}</p> : null}
           <Field label="Tiêu đề trang" name="title" value={article.title} onChange={changeHandler(setArticle)} required />
-          <Field
-            label="Đoạn giới thiệu"
-            name="intro"
-            type="textarea"
-            rows={5}
-            value={article.intro}
-            onChange={changeHandler(setArticle)}
-            required
-          />
-          <p className="admin-muted">
-            Để cập nhật yêu cầu chung cho mọi vị trí, đặt “Yêu cầu chung” hoặc
-            “Điều kiện chung” trên một dòng riêng, rồi nhập nội dung bên dưới.
-            Bắt đầu mỗi ý trong danh sách bằng dấu gạch ngang và một dấu cách.
-          </p>
+          <div className="admin-field">
+            <label htmlFor="admin-field-intro">
+              Đoạn giới thiệu
+              <em> *</em>
+            </label>
+            <NewsContentEditor
+              value={article.intro}
+              onChange={(intro) => setArticle((current) => ({ ...current, intro }))}
+              placeholder="Nhập đoạn giới thiệu tuyển dụng…"
+            />
+            <small>
+              Dùng tiêu đề “Yêu cầu chung” hoặc “Điều kiện chung” cho phần sẽ hiển thị ở mọi vị trí. Nhập các ý bên dưới bằng công cụ danh sách.
+            </small>
+          </div>
           <button className="admin-btn" type="submit" disabled={saving}>
             {saving ? "Đang lưu…" : "Lưu mở đầu"}
           </button>

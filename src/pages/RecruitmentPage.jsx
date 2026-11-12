@@ -11,6 +11,8 @@ import {
   recruitmentArticle,
   recruitmentDocuments,
 } from "../data/recruitment.js";
+import { isHtmlContent } from "../utils/richContent.js";
+import { RichContent } from "../components/RichContent.jsx";
 import { RecruitmentSkeleton } from "../components/Skeleton.jsx";
 import { RecruitmentCard } from "../features/RecruitmentCard.jsx";
 import { RecruitmentTopicIcon } from "../components/RecruitmentTopicIcon.jsx";
@@ -20,6 +22,27 @@ import { sortByPublicationOrder } from "../utils/publicationOrder.js";
 const commonHeading = /^(?:\d+[.)]\s+)?(?:Điều kiện chung|Yêu cầu chung)\s*:?$/iu;
 
 function getCommonRequirements(intro) {
+  if (isHtmlContent(intro)) {
+    const { content } = Object.assign(document.createElement("template"), { innerHTML: intro });
+    const items = [];
+    const paragraphs = [];
+    let collecting = false;
+    for (const block of content.children) {
+      const text = block.textContent.trim();
+      if (commonHeading.test(text)) {
+        collecting = true;
+        continue;
+      }
+      if (!collecting) continue;
+      if (/^H[1-6]$/u.test(block.tagName) || /^\d+[.)]\s+/u.test(text)) break;
+      if (block.matches("ul, ol")) {
+        items.push(...Array.from(block.children, (item) => item.textContent.trim()).filter(Boolean));
+      } else if (text) {
+        paragraphs.push(text);
+      }
+    }
+    if (items.length || paragraphs.length) return { items, paragraphs };
+  }
   const lines = (intro || "").split(/\r?\n/).map((line) => line.trim());
   const start = lines.findIndex((line) => commonHeading.test(line));
   const common = start < 0 ? [] : lines.slice(start + 1);
@@ -32,6 +55,9 @@ function getCommonRequirements(intro) {
 }
 
 function RecruitmentIntro({ text }) {
+  if (isHtmlContent(text)) {
+    return <RichContent className="recruitment-intro" text={text} />;
+  }
   const blocks = [];
   for (const line of text.split(/\r?\n/).map((value) => value.trim()).filter(Boolean)) {
     const bullet = line.match(/^[•*-]\s+(.+)$/u);
