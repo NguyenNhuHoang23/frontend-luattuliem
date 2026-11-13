@@ -11,7 +11,7 @@ colors:
   surface-container: '#f6f9fd'
   outline-variant: '#dce3ec'
   header-surface: '#f0f5fc'
-  footer-surface: '#edf3fb'
+  footer-surface: '#e3edfa'
   number-accent: '#7496c7'
   focus: '#d3a04a'
 ---
@@ -45,7 +45,7 @@ Toàn bộ nội dung tiếng Việt phải đầy đủ dấu. Giữ cách xưn
 | Nền phụ | `#f5f7fa` — `--paper` | Khu vực thành viên và các vùng thông tin nhẹ |
 | Nền khối trang chủ | `#f6f9fd` | Lĩnh vực hoạt động, bài viết và hoạt động |
 | Nền thanh trên | `#f0f5fc` | Thanh tên công ty và khẩu hiệu |
-| Nền chân trang | `#edf3fb` | Footer nền sáng, thông tin liên hệ |
+| Nền chân trang | `#e3edfa` — `--footer-surface` | Nền xanh nhạt của chân trang và thanh bản quyền |
 | Đường phân cách | `#dce3ec` — `--line` | Viền thẻ, trường nhập, phân cách nội dung |
 | Số thứ tự | `#7496c7` | Các mục 01, 02, 03 dưới hero |
 | Focus bàn phím | `#d3a04a` | Viền focus của liên kết và nút; mobile đang dùng `#bd852d` |
@@ -113,7 +113,7 @@ Các breakpoint được kế thừa qua CSS layers; cần kiểm tra quy tắc 
 
 ### Header và điều hướng
 
-Thanh thông tin nhanh hiển thị giờ làm việc và thông điệp đồng hành. Trên màn hình máy tính (`> 900px`), logo tròn giữ ở lề trái, cụm tên công ty (“CÔNG TY LUẬT TNHH MTV” / “TỪ LIÊM”, chữ “TỪ LIÊM” tăng lên 56px và căn giữa) được đưa ra chính giữa thanh header, còn góc phải chỉ hiển thị khối thông tin liên hệ tiếp nhận (đẩy sát lề phải, bỏ nút “Liên hệ tư vấn” để tránh lặp với mục “Liên hệ” trên thanh menu). Trên mobile (`≤ 900px`), giữ logo và tên công ty cạnh nhau bên trái cùng nút Menu bên phải. Header dùng chung trên các trang công khai; khi chỉnh kích thước logo hoặc chữ, kiểm tra `site-chrome.css` ở desktop, mobile và trạng thái sau khi cuộn.
+Thanh thông tin nhanh hiển thị giờ làm việc và thông điệp đồng hành. Trên màn hình máy tính (`> 900px`), logo tròn và tên công ty nằm cạnh nhau ở lề trái. Tên công ty giữ phông không chân và màu xanh thương hiệu: dòng pháp nhân nhỏ căn trái, dòng “TỪ LIÊM” lớn thụt sang phải bên dưới. Khối thông tin liên hệ nằm ở lề phải. Trên mobile (`≤ 900px`), giữ logo và tên công ty cạnh nhau bên trái cùng nút Menu bên phải. Header dùng chung trên các trang công khai; khi chỉnh kích thước logo hoặc chữ, kiểm tra `site-chrome.css` ở desktop, mobile và trạng thái sau khi cuộn.
 
 Thứ tự điều hướng: **Trang chủ → Giới thiệu → Án lệ – Án hay → Tuyển dụng – Hợp tác → Thành viên → Liên hệ**. Giữ chữ có dấu và thứ tự đã thống nhất.
 

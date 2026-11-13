@@ -312,40 +312,17 @@
       border-bottom: 0;
     }
 
-    .masthead {
-      display: grid;
-      grid-template-columns: minmax(max-content, 1fr) auto minmax(max-content, 1fr);
-      align-items: center;
-      column-gap: 24px;
-    }
-
-    .site-header .brand {
-      display: contents;
-    }
-
-    .site-header .brand .brand-logo-img,
-    .site-header .brand img.brand-logo-img {
-      grid-column: 1;
-      justify-self: start;
-    }
-
     .site-header .brand .brand-text {
-      grid-column: 2;
-      justify-self: center;
-      align-items: center;
-      text-align: center;
+      text-align: left;
     }
 
-    .site-header .brand:focus-visible .brand-text {
-      outline: 2px solid var(--focus, #d3a04a);
-      outline-offset: 6px;
-      border-radius: 4px;
+    .site-header .brand .brand-text strong {
+      padding-inline-start: clamp(38px, 5vw, 78px);
+      text-align: left;
     }
 
     .header-actions {
-      grid-column: 3;
-      justify-self: end;
-      margin-left: 0;
+      margin-left: auto;
     }
 
     .site-header .nav-line {

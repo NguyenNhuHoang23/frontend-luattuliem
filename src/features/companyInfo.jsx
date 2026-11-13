@@ -6,7 +6,7 @@ export const defaultCompanyInfo = {
   name: site.name,
   phone: site.phone,
   phoneHref: site.phoneHref,
-  email: "contact@luattuliem.vn",
+  email: site.email,
   address:
     "Tầng 5, số 73 đường Phú Diễn, phường Phú Diễn, quận Bắc Từ Liêm, Hà Nội.",
   workingHours:
@@ -15,8 +15,8 @@ export const defaultCompanyInfo = {
   slogan: site.slogan,
   headerContactType: "email",
   headerContactLabel: "Email tiếp nhận",
-  headerContactValue: "contact@luattuliem.vn",
-  headerContactHref: "mailto:contact@luattuliem.vn",
+  headerContactValue: "",
+  headerContactHref: "",
   headerContactHint: "Gửi email để được tư vấn pháp lý",
 };
 
