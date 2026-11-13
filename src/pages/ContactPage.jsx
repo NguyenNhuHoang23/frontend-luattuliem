@@ -4,6 +4,7 @@ import { submitPublicContactMessage } from "../api/public.js";
 import { IconArrowExternal } from "../components/IconArrow.jsx";
 import { Modal } from "../components/Modal.jsx";
 import { useToast } from "../components/toast-context.js";
+import { resolvePublicEmail } from "../data/site.js";
 import { LineBreaks, useCompanyInfo } from "../features/companyInfo.jsx";
 
 const CLIENT_GUIDE_STEPS = [
@@ -74,6 +75,7 @@ const CLIENT_GUIDE_STEPS = [
 
 export default function ContactPage() {
   const company = useCompanyInfo();
+  const email = resolvePublicEmail(company.email);
   const location = useLocation();
   const formRef = useRef(null);
   const guideRef = useRef(null);
@@ -353,7 +355,7 @@ export default function ContactPage() {
                   <div>
                     <b>Hòm thư điện tử:</b>{" "}
                     <p>
-                      <a href={`mailto:${company.email}`}>{company.email}</a>
+                      <a href={email.href}>{email.address}</a>
                     </p>
                   </div>
                 </li>

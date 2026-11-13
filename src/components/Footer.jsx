@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { images } from "../data/images.js";
-import { site } from "../data/site.js";
+import { resolvePublicEmail, site } from "../data/site.js";
 import { useCompanyInfo } from "../features/companyInfo.jsx";
 
 const FOOTER_TAGLINE =
@@ -40,7 +40,7 @@ export function Footer() {
     : FOOTER_TAGLINE;
   const phone = company.phone || site.phone;
   const phoneHref = company.phoneHref || site.phoneHref;
-  const email = company.email || "contact@luattuliem.vn";
+  const email = resolvePublicEmail(company.email);
   const address = shortAddress(company.address);
   const year = new Date().getFullYear();
   const logoSrc =
@@ -88,7 +88,7 @@ export function Footer() {
           <ul className="site-footer-list">
             <li>{address}</li>
             <li>
-              <a href={`mailto:${email}`}>{email}</a>
+              <a href={email.href}>{email.address}</a>
             </li>
             <li>
               <a href={phoneHref}>{phone}</a>
