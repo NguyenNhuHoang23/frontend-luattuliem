@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { navigation, site } from "../data/site.js";
+import { navigation, resolvePublicEmail, site } from "../data/site.js";
 import { images } from "../data/images.js";
 import { useCompanyInfo } from "../features/companyInfo.jsx";
 
@@ -40,20 +40,29 @@ function HeaderContactIcon({ type }) {
 
 function resolveHeaderContact(company) {
   const type = company.headerContactType || "email";
-  const email = company.email || "contact@luattuliem.vn";
+  const email = resolvePublicEmail(company.email);
+  const headerEmail = resolvePublicEmail(
+    company.headerContactValue || email.address,
+  );
   const phone = company.phone || site.phone;
   const value =
-    company.headerContactValue ||
-    (type === "zalo" || type === "phone" ? phone : type === "link" ? company.website || email : email);
+    type === "email"
+      ? headerEmail.address
+      : company.headerContactValue ||
+        (type === "link" ? company.website || email.address : phone);
+  const customHref =
+    type === "email" && headerEmail.address === site.email
+      ? ""
+      : company.headerContactHref;
   const href =
-    company.headerContactHref ||
+    customHref ||
     (type === "zalo"
       ? `https://zalo.me/${String(value).replace(/[^\d]/g, "")}`
       : type === "phone"
         ? company.phoneHref || `tel:${String(value).replace(/[^\d+]/g, "")}`
         : type === "link"
           ? value
-          : `mailto:${value}`);
+          : headerEmail.href);
 
   return {
     type,

@@ -4,9 +4,22 @@ export const site = {
   brandName: "Từ Liêm",
   phone: "091 602 99 66",
   phoneHref: "tel:0916029966",
+  email: "hotro@luattuliem.vn",
+  emailHref: "mailto:dungtvluat@gmail.com",
   website: "luattuliem.vn",
   slogan: "Đồng hành cùng quyền lợi của bạn",
 };
+
+export function resolvePublicEmail(email) {
+  const address = email?.trim();
+  if (
+    !address ||
+    [site.email, "contact@luattuliem.vn"].includes(address.toLowerCase())
+  ) {
+    return { address: site.email, href: site.emailHref };
+  }
+  return { address, href: `mailto:${address}` };
+}
 
 export const navigation = [
   { to: "/", label: "Trang chủ" },
